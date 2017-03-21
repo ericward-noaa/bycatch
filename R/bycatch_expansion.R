@@ -2,14 +2,15 @@
 #'
 #' @param time Numeric, e.g. years
 #' @param events Integer vector of takes (events)
+#' @param covar Optional matrix of covariates
 #' @param effort Metric of fishing effort to be used in estimation of mean bycatch rate
 #' @param coverage Observer coverage (0 - 100) used for binomial expansion
 #' @param family Observation error distribution, defaults to Poisson
 #'
-#' @return list of the data used to fit the model, the expanded bycatch generated via the fit and simulations, and the fitted stan model
+#' @return list of the data used to fit the model, the matrix of covariates, the expanded bycatch generated via the fit and simulations, and the fitted stan model
 #'
 #' @export
-bycatch_expansion <- function(time = NA, events = NA, effort = NA, coverage = NA, family = c("poisson")) {
+bycatch_expansion <- function(time = NULL, events = NULL, covar = NULL, effort = NULL, coverage = NULL, family = c("poisson")) {
   rstan_options(auto_write = TRUE)
   options(mc.cores = parallel::detectCores())
 
@@ -18,10 +19,17 @@ bycatch_expansion <- function(time = NA, events = NA, effort = NA, coverage = NA
   stan_dir = find.package("bycatch")
   model = paste0(stan_dir, "/exec/bycatch.stan")
 
-  pars = c("theta", "lambda")
+  if(is.null(covar)) {
+    # covariate matrix =
+    covar = matrix(1, nrow(df), ncol=1)
+  }
+
+  pars = c("beta", "lambda")
   datalist = list(n_year = nrow(df),
     effort = df$effort,
     events = df$events,
+    x = covar,
+    K = ncol(covar),
     family = 1)
 
   # Currently each year as modeled as independent
@@ -55,5 +63,5 @@ bycatch_expansion <- function(time = NA, events = NA, effort = NA, coverage = NA
   }
   expanded_estimates = expanded_estimates / sigfig_multiplier
 
-  return(list("data" = df, "expanded_estimates" = expanded_estimates, "fitted_model" = stan_model))
+  return(list("data" = df, "covar"=covar, "expanded_estimates" = expanded_estimates, "fitted_model" = stan_model))
 }

@@ -1,20 +1,24 @@
 data {
   int<lower=0> n_year;
-  real effort[n_year]; # vector[n_pos] y; # data
+  int<lower=0> K;
+  matrix[n_year, K] x; # covariates
+  vector[n_year] effort; # covariates
   int events[n_year]; # vector[n_pos] y; # data
   int family;
 }
 parameters {
-  real<lower=0> theta; # estimated coefficient for effort
+  vector[K] beta;
 }
 transformed parameters {
-  vector<lower=0>[n_year] lambda;
+  vector[n_year] lambda;
+  vector[n_year] pred;
+  pred = x * beta;
   for(i in 1:n_year) {
-    lambda[i] = theta * effort[i];
+    lambda[i] = exp(pred[i]) * effort[i];
   }
 }
 model {
-  theta ~ cauchy(0,5);
+  beta ~ student_t(3, 0, 3);
 
   if(family == 1) {
     events ~ poisson(lambda);

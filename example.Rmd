@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r, results="hide", message=FALSE, warning=FALSE}
 require(devtools)
-devtools::install_github("eric-ward/bycatch")
+#devtools::install_github("eric-ward/bycatch")
 library(bycatch)
 ```
 
@@ -52,3 +52,23 @@ df = data.frame("time" = d[,"Year"],
 
 write.table(df, "estimated_bycatch.csv", row.names=F, col.names=T, sep=",")
 ```
+
+\break 
+
+## Example with covariates
+
+Following [Martin et al. 2015](http://onlinelibrary.wiley.com/doi/10.1890/14-0059.1/abstract) we can include fixed or continuous covariates. This needs to be passed in as a design matrix, so using `model.matrix()` is one easy way to do this. 
+
+For example, to add a continuous and indictor covariate to the example above, we can pass in the matrix `covar`,
+
+```{r}
+covar = cbind(1, rnorm(nrow(d)), c(rep(0,5), rep(1, nrow(d)-5)))
+colnames(covar) = c("intercept","predictor","factor")
+print(covar)
+```
+
+```{r eval=FALSE}
+fit = bycatch_expansion(time = d[,"Year"], events = d[,"Takes"], 
+  effort = d[,"Sets"], coverage = d[,"expansionRate"], covar = covar)
+```
+
