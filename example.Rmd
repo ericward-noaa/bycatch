@@ -3,8 +3,8 @@ title: "Bycatch Estimation and Expansion in STAN"
 author: "Eric Ward"
 date: "March 21, 2017"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 ## Load library
@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r, results="hide", message=FALSE, warning=FALSE}
 require(devtools)
-#devtools::install_github("eric-ward/bycatch")
+devtools::install_github("eric-ward/bycatch")
 library(bycatch)
 ```
 
