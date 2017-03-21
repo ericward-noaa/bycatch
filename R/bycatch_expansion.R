@@ -10,8 +10,10 @@
 #' @return list of the data used to fit the model, the matrix of covariates, the expanded bycatch generated via the fit and simulations, and the fitted stan model
 #'
 #' @export
+#' @importFrom rstan
+#'
 bycatch_expansion <- function(time = NULL, events = NULL, covar = NULL, effort = NULL, coverage = NULL, family = c("poisson")) {
-  rstan_options(auto_write = TRUE)
+  rstan::rstan_options(auto_write = TRUE)
   options(mc.cores = parallel::detectCores())
 
   df = data.frame(time=time, events=events, effort=effort, coverage=coverage)

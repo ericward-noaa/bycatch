@@ -7,6 +7,7 @@
 #' @return plot called from ggplot
 #'
 #' @export
+#' @importFrom ggplot2
 plot_expanded = function(fitted_model, xlab = "Time", ylab="Events") {
 
   df = data.frame("time" = fitted_model$data$time,

@@ -4,15 +4,15 @@
 \alias{bycatch_expansion}
 \title{bycatch_expansion is the primary function for fitting bycatch models to time series of takes and effort}
 \usage{
-bycatch_expansion(time = NULL, events = NULL, cov = NULL, effort = NULL,
-  coverage = NULL, family = c("poisson"))
+bycatch_expansion(time = NULL, events = NULL, covar = NULL,
+  effort = NULL, coverage = NULL, family = c("poisson"))
 }
 \arguments{
 \item{time}{Numeric, e.g. years}
 
 \item{events}{Integer vector of takes (events)}
 
-\item{cov}{Optional matrix of covariates}
+\item{covar}{Optional matrix of covariates}
 
 \item{effort}{Metric of fishing effort to be used in estimation of mean bycatch rate}
 
@@ -21,7 +21,7 @@ bycatch_expansion(time = NULL, events = NULL, cov = NULL, effort = NULL,
 \item{family}{Observation error distribution, defaults to Poisson}
 }
 \value{
-list of the data used to fit the model, the expanded bycatch generated via the fit and simulations, and the fitted stan model
+list of the data used to fit the model, the matrix of covariates, the expanded bycatch generated via the fit and simulations, and the fitted stan model
 }
 \description{
 bycatch_expansion is the primary function for fitting bycatch models to time series of takes and effort
