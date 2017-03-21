@@ -35,7 +35,7 @@ bycatch_expansion <- function(time = NULL, events = NULL, covar = NULL, effort =
   # Currently each year as modeled as independent
   if(family == "poisson") {
     # intercept dropped, because lambda = theta * effort
-    stan_model = stan(file=model, data = datalist, pars = pars, chains=4, iter=2000)
+    stan_model = stan(file=model, data = datalist, pars = pars, chains=4, iter=2000, control = list(adapt_delta = 0.99))
   }
 
   pars = rstan::extract(stan_model)
