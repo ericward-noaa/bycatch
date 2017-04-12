@@ -5,7 +5,8 @@
 \title{bycatch_expansion is the primary function for fitting bycatch models to time series of takes and effort}
 \usage{
 bycatch_expansion(time = NULL, events = NULL, covar = NULL,
-  effort = NULL, coverage = NULL, family = c("poisson"))
+  effort = NULL, coverage = NULL, family = c("poisson"),
+  control = list(sigfig_multiplier = 100, mcmc_samples = 1000, maxX = 20000))
 }
 \arguments{
 \item{time}{Numeric, e.g. years}
@@ -19,6 +20,8 @@ bycatch_expansion(time = NULL, events = NULL, covar = NULL,
 \item{coverage}{Observer coverage (0 - 100) used for binomial expansion}
 
 \item{family}{Observation error distribution, defaults to Poisson}
+
+\item{control, }{list of 3 elements used for control: sigfig_multiplier (used for adjusting precision of estimates, defaults to 1000), mcmc_samples (number of mcmc samples randomly selected from the posterior for expansion), maxX (upper bound for drawing from latent bycatch events, also related to sigfig_multiplier)}
 }
 \value{
 list of the data used to fit the model, the matrix of covariates, the expanded bycatch generated via the fit and simulations, and the fitted stan model

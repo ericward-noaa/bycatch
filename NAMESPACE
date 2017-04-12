@@ -2,3 +2,5 @@
 
 export(bycatch_expansion)
 export(plot_expanded)
+importFrom(ggplot2)
+importFrom(rstan)
