@@ -18,6 +18,12 @@ plot_fitted = function(fitted_model, xlab = "Time", ylab="Events") {
     "high" = apply(lambda, 2, quantile, 0.975),
     "obs" = fitted_model$data$events)
 
+  # generate intervals for new data
+  #n_sim = 10000
+  #rand = matrix(rpois(n = length(df$mean)*n_sim, lambda=rep(df$mean, n_sim)), ncol = n_sim)
+  #df$low_obs = apply(rand, 1, quantile, 0.025)
+  #df$high_obs = apply(rand, 1, quantile, 0.975)
+
   g1 = ggplot(df, aes(time, mean)) +
     geom_ribbon(aes(ymin = low, ymax=high), fill="grey60") +
     geom_line() +

@@ -5,6 +5,7 @@
 #' @param effort Metric of fishing effort to be used in estimation of mean bycatch rate
 #' @param coverage Observer coverage (0 - 100) used for binomial expansion
 #' @param family Observation error distribution, defaults to Poisson
+#' @param time_varying True / False, whether to include time varying component (this is a random walk, analogous to making this a Dynamic linear model)
 #' @param control, list of 3 elements used for control: sigfig_multiplier (used for adjusting precision of estimates, defaults to 1000), mcmc_samples (number of mcmc samples randomly selected from the posterior for expansion), maxX (upper bound for drawing from latent bycatch events, also related to sigfig_multiplier)
 #'
 #' @return list of the data used to fit the model, the matrix of covariates, the expanded bycatch generated via the fit and simulations, and the fitted stan model
@@ -12,7 +13,7 @@
 #' @export
 #' @importFrom rstan
 #'
-bycatch_expansion <- function(time = NULL, events = NULL, covar = NULL, effort = NULL, coverage = NULL, family = c("poisson"), control = list(sigfig_multiplier = 100, mcmc_samples = 1000, maxX = 20000)) {
+bycatch_expansion <- function(time = NULL, events = NULL, covar = NULL, effort = NULL, coverage = NULL, family = c("poisson"), time_varying = FALSE, control = list(sigfig_multiplier = 100, mcmc_samples = 1000, maxX = 20000)) {
 
   rstan::rstan_options(auto_write = TRUE)
   options(mc.cores = parallel::detectCores())
@@ -33,7 +34,8 @@ bycatch_expansion <- function(time = NULL, events = NULL, covar = NULL, effort =
     events = df$events,
     x = covar,
     K = ncol(covar),
-    family = 1)
+    family = 1,
+    time_varying = as.numeric(time_varying))
 
   # Currently each year as modeled as independent
   if(family == "poisson") {
