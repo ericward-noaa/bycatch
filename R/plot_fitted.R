@@ -15,7 +15,7 @@ plot_fitted = function(fitted_model, xlab = "Time", ylab="Events") {
   df = data.frame("time" = fitted_model$data$time,
     "mean" = apply(lambda, 2, mean),
     "low" = apply(lambda, 2, quantile, 0.025),
-    "high" = apply(lambda, 2, quantile, 0.025),
+    "high" = apply(lambda, 2, quantile, 0.975),
     "obs" = fitted_model$data$events)
 
   g1 = ggplot(df, aes(time, mean)) +
