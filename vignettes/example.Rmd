@@ -37,10 +37,13 @@ fit = bycatch_expansion(time = d[,"Year"], events = d[,"Takes"],
 
 ## Make plots
 
+```{r, fig.pos="placeHere", fig.cap = "Estimated fleet-level bycatch (not expanded by observer coverage), incorporating data on takes, effort. Dots represent observed bycatch events."}
+plot_fitted(fit, xlab="Year", ylab = "Fleet-level bycatch")
+```
+
 ```{r, fig.pos="placeHere", fig.cap = "Estimated fleet-level expanded bycatch, incorporating data on takes, effort, and observer coverage. Dots represent observed bycatch events."}
 plot_expanded(fit, xlab="Year", ylab = "Fleet-level bycatch")
 ```
-
 ## Make table of expanded bycatch estimates
 
 ```{r, eval=FALSE}
