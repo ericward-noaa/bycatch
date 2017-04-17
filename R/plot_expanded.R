@@ -17,9 +17,9 @@ plot_expanded = function(fitted_model, xlab = "Time", ylab="Events") {
     "obs" = fitted_model$data$events)
 
   g1 = ggplot(df, aes(time, mean)) +
-    geom_ribbon(aes(ymin = low, ymax=high), fill="grey60") +
-    geom_line() +
-    geom_point(aes(time, obs), size=2) +
+    geom_ribbon(aes(ymin = low, ymax=high), fill="blue", alpha=0.3) +
+    geom_line(color = "blue") +
+    geom_point(aes(time, obs), size=2, color = "blue") +
     xlab(xlab) + ylab(ylab) + theme_bw() +
     theme(panel.border = element_blank(), panel.grid.major = element_blank(),
       panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))

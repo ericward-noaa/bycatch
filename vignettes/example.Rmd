@@ -75,3 +75,17 @@ fit = bycatch_expansion(time = d[,"Year"], events = d[,"Takes"],
   effort = d[,"Sets"], coverage = d[,"expansionRate"], covar = covar)
 ```
 
+\break 
+
+## Fit model with time-varying effects
+
+To incorporate potential autocorrelation, we can fit a model with time-varying random effects. This is equivalent to a dynamic linear model with time varying intercept in a Poisson GLM. 
+
+```{r, results="hide", message=FALSE, warning=FALSE}
+fit = bycatch_expansion(time = d[,"Year"], events = d[,"Takes"], 
+  effort = d[,"Sets"], coverage = d[,"expansionRate"], time_varying=TRUE)
+```
+
+```{r, fig.pos="placeHere", fig.cap = "Estimated fleet-level expanded bycatch from the model with time-varying effects, incorporating data on takes, effort, and observer coverage. Dots represent observed bycatch events."}
+plot_expanded(fit, xlab="Year", ylab = "Fleet-level bycatch")
+```

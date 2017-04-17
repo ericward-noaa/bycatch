@@ -29,10 +29,10 @@ transformed parameters {
 model {
   beta ~ student_t(3, 0, 3);
   sigma_rw ~ cauchy(0,5);
-  est_time_dev[i] ~ student_t(3, 0, 3);
+  est_time_dev[1] ~ student_t(3, 0, 3);
   for(i in 2:(n_year-1)) {
     # model evolution of temporal deviations as random walk
-    est_time_dev[i] ~ normal(est_time_dev[i], sigma_rw);
+    est_time_dev[i] ~ normal(est_time_dev[i-1], sigma_rw);
   }
   if(family == 1) {
     events ~ poisson(lambda);
