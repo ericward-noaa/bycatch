@@ -17,5 +17,5 @@ plot_fitted(fitted_model, xlab = "Time", ylab = "Events")
 plot called from ggplot
 }
 \description{
-plot_fitted makes plots bycatch estimates (lambda of Poisson), accounting for effort but not accounting for observer coverage.
+plot_fitted makes plots bycatch estimates (lambda of Poisson), accounting for effort but not accounting for observer coverage
 }

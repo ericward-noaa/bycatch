@@ -1,16 +1,13 @@
 Package: bycatch
 Type: Package
 Title: Fits Bayesian Model to Bycatch Data
-Version: 0.1.0
+Version: 1.0
+Date: 2017-04-19
 Author: Eric Ward
 Maintainer: Eric Ward <eric.ward@noaa.gov>
 Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: GPL (>=3)
-Encoding: UTF-8
-LazyData: true
-Depends:
-    R (>= 3.2.0),
-    Rcpp (>= 0.11.0), 
-    rstan (>= 2.12.0), ggplot2
+License: What license is it under?
+Depends: R (>= 3.0.2), Rcpp (>= 0.12.10), methods, ggplot2, viridis
+Imports: rstan (>= 2.14.2), rstantools (>= 1.2.0)
+LinkingTo: StanHeaders (>= 2.14.0.1), rstan (>= 2.14.2), BH (>= 1.62.0.1), Rcpp (>= 0.12.10), RcppEigen (>= 0.3.2.9.1)
 RoxygenNote: 6.0.1

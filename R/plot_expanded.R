@@ -7,7 +7,8 @@
 #' @return plot called from ggplot
 #'
 #' @export
-#' @importFrom ggplot2
+#' @import ggplot2
+#' @import viridis
 plot_expanded = function(fitted_model, xlab = "Time", ylab="Events") {
 
   df = data.frame("time" = fitted_model$data$time,

@@ -7,7 +7,8 @@
 #' @return plot called from ggplot
 #'
 #' @export
-#' @importFrom ggplot2
+#' @import ggplot2
+#' @import viridis
 plot_fitted = function(fitted_model, xlab = "Time", ylab="Events") {
 
   lambda = rstan::extract(fitted_model$fitted_model, c("lambda"))$lambda

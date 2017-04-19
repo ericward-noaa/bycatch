@@ -30,5 +30,5 @@ bycatch_expansion(time = NULL, events = NULL, covar = NULL,
 list of the data used to fit the model, the matrix of covariates, the expanded bycatch generated via the fit and simulations, and the fitted stan model
 }
 \description{
-bycatch_expansion is the primary function for fitting bycatch models to time series of takes and effort. The simple version of the model without time-varying parameters is modeled as \deqn{Y_{t} ~ Poisson(\lambda_{t})}, where \deqn{\lambda_{t} = exp(B*X)*effort_{t}}. In the simplest case, X is a column of 1s and \eqn{B_{1}} is an estimated intercept. For models with covariates, X can include > 1 column. For models with time-varying effects, these effects are treated as random walks (in log space) and is equivalent to a dynamic linear model (DLM) in a Poisson regression. For this model, \deqn{\lambda_{t} = exp(B*X + c_{t})*effort_{t}}. The terms \eqn{c_{t}} represent the temporal random effects, and are modeled as \deqn{c_{t} ~ Normal(c_{t-1}, \sigma_{c})}
+bycatch_expansion is the primary function for fitting bycatch models to time series of takes and effort
 }

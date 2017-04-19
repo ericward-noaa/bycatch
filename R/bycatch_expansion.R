@@ -11,7 +11,9 @@
 #' @return list of the data used to fit the model, the matrix of covariates, the expanded bycatch generated via the fit and simulations, and the fitted stan model
 #'
 #' @export
-#' @importFrom rstan
+#' @import rstan
+#' @import methods
+#' @import Rcpp
 #'
 bycatch_expansion <- function(time = NULL, events = NULL, covar = NULL, effort = NULL, coverage = NULL, family = c("poisson"), time_varying = FALSE, control = list(sigfig_multiplier = 100, mcmc_samples = 1000, maxX = 20000)) {
 
