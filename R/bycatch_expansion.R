@@ -42,7 +42,9 @@ bycatch_expansion <- function(time = NULL, events = NULL, covar = NULL, effort =
   # Currently each year as modeled as independent
   if(family == "poisson") {
     # intercept dropped, because lambda = theta * effort
-    stan_model = stan(file=model, data = datalist, pars = pars, chains=4, iter=2000, control = list(adapt_delta = 0.99))
+    stan_model = stan(file=model, data = datalist, pars = pars,
+      chains=3, iter=4000, control = list(adapt_delta = 0.999,
+        max_treedepth = 20))
   }
 
   pars = rstan::extract(stan_model)
@@ -63,16 +65,24 @@ bycatch_expansion <- function(time = NULL, events = NULL, covar = NULL, effort =
 
   for(y in 1:nrow(df)) {
     for(mcmc in 1:length(samples)) {
+      # We observe takes, df$events[y]
       # pmf of N | p
       # In other words, we need to sample from the density of Binomial N
       # given Binomial p and X
+
+      # X needs to be an integer, so expand to a series of large numbers as approximation
       X = round(pars$lambda[samples[mcmc],y] * sigfig_multiplier)
-      probs = dbinom(x=X,
-        size = seq(X, maxX), prob = binom_p[y])
-      expanded_estimates[mcmc,y] = sample(seq(X, maxX),size=1, prob=probs)
+      # calculate the probabilites of these Ns given the mean observed takes and observer coverage
+      prob_N = dbinom(x=X, size = seq(X, maxX), prob = binom_p[y])
+      # sample from distribution of N, representing total mean takes
+      N = sample(seq(X, maxX),size=1, prob=prob_N)
+      # sample from poisson to convert mean -> observed data with observation model
+      N = rpois(n = 1, lambda = N)
+      # use the expansion for unobserved sets, use observed as known perfectly for observed
+      N = (1-binom_p[y]) * N / sigfig_multiplier + df$events[y]
+      expanded_estimates[mcmc,y] = N
     }
   }
-  expanded_estimates = expanded_estimates / sigfig_multiplier
 
   return(list("data" = df, "covar"=covar, "expanded_estimates" = expanded_estimates, "fitted_model" = stan_model))
 }

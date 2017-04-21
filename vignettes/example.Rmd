@@ -3,8 +3,8 @@ title: "Bycatch Estimation and Expansion in STAN"
 author: "Eric Ward"
 date: "March 21, 2017"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ## Load library
@@ -46,7 +46,6 @@ plot_fitted(fit, xlab="Year", ylab = "Fleet-level bycatch")
 plot_expanded(fit, xlab="Year", ylab = "Fleet-level bycatch")
 ```
 
-  
 ## Make table of expanded bycatch estimates
 
 ```{r, eval=FALSE}
