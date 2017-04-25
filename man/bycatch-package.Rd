@@ -21,6 +21,7 @@ This framework multiplies the estimated per set bycatch rate \eqn{\theta_{t}} by
 In situations where observer coverage is \eqn{0 < p < 1}, we need to extrapolate these estimates to the unobserved sets. One approach for doing this is to view each estimated number of takes (corrected for effort) \eqn{\lambda_{t}} as the \eqn{x} of a Binomial distribution with known \eqn{p} (observer coverage is known) but unknown N. This algorithm works by iterating over MCMC draws (\eqn{i = 1, 2, ...,n}). For each draw and in each year, we can generate \eqn{{ N }_{ i,t }|p,{ x }_{ i,t }={ \lambda  }_{ i,t }}. because the relative probabilities of each \eqn{{ N }_{ i,t }} can be computed using `dbinom(x = x, size = N, prob = p)`.
 
 In terms of interpretation, the only constraints on \eqn{{ N }_{ i,t }} are that they have to be greater than \eqn{{ x }_{ i,t }}. Like the \eqn{{ x }_{ i,t }}, the \eqn{{ N }_{ i,t }} represents the expanded mean (and thus, the 95 percent CIs are not expected to contain most of the observations).
+
 }
 \author{
 \packageAuthor{bycatch}
