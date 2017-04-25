@@ -4,7 +4,8 @@
 \alias{plot_fitted}
 \title{plot_fitted makes plots bycatch estimates (lambda of Poisson), accounting for effort but not accounting for observer coverage}
 \usage{
-plot_fitted(fitted_model, xlab = "Time", ylab = "Events")
+plot_fitted(fitted_model, xlab = "Time", ylab = "Events",
+  include_points = FALSE)
 }
 \arguments{
 \item{fitted_model}{Data and fitted model returned from bycatch_expansion()}
@@ -12,6 +13,8 @@ plot_fitted(fitted_model, xlab = "Time", ylab = "Events")
 \item{xlab}{X-axis label for plot}
 
 \item{ylab}{Y-axis label for plot}
+
+\item{include_points}{whether or not to include raw bycatch events on plots, defaults to FALSE}
 }
 \value{
 plot called from ggplot
