@@ -1,11 +1,11 @@
 data {
   int<lower=0> n_year;
   int<lower=0> K;
-  matrix[n_year, K] x; # covariates
-  vector[n_year] effort; # covariates
-  int events[n_year]; # vector[n_pos] y; # data
+  matrix[n_year, K] x; // covariates
+  vector[n_year] effort; // covariates
+  int events[n_year]; // vector[n_pos] y; # data
   int family;
-  int time_varying; # whether to treat model as dlm
+  int time_varying; // whether to treat model as dlm
 }
 parameters {
   vector[K] beta;
@@ -39,7 +39,7 @@ model {
     sigma_rw ~ cauchy(0,5);
     est_time_dev[1] ~ student_t(3, 0, 3);
     for(i in 2:(n_year-1)) {
-      # model evolution of temporal deviations as random walk
+      // model evolution of temporal deviations as random walk
       est_time_dev[i] ~ normal(est_time_dev[i-1], sigma_rw);
     }
   }

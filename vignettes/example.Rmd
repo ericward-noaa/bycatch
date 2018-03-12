@@ -64,7 +64,7 @@ write.table(df, "estimated_bycatch.csv", row.names=F, col.names=T, sep=",")
 
 Following [Martin et al. 2015](http://onlinelibrary.wiley.com/doi/10.1890/14-0059.1/abstract) we can include fixed or continuous covariates. This needs to be passed in as a design matrix, so using `model.matrix()` is one easy way to do this. 
 
-For example, to add a continuous and indictor covariate to the example above, we can pass in the matrix `covar`,
+For example, to add a continuous and factor(indictor) covariate to the example above, we can pass in the matrix `covar`,
 
 ```{r}
 covar = cbind(1, rnorm(nrow(d)), c(rep(0,5), rep(1, nrow(d)-5)))
@@ -75,6 +75,17 @@ print(covar)
 ```{r eval=FALSE}
 fit = bycatch_expansion(time = d[,"Year"], events = d[,"Takes"], 
   effort = d[,"Sets"], coverage = d[,"expansionRate"], covar = covar)
+
+# Again, we can make plots
+plot_fitted(fit)
+plot_expanded(fit)
+
+# We can get the 3 covariate effects out with the following call:
+betas = rstan::extract(fit$fitted_model)$beta
+
+# Note that 'betas' has 3 columns. These correspond to (1) the intercept,
+# (2) continuous predictor, and (3) factor variable above. If we didn't 
+# include the covariates, we'd still estimate beta[1]
 ```
 
 \break 
@@ -91,3 +102,21 @@ fit = bycatch_expansion(time = d[,"Year"], events = d[,"Takes"],
 ```{r, fig.pos="placeHere", fig.cap = "Estimated fleet-level expanded bycatch from the model with time-varying effects, incorporating data on takes, effort, and observer coverage. Dots represent observed bycatch events."}
 plot_expanded(fit, xlab="Year", ylab = "Fleet-level bycatch")
 ```
+
+\break 
+
+## Fit model with no bycatch events
+
+```{r data2}
+# replace this with your own data frame
+d = data.frame("Year"= 2002:2014, 
+  "Takes" = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+  "expansionRate" = c(24, 22, 14, 32, 28, 25, 30,  7, 26, 21, 22, 23, 27),
+  "Sets" = c(391, 340, 330, 660, 470, 500, 330, 287, 756, 673, 532, 351, 486))
+```
+
+```{r, eval = FALSE}
+fit = bycatch_expansion(time = d[,"Year"], events = d[,"Takes"], 
+  effort = d[,"Sets"], coverage = d[,"expansionRate"])
+```
+
