@@ -30,7 +30,7 @@ bycatch_expansion <- function(time = NULL, events = NULL, covar = NULL, effort =
     covar = matrix(1, nrow(df), ncol=1)
   }
 
-  pars = c("beta", "lambda")
+  pars = c("beta", "lambda", "log_lik")
   datalist = list(n_year = nrow(df),
     effort = df$effort,
     events = df$events,

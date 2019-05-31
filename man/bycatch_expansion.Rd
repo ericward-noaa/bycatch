@@ -6,8 +6,8 @@
 \usage{
 bycatch_expansion(time = NULL, events = NULL, covar = NULL,
   effort = NULL, coverage = NULL, family = c("poisson"),
-  time_varying = FALSE, control = list(sigfig_multiplier = 100, mcmc_samples
-  = 1000, maxX = 20000))
+  time_varying = FALSE, control = list(sigfig_multiplier = 100,
+  mcmc_samples = 1000, maxX = 20000))
 }
 \arguments{
 \item{time}{Numeric, e.g. years}

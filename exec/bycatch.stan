@@ -49,3 +49,9 @@ model {
   }
 
 }
+generated quantities {
+  vector[n_year] log_lik;
+  for(n in 1:n_year) {
+    log_lik[n] = poisson_lpmf(events[n] | lambda[n]);
+  }
+}
