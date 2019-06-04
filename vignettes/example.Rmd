@@ -3,8 +3,8 @@ title: "Bycatch Estimation and Expansion in STAN"
 author: "Eric Ward"
 date: "June 04, 2019"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 ## Load library
