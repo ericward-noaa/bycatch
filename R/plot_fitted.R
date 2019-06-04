@@ -9,6 +9,7 @@
 #'
 #' @export
 #' @import ggplot2
+#' @importFrom stats quantile
 plot_fitted = function(fitted_model, xlab = "Time", ylab="Events", include_points=FALSE) {
 
   lambda = rstan::extract(fitted_model$fitted_model, c("lambda"))$lambda

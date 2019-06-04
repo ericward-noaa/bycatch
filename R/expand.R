@@ -7,6 +7,8 @@
 #'
 #' @export
 #' @importFrom rstan extract
+#' @importFrom stats dbinom rpois
+#' @importFrom MASS rnegbin
 #'
 expand <- function(fit, coverage = NULL,
   control = list(sigfig_multiplier = 100, mcmc_samples = 1000, maxX = 20000)) {
@@ -47,9 +49,13 @@ expand <- function(fit, coverage = NULL,
       # calculate the probabilites of these Ns given the mean observed takes and observer coverage
       prob_N = dbinom(x=X, size = seq(X, maxX), prob = binom_p[y])
       # sample from distribution of N, representing total mean takes
-      N = sample(seq(X, maxX),size=1, prob=prob_N)
+      mean_takes = sample(seq(X, maxX),size=1, prob=prob_N)
       # sample from poisson to convert mean -> observed data with observation model
-      N = rpois(n = 1, lambda = N)
+      if(fit$family == "poisson") {
+        N = rpois(n = 1, lambda = mean_takes)
+      } else {
+        N = rnegbin(n = 1, mu = mean_takes, theta = pars$nb2_phi[samples[mcmc]])
+      }
       # use the expansion for unobserved sets, use observed as known perfectly for observed
       N = (1-binom_p[y]) * N / sigfig_multiplier + fit$data[y,fit$events]
       expanded_estimates[mcmc,y] = N

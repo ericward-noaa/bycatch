@@ -10,6 +10,7 @@
 #'
 #' @export
 #' @import ggplot2
+#' @importFrom stats quantile
 plot_expanded = function(fitted_model, expanded_estimates, xlab = "Time", ylab="Events", include_points=FALSE) {
 
   df = data.frame("time" = fitted_model$data[,fitted_model$time],
