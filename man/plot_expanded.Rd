@@ -4,11 +4,13 @@
 \alias{plot_expanded}
 \title{plot_expanded is makes plots of the expanded bycatch estimates, accounting for observer coverage and effort}
 \usage{
-plot_expanded(fitted_model, xlab = "Time", ylab = "Events",
-  include_points = FALSE)
+plot_expanded(fitted_model, expanded_estimates, xlab = "Time",
+  ylab = "Events", include_points = FALSE)
 }
 \arguments{
-\item{fitted_model}{Data and fitted model returned from bycatch_expansion()}
+\item{fitted_model}{Data and fitted model returned from estimation}
+
+\item{expanded_estimates}{values returned from a call to expansion()}
 
 \item{xlab}{X-axis label for plot}
 

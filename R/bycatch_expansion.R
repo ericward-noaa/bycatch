@@ -1,51 +1,60 @@
 #' bycatch_expansion is the primary function for fitting bycatch models to time series of takes and effort
-#' @param time Numeric, e.g. years
-#' @param events Integer vector of takes (events)
-#' @param covar Optional matrix of covariates
-#' @param effort Metric of fishing effort to be used in estimation of mean bycatch rate
-#' @param coverage Observer coverage (0 - 100) used for binomial expansion
-#' @param family Observation error distribution, defaults to Poisson
-#' @param time_varying True / False, whether to include time varying component (this is a random walk, analogous to making this a Dynamic linear model)
-#' @param control, list of 3 elements used for control: sigfig_multiplier (used for adjusting precision of estimates, defaults to 1000), mcmc_samples (number of mcmc samples randomly selected from the posterior for expansion), maxX (upper bound for drawing from latent bycatch events, also related to sigfig_multiplier)
+#' @param formula The model formula.
+#' @param data A data frame.
+#' @param time Named column of the 'data' data frame with the label for the time (e.g. year) variable
+#' @param effort Named column of the 'effort' variable in the data frame with the label for the fishing effort to be used in estimation of mean bycatch rate
+#' @param coverage Named column of the 'observer coverage' variable in the data frame (0 - 100) used for binomial expansion
+#' @param family "poisson" or "nbinom2", defaults to "poisson". Both default to using a log link function
+#' @param time_varying boolean TRUE/FALSE, whether to include time varying component (this is a random walk, analogous to making this a Dynamic linear model)
+#' @param control List to pass to [rstan::sampling()]. For example,
+#'   increase \code{adapt_delta} if there are warnings about divergent
+#'   transitions: \code{control = list(adapt_delta = 0.99)}. By default,
+#'   \pkg{glmmfields} sets \code{adapt_delta = 0.9}.
 #'
 #' @return list of the data used to fit the model, the matrix of covariates, the expanded bycatch generated via the fit and simulations, and the fitted stan model
 #'
 #' @export
-#' @import rstan
-#' @import methods
+#' @importFrom rstan sampling vb
 #' @import Rcpp
+#' @importFrom stats model.frame model.matrix model.response
 #'
-bycatch_expansion <- function(time = NULL, events = NULL, covar = NULL, effort = NULL, coverage = NULL, family = c("poisson"), time_varying = FALSE, control = list(sigfig_multiplier = 100, mcmc_samples = 1000, maxX = 20000)) {
+fit_bycatch <- function(formula, data, time = "year", effort = "effort",
+  family = c("poisson","nbinom2"), time_varying = FALSE) {
 
-  rstan::rstan_options(auto_write = TRUE)
-  options(mc.cores = parallel::detectCores())
+  mf <- model.frame(formula, data)
+  X <- model.matrix(formula, mf)
+  y <- model.response(mf, "numeric")
 
-  df = data.frame(time=time, events=events, effort=effort, coverage=coverage)
-
-  stan_dir = find.package("bycatch")
-  model = paste0(stan_dir, "/exec/bycatch.stan")
-
-  if(is.null(covar)) {
-    # covariate matrix =
-    covar = matrix(1, nrow(df), ncol=1)
+  if(time %in% colnames(data) == FALSE) {
+    stop("The time variable needs to be specified as a named column in the data frame")
   }
+  if(effort %in% colnames(data) == FALSE) {
+    stop("The effort variable needs to be specified as a named column in the data frame")
+  }
+  if(coverage %in% colnames(data) == FALSE) {
+    stop("The coverage variable needs to be specified as a named column in the data frame")
+  }
+  if(family %in% c("poisson","nbinom2") == FALSE) {
+    stop("The family must be specified as poisson or nbinom2")
+  }
+  family = ifelse(family=="poisson",1,2)
 
   pars = c("beta", "lambda", "log_lik")
   datalist = list(n_year = nrow(df),
-    effort = df$effort,
-    events = df$events,
-    x = covar,
-    K = ncol(covar),
+    effort = data[,effort],
+    events = y,
+    time = data[,time],
+    x = X,
+    K = ncol(X),
     family = 1,
     time_varying = as.numeric(time_varying))
 
-  # Currently each year as modeled as independent
-  if(family == "poisson") {
-    # intercept dropped, because lambda = theta * effort
-    stan_model = stan(file=model, data = datalist, pars = pars,
-      chains=3, iter=4000, control = list(adapt_delta = 0.999,
-        max_treedepth = 20))
-  }
+  sampling_args <- list(
+    object = stanmodels$bycatch,
+    data = stan_data,
+    pars = pars,
+    control = control, ...
+  )
 
   pars = rstan::extract(stan_model)
   df$lambda = apply(pars$lambda, 2, mean)
@@ -84,5 +93,5 @@ bycatch_expansion <- function(time = NULL, events = NULL, covar = NULL, effort =
     }
   }
 
-  return(list("data" = df, "covar"=covar, "expanded_estimates" = expanded_estimates, "fitted_model" = stan_model))
+  return(list("data" = data, "effort"=effort, "time"=time))
 }

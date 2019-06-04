@@ -9,16 +9,15 @@
 #'
 #' @export
 #' @import ggplot2
-#' @import viridis
 plot_fitted = function(fitted_model, xlab = "Time", ylab="Events", include_points=FALSE) {
 
   lambda = rstan::extract(fitted_model$fitted_model, c("lambda"))$lambda
 
-  df = data.frame("time" = fitted_model$data$time,
+  df = data.frame("time" = fitted_model$data[,fitted_model$time],
     "mean" = apply(lambda, 2, mean),
     "low" = apply(lambda, 2, quantile, 0.025),
     "high" = apply(lambda, 2, quantile, 0.975),
-    "obs" = fitted_model$data$events)
+    "obs" = fitted_model$data[,fitted_model$events])
 
   # generate intervals for new data
   #n_sim = 10000

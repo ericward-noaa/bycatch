@@ -1,13 +1,34 @@
 Package: bycatch
 Type: Package
 Title: Fit Bayesian Models to Bycatch Data
-Version: 1.0
-Date: 2017-04-19
+Version: 1.0.1
+Encoding: UTF-8
+Date: 2019-06-03
 Author: Eric Ward
 Maintainer: Eric Ward <eric.ward@noaa.gov>
-Description: More about what it does (maybe more than one line)
+Description: Fit Poisson and Negative Binomial models to bycatch data from fisheries with less than 100 observer coverage
 License: GPL-3
-Depends: R (>= 3.0.2), Rcpp (>= 0.12.10), methods, ggplot2, viridis
-Imports: rstan (>= 2.14.2), rstantools (>= 1.2.0)
-LinkingTo: StanHeaders (>= 2.14.0.1), rstan (>= 2.14.2), BH (>= 1.62.0.1), Rcpp (>= 0.12.10), RcppEigen (>= 0.3.2.9.1)
+Depends:
+    R (>= 3.4.0), Rcpp (>= 0.12.18), methods
+Imports:
+    rstan (>= 2.18.2),
+    rstantools (>= 1.5.1),
+    ggplot2,
+    loo (>= 2.0.0),
+    dplyr (>= 0.8.0),
+    reshape2,
+    rlang (>= 0.3.1)
+LinkingTo: StanHeaders (>= 2.18.1), rstan (>= 2.18.2), BH (>= 1.66.0),
+        Rcpp (>= 0.12.8), RcppEigen (>= 0.3.3.3.0)
+Suggests:
+    testthat,
+    parallel,
+    knitr,
+    rmarkdown
+URL: https://github.com/ericward-noaa/bycatch
+BugReports: https://github.com/ericward-noaa/bycatch/issues
 RoxygenNote: 6.1.1
+VignetteBuilder: knitr
+Roxygen: list(markdown = TRUE)
+SystemRequirements: GNU make
+
