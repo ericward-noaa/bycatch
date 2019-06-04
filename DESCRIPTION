@@ -6,7 +6,7 @@ Encoding: UTF-8
 Date: 2019-06-03
 Author: Eric Ward
 Maintainer: Eric Ward <eric.ward@noaa.gov>
-Description: Fit Poisson and Negative Binomial models to bycatch data from fisheries with less than 100 observer coverage
+Description: This package fits Poisson and Negative Binomial models to bycatch data from fisheries with less than 100% observer coverage.
 License: GPL-3
 Depends:
     R (>= 3.4.0), Rcpp (>= 0.12.18), methods
@@ -16,7 +16,6 @@ Imports:
     ggplot2,
     loo (>= 2.0.0),
     dplyr (>= 0.8.0),
-    reshape2,
     rlang (>= 0.3.1)
 LinkingTo: StanHeaders (>= 2.18.1), rstan (>= 2.18.2), BH (>= 1.66.0),
         Rcpp (>= 0.12.8), RcppEigen (>= 0.3.3.3.0)
@@ -24,7 +23,9 @@ Suggests:
     testthat,
     parallel,
     knitr,
-    rmarkdown
+    rmarkdown,
+    devtools,
+    MASS
 URL: https://github.com/ericward-noaa/bycatch
 BugReports: https://github.com/ericward-noaa/bycatch/issues
 RoxygenNote: 6.1.1

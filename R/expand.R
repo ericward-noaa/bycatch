@@ -8,8 +8,17 @@
 #' @export
 #' @importFrom rstan extract
 #' @importFrom stats dbinom rpois
-#' @importFrom MASS rnegbin
 #'
+#' @examples
+#' \donttest{
+#' d = data.frame("Year"= 2002:2014,
+#' "Takes" = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0),
+#' "expansionRate" = c(24, 22, 14, 32, 28, 25, 30,  7, 26, 21, 22, 23, 27),
+#' "Sets" = c(391, 340, 330, 660, 470, 500, 330, 287, 756, 673, 532, 351, 486))
+#' fit = fit_bycatch(Takes ~ 1, data=d,
+#' time="Year", effort="Sets", family="poisson", time_varying = FALSE)
+#' expanded = expand(fit, coverage = d$expansionRate)
+#' }
 expand <- function(fit, coverage = NULL,
   control = list(sigfig_multiplier = 100, mcmc_samples = 1000, maxX = 20000)) {
 
@@ -54,7 +63,7 @@ expand <- function(fit, coverage = NULL,
       if(fit$family == "poisson") {
         N = rpois(n = 1, lambda = mean_takes)
       } else {
-        N = rnegbin(n = 1, mu = mean_takes, theta = pars$nb2_phi[samples[mcmc]])
+        N = MASS::rnegbin(n = 1, mu = mean_takes, theta = pars$nb2_phi[samples[mcmc]])
       }
       # use the expansion for unobserved sets, use observed as known perfectly for observed
       N = (1-binom_p[y]) * N / sigfig_multiplier + fit$data[y,fit$events]

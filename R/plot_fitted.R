@@ -10,6 +10,27 @@
 #' @export
 #' @import ggplot2
 #' @importFrom stats quantile
+#' @examples
+#' \donttest{
+#' d = data.frame("Year"= 2002:2014,
+#' "Takes" = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0),
+#' "expansionRate" = c(24, 22, 14, 32, 28, 25, 30,  7, 26, 21, 22, 23, 27),
+#' "Sets" = c(391, 340, 330, 660, 470, 500, 330, 287, 756, 673, 532, 351, 486))
+#' fit = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets",
+#' family="poisson", time_varying = FALSE)
+#' plot_fitted(fit, xlab="Year", ylab = "Fleet-level bycatch",
+#' include_points = TRUE)
+#'
+#' # fit a negative binomial model, with more chains and control arguments
+#' fit_nb = fit_bycatch(Takes ~ 1, data=d, time="Year",
+#' effort="Sets", family="nbinom2",
+#' time_varying = FALSE, iter=2000, chains=4,
+#' control=list(adapt_delta=0.99,max_treedepth=20))
+#'
+#' # fit a time varying model
+#' fit = fit_bycatch(Takes ~ 1, data=d, time="Year",
+#' effort="Sets", family="poisson", time_varying = TRUE)
+#' }
 plot_fitted = function(fitted_model, xlab = "Time", ylab="Events", include_points=FALSE) {
 
   lambda = rstan::extract(fitted_model$fitted_model, c("lambda"))$lambda
@@ -26,12 +47,12 @@ plot_fitted = function(fitted_model, xlab = "Time", ylab="Events", include_point
   #df$low_obs = apply(rand, 1, quantile, 0.025)
   #df$high_obs = apply(rand, 1, quantile, 0.975)
 
-  g1 = ggplot(df, aes(time, mean)) +
-    geom_ribbon(aes(ymin = low, ymax=high), fill="blue", alpha=0.3) +
+  g1 = ggplot(df, aes(.data$time, mean)) +
+    geom_ribbon(aes(ymin = .data$low, ymax=.data$high), fill="blue", alpha=0.3) +
     geom_line(color="blue") +
     xlab(xlab) + ylab(ylab) + theme_bw() +
     theme(panel.border = element_blank(), panel.grid.major = element_blank(),
       panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
-  if(include_points==TRUE) g1 = g1 + geom_point(aes(time, obs), size=2, color="blue")
+  if(include_points==TRUE) g1 = g1 + geom_point(aes(.data$time, .data$obs), size=2, color="blue")
   return(g1)
 }
