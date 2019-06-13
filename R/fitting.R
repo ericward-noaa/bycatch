@@ -68,5 +68,5 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort",
     chains = chains,
     control = control, ...)
 
-  return(list("data" = data, "effort"=effort, "events"=names(mf), "time"=time, "fitted_model"=mod, "family"=family))
+  return(list("data" = data, "effort"=effort, "events"=names(mf)[1], "time"=time, "fitted_model"=mod, "family"=family))
 }
