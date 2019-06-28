@@ -12,4 +12,7 @@ Martin, S.L., S.M. Stohs, and J.E. Moore. 2015. Bayesian inference and assessmen
 ## Reports:
 Good, T. P., E. Ward, J. Jannot, R. Shama, N. Riley, and J. McVeigh. 2019. Observed and Estimated Bycatch of Short-tailed Albatross in U.S. West Coast Groundfish Fisheries 2002-2017. National Marine Fisheries Service, NWFSC, 2725 Montlake Blvd E., Seattle, WA 98112
 
+Hanson, M.B., T.P. Good, J.E. Jannot, and J. McVeigh. 2019. Estimated humpback whale bycatch in the U.S. West Coast Groundfish Fisheries 2002-2017. National Marine Fisheries Service, NWFSC, 2725 Montlake Blvd E., Seattle, WA 98112
+
 Good, T. P., E. Ward, J. Jannot, R. Shama, N. Riley, and J. McVeigh. 2017. Observed and Estimated Bycatch of Short-tailed Albatross in U.S. West Coast Groundfish Fisheries 2014-2015. National Marine Fisheries Service, NWFSC, 2725 Montlake Blvd E., Seattle, WA 98112
+
