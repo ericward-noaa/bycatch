@@ -1,8 +1,8 @@
 ---
 title: "Bycatch Estimation and Expansion in STAN"
-author: "Eric J. Ward"
+author: "Eric J. Ward, Jason E. Jannot"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: word_document
 vignette: >
   %\VignetteIndexEntry{Intro to bycatch package}
   %\VignetteEngine{knitr::rmarkdown}
@@ -55,18 +55,18 @@ fit = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets", family="poisson
 
 ### Make plots
 
-```{r, fig.pos="placeHere", fig.cap = "Estimated fleet-level bycatch (not expanded by observer coverage), incorporating data on takes, effort."}
-plot_fitted(fit, xlab="Year", ylab = "Fleet-level bycatch")
+```{r, fig.pos="placeHere", fig.cap = "Estimated bycatch for observed vessels (not expanded by observer coverage), but including observed takes and effort."}
+plot_fitted(fit, xlab="Year", ylab = "Bycatch (observed vessels)")
 ```
 
 We can include points also, 
-```{r, fig.pos="placeHere", fig.cap = "Estimated fleet-level bycatch (not expanded by observer coverage), incorporating data on takes, effort. Dots represent observed bycatch events."}
-plot_fitted(fit, xlab="Year", ylab = "Fleet-level bycatch", include_points = TRUE)
+```{r, fig.pos="placeHere", fig.cap = "Observed bycatch (not expanded by observer coverage), incorporating data on observed takes and effort. Dots represent observed bycatch events."}
+plot_fitted(fit, xlab="Year", ylab = "Estimated bycatch for observed vessels", include_points = TRUE)
 ```
   
 ### Extracting model selection information (LOOIC)  
   
-The `loo` package in R provides a nice interface for extracting leave one out information criterion (LOOIC) from `stanfit` objects. Like AIC, lower is better. Values of LOOIC can be used to compare models with the same response but different structure (covariates or not, time-varying bycatch or not, etc).
+The `loo` package in R provides a nice interface for extracting leave one out information criterion (LOOIC) from `stanfit` objects. Like AIC, lower is better. Values of LOOIC can be used to compare models with the same response but different structure (covariates or not, time-varying bycatch or not, etc). Additional information on LOOIC can be found at [mc-stan.org](http://mc-stan.org/rstanarm/reference/loo.stanreg.html), [Vehtari et al. 2017](https://link.springer.com/article/10.1007/s11222-016-9696-4), or the vignette for the [loo package](https://cran.r-project.org/web/packages/loo/vignettes/loo2-example.html).
 
 ```{r}
 loo::loo(fit$fitted_model)$estimates
@@ -92,10 +92,10 @@ We can also do things like summarize the expanded estimates in table form
 
 ```{r, eval=FALSE}
 df = data.frame("time" = d[,"Year"], 
-  "mean" = apply(expanded_estimates, 2, mean),
-  "median" = apply(expanded_estimates, 2, quantile, 0.5),
-  "lower95" = apply(expanded_estimates, 2, quantile, 0.025),
-  "upper95" = apply(expanded_estimates, 2, quantile, 0.975))
+  "mean" = apply(expanded, 2, mean),
+  "median" = apply(expanded, 2, quantile, 0.5),
+  "lower95" = apply(expanded, 2, quantile, 0.025),
+  "upper95" = apply(expanded, 2, quantile, 0.975))
 
 write.table(df, "estimated_bycatch.csv", row.names=F, col.names=T, sep=",")
 ```
@@ -130,7 +130,7 @@ d$Reg = ifelse(d$Year < 2008, 0, 1)
 
 Using the formula interface makes it easy to include covariates,
 
-```{r}
+```{r message=FALSE, warning=FALSE,results="hide"}
 fit = fit_bycatch(Takes ~ Day + Reg, data=d, time="Year", effort="Sets", family="poisson",
   time_varying = FALSE)
 ```
