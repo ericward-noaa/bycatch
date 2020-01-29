@@ -30,7 +30,7 @@ expand <- function(fit, coverage = NULL,
   fit$data$coverage = coverage
 
   # extract parameters
-  pars = extract(fit$fitted_model)
+  pars = rstan::extract(fit$fitted_model)
   fit$data$lambda = apply(pars$lambda, 2, mean)
 
   # do binomial expansion of estimated takes
