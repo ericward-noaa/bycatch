@@ -22,6 +22,14 @@
 expand <- function(fit, coverage = NULL,
   control = list(sigfig_multiplier = 100, mcmc_samples = 1000, maxX = 20000)) {
 
+  # catch that all control parameters are being included
+  if(is.null(control)) {
+    control = list(sigfig_multiplier = 100, mcmc_samples = 1000, maxX = 20000)
+  }
+  if(is.null(control$mcmc_samples)) control$mcmc_samples = 1000
+  if(is.null(control$sigfig_multiplier)) control$sigfig_multiplier = 100
+  if(is.null(control$maxX)) control$maxX = 20000
+
   if(is.null(coverage)) {
     stop("Please remember to enter a vector of numbers (0-100) that is a scalar representing constant coverage or a vector representing coverage for each row of the data frame that was used to fit the model")
   }
@@ -42,6 +50,8 @@ expand <- function(fit, coverage = NULL,
   sigfig_multiplier = control$sigfig_multiplier # default to 100
   mcmc_samples = control$mcmc_samples # default to 1000
   maxX = control$maxX # default to 20000
+  warning_maxX = maxX # keep to print warning message
+  warning_flag = FALSE
 
   samples = sample(1:dim(pars$lambda)[1], size=mcmc_samples, replace=F)
   expanded_estimates = matrix(0, length(samples), nrow(fit$data))
@@ -58,32 +68,38 @@ expand <- function(fit, coverage = NULL,
       # calculate the probabilites of these Ns given the mean observed takes and observer coverage
       prob_N = dbinom(x=X, size = seq(X, maxX), prob = binom_p[y])
       if(X/binom_p[y] < maxX) {
-        warning(
-          paste("Warning: maxX in the control list needs to be increased",
-            " to at least ", ceiling(X/binom_p[y]),". Or try smaller values of ",
-            "the sigfig_multiplier parameter. Please try running the expand function again.")
-        )
+        if(ceiling(X/binom_p[y]) > warning_maxX) {
+          warning_maxX = ceiling(X/binom_p[y])
+          warning_flag = TRUE
+        }
       }
       # sample from distribution of N, representing total mean takes
       mean_takes = try(sample(seq(X, maxX),size=1, prob=prob_N),
         silent=TRUE)
       if(class(mean_takes)=="try-error") {
-        warning(paste("Warning: maxX in the control list needs to be increased",
-          " to at least ", ceiling(X/binom_p[y]),". Or try smaller values of ",
-          "the sigfig_multiplier parameter. Please try running the expand function again.")
-        ))
-      }
-      # sample from poisson to convert mean -> observed data with observation model
-      if(fit$family == "poisson") {
-        N = rpois(n = 1, lambda = mean_takes)
+        if(ceiling(X/binom_p[y]) > warning_maxX) {
+          warning_maxX = ceiling(X/binom_p[y])
+          warning_flag = TRUE
+        }
       } else {
-        N = MASS::rnegbin(n = 1, mu = mean_takes, theta = pars$nb2_phi[samples[mcmc]])
+        # sample from poisson to convert mean -> observed data with observation model
+        if(fit$family == "poisson") {
+          N = rpois(n = 1, lambda = mean_takes)
+        } else {
+          N = MASS::rnegbin(n = 1, mu = mean_takes, theta = pars$nb2_phi[samples[mcmc]])
+        }
+        # use the expansion for unobserved sets, use observed as known perfectly for observed
+        N = (1-binom_p[y]) * N / sigfig_multiplier + fit$data[y,fit$events]
+        expanded_estimates[mcmc,y] = N
       }
-      # use the expansion for unobserved sets, use observed as known perfectly for observed
-      N = (1-binom_p[y]) * N / sigfig_multiplier + fit$data[y,fit$events]
-      expanded_estimates[mcmc,y] = N
     }
   }
 
+  if(warning_flag == TRUE) {
+    warning(paste("Warning: maxX in the control list needs to be increased\n",
+      "to at least", warning_maxX,". Or try smaller values of the\n",
+      "sigfig_multiplier parameter. Please try running the expand() function again.")
+    )
+  }
   return(expanded_estimates)
 }

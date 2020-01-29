@@ -16,8 +16,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r, results="hide", message=FALSE, warning=FALSE}
-library(devtools)
-devtools::install_github("ericward-noaa/bycatch")
+#library(devtools)
+#devtools::install_github("ericward-noaa/bycatch")
 library(bycatch)
 set.seed(123)
 ```
