@@ -68,7 +68,10 @@ expand <- function(fit, coverage = NULL,
       mean_takes = try(sample(seq(X, maxX),size=1, prob=prob_N),
         silent=TRUE)
       if(class(mean_takes)=="try-error") {
-
+        warning(paste("Warning: maxX in the control list needs to be increased",
+          " to at least ", ceiling(X/binom_p[y]),". Or try smaller values of ",
+          "the sigfig_multiplier parameter. Please try running the expand function again.")
+        ))
       }
       # sample from poisson to convert mean -> observed data with observation model
       if(fit$family == "poisson") {
