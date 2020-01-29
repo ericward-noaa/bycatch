@@ -4,8 +4,11 @@
 \alias{expand}
 \title{expand does the expansion from a fitted object}
 \usage{
-expand(fit, coverage = NULL, control = list(sigfig_multiplier = 100,
-  mcmc_samples = 1000, maxX = 20000))
+expand(
+  fit,
+  coverage = NULL,
+  control = list(sigfig_multiplier = 100, mcmc_samples = 1000, maxX = 20000)
+)
 }
 \arguments{
 \item{fit}{the estimated bycatch rate from a call to fit}

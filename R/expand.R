@@ -57,13 +57,18 @@ expand <- function(fit, coverage = NULL,
       X = round(pars$lambda[samples[mcmc],y] * sigfig_multiplier)
       # calculate the probabilites of these Ns given the mean observed takes and observer coverage
       prob_N = dbinom(x=X, size = seq(X, maxX), prob = binom_p[y])
+      if(X/binom_p[y] < maxX) {
+        warning(
+          paste("Warning: maxX in the control list needs to be increased",
+            " to at least ", ceiling(X/binom_p[y]),". Or try smaller values of ",
+            "the sigfig_multiplier parameter. Please try running the expand function again.")
+        )
+      }
       # sample from distribution of N, representing total mean takes
       mean_takes = try(sample(seq(X, maxX),size=1, prob=prob_N),
         silent=TRUE)
       if(class(mean_takes)=="try-error") {
-        warning(
-          "Warning: maxX in the control list needs to be increased and the expand function needs to be run again. An alternative is to decrease the sigfig_multiplier parameter in the control list."
-        )
+
       }
       # sample from poisson to convert mean -> observed data with observation model
       if(fit$family == "poisson") {

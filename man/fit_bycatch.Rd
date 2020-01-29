@@ -4,10 +4,18 @@
 \alias{fit_bycatch}
 \title{fit_bycatch is the primary function for fitting bycatch models to time series of takes and effort}
 \usage{
-fit_bycatch(formula, data, time = "year", effort = "effort",
-  family = c("poisson", "nbinom2"), time_varying = FALSE,
-  iter = 1000, chains = 3, control = list(adapt_delta = 0.9,
-  max_treedepth = 20), ...)
+fit_bycatch(
+  formula,
+  data,
+  time = "year",
+  effort = "effort",
+  family = c("poisson", "nbinom2"),
+  time_varying = FALSE,
+  iter = 1000,
+  chains = 3,
+  control = list(adapt_delta = 0.9, max_treedepth = 20),
+  ...
+)
 }
 \arguments{
 \item{formula}{The model formula.}

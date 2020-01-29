@@ -32,8 +32,7 @@ Suggests:
     MASS
 URL: https://github.com/ericward-noaa/bycatch
 BugReports: https://github.com/ericward-noaa/bycatch/issues
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 SystemRequirements: GNU make
-
