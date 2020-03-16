@@ -2,7 +2,7 @@
 title: "Bycatch Estimation and Expansion in STAN"
 author: "Eric J. Ward, Jason E. Jannot"
 date: "`r Sys.Date()`"
-output: word_document
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Intro to bycatch package}
   %\VignetteEngine{knitr::rmarkdown}
