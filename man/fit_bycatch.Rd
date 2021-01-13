@@ -34,12 +34,12 @@ fit_bycatch(
 
 \item{chains}{the number of mcmc chains, defaults to 3}
 
-\item{control}{List to pass to \code{\link[rstan:sampling]{rstan::sampling()}}. For example,
+\item{control}{List to pass to \code{\link[rstan:stanmodel-method-sampling]{rstan::sampling()}}. For example,
 increase \code{adapt_delta} if there are warnings about divergent
 transitions: \code{control = list(adapt_delta = 0.99)}. By default,
 \pkg{glmmfields} sets \code{adapt_delta = 0.9}.}
 
-\item{...}{Any other arguments to pass to \code{\link[rstan:sampling]{rstan::sampling()}}.}
+\item{...}{Any other arguments to pass to \code{\link[rstan:stanmodel-method-sampling]{rstan::sampling()}}.}
 }
 \value{
 list of the data used to fit the model, the matrix of covariates, the expanded bycatch generated via the fit and simulations, and the fitted stan model

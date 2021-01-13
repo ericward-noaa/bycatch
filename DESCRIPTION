@@ -13,16 +13,16 @@ Maintainer: Eric Ward <eric.ward@noaa.gov>
 Description: This package fits Poisson and Negative Binomial models to bycatch data from fisheries with less than 100% observer coverage.
 License: GPL-3
 Depends:
-    R (>= 3.4.0), Rcpp (>= 0.12.18), methods
+    R (>= 4.0.0), Rcpp (>= 1.0.5), methods
 Imports:
-    rstan (>= 2.18.2),
-    rstantools (>= 1.5.1),
+    rstan (>= 2.21.2),
+    rstantools (>= 2.1.1),
     ggplot2,
-    loo (>= 2.0.0),
-    dplyr (>= 0.8.0),
-    rlang (>= 0.3.1)
-LinkingTo: StanHeaders (>= 2.18.1), rstan (>= 2.18.2), BH (>= 1.66.0),
-        Rcpp (>= 0.12.8), RcppEigen (>= 0.3.3.3.0)
+    loo (>= 2.4.1),
+    dplyr (>= 1.0.2),
+    rlang (>= 0.4.1)
+LinkingTo: StanHeaders (>= 2.21.0.7), rstan (>= 2.21.2), BH (>= 1.75.0.0),
+        Rcpp (>= 1.0.5), RcppEigen (>= 0.3.3.9.1)
 Suggests:
     testthat,
     parallel,
@@ -32,7 +32,7 @@ Suggests:
     MASS
 URL: https://github.com/ericward-noaa/bycatch
 BugReports: https://github.com/ericward-noaa/bycatch/issues
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 SystemRequirements: GNU make

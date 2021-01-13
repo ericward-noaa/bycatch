@@ -1,5 +1,7 @@
-[![Build Status](https://travis-ci.com/ericward-noaa/bycatch.svg?branch=master)](https://travis-ci.com/ericward-noaa/bycatch)
-
+  <!-- badges: start -->
+  [![R-CMD-check](https://github.com/ericward-noaa/bycatch/workflows/R-CMD-check/badge.svg)](https://github.com/ericward-noaa/bycatch/actions)
+  <!-- badges: end -->
+  
 # bycatch
 Repository for applications of Bayesian bycatch models. These models fit Bayesian GLMs (with or without time varying parameters, and with or without covariates) to estimate bycatch rates. These estimates are expanded to fleet-level estimates.
 
