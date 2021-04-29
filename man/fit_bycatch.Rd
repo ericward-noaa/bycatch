@@ -9,7 +9,7 @@ fit_bycatch(
   data,
   time = "year",
   effort = "effort",
-  family = c("poisson", "nbinom2"),
+  family = c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle"),
   time_varying = FALSE,
   iter = 1000,
   chains = 3,
@@ -26,7 +26,8 @@ fit_bycatch(
 
 \item{effort}{Named column of the 'effort' variable in the data frame with the label for the fishing effort to be used in estimation of mean bycatch rate}
 
-\item{family}{"poisson" or "nbinom2", defaults to "poisson". Both default to using a log link function}
+\item{family}{Family for response distribution ("poisson", "nbinom2", "poisson-hurdle","nbinom2-hurdle"), defaults to "poisson". The hurdle variants estimate
+the probability of zeros (theta) separately from the other models and use truncated distribution to model positive counts. All use a log link function}
 
 \item{time_varying}{boolean TRUE/FALSE, whether to include time varying component (this is a random walk, analogous to making this a Dynamic linear model)}
 
@@ -49,12 +50,16 @@ fit_bycatch is the primary function for fitting bycatch models to time series of
 }
 \examples{
 \donttest{
-d = data.frame("Year"= 2002:2014,
-"Takes" = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0),
-"expansionRate" = c(24, 22, 14, 32, 28, 25, 30,  7, 26, 21, 22, 23, 27),
-"Sets" = c(391, 340, 330, 660, 470, 500, 330, 287, 756, 673, 532, 351, 486))
-fit = fit_bycatch(Takes ~ 1, data=d, time="Year",
-effort="Sets", family="poisson", time_varying = FALSE)
+d <- data.frame(
+  "Year" = 2002:2014,
+  "Takes" = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0),
+  "expansionRate" = c(24, 22, 14, 32, 28, 25, 30, 7, 26, 21, 22, 23, 27),
+  "Sets" = c(391, 340, 330, 660, 470, 500, 330, 287, 756, 673, 532, 351, 486)
+)
+fit <- fit_bycatch(Takes ~ 1,
+  data = d, time = "Year",
+  effort = "Sets", family = "poisson", time_varying = FALSE
+)
 loo::loo(fit$fitted_model)$estimates
 }
 }

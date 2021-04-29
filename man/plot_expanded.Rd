@@ -31,19 +31,25 @@ plot_expanded is makes plots of the expanded bycatch estimates, accounting for o
 }
 \examples{
 \donttest{
-d = data.frame("Year"= 2002:2014,
-"Takes" = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0),
-"expansionRate" = c(24, 22, 14, 32, 28, 25, 30,  7, 26, 21, 22, 23, 27),
-"Sets" = c(391, 340, 330, 660, 470, 500, 330, 287, 756, 673, 532, 351, 486))
-fit = fit_bycatch(Takes ~ 1, data=d, time="Year",
-effort="Sets",
-family="poisson",
-time_varying = FALSE)
-expanded = expand(fit, coverage = d$expansionRate)
-plot_expanded(fitted_model=fit,
-expanded_estimates = expanded,
-xlab="Year",
-ylab = "Fleet-level bycatch",
-include_points = TRUE)
+d <- data.frame(
+  "Year" = 2002:2014,
+  "Takes" = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0),
+  "expansionRate" = c(24, 22, 14, 32, 28, 25, 30, 7, 26, 21, 22, 23, 27),
+  "Sets" = c(391, 340, 330, 660, 470, 500, 330, 287, 756, 673, 532, 351, 486)
+)
+fit <- fit_bycatch(Takes ~ 1,
+  data = d, time = "Year",
+  effort = "Sets",
+  family = "poisson",
+  time_varying = FALSE
+)
+expanded <- expand(fit, coverage = d$expansionRate)
+plot_expanded(
+  fitted_model = fit,
+  expanded_estimates = expanded,
+  xlab = "Year",
+  ylab = "Fleet-level bycatch",
+  include_points = TRUE
+)
 }
 }
