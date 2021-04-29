@@ -95,7 +95,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/example.html">Bycatch Estimation and Expansion in STAN</a>
+      <a href="../articles/example.html">Intro to bycatch package</a>
     </li>
   </ul>
 </li>
@@ -163,17 +163,21 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='va'>d</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='st'>"Year"</span><span class='op'>=</span> <span class='fl'>2002</span><span class='op'>:</span><span class='fl'>2014</span>,
-<span class='st'>"Takes"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>,
-<span class='st'>"expansionRate"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>24</span>, <span class='fl'>22</span>, <span class='fl'>14</span>, <span class='fl'>32</span>, <span class='fl'>28</span>, <span class='fl'>25</span>, <span class='fl'>30</span>,  <span class='fl'>7</span>, <span class='fl'>26</span>, <span class='fl'>21</span>, <span class='fl'>22</span>, <span class='fl'>23</span>, <span class='fl'>27</span><span class='op'>)</span>,
-<span class='st'>"Sets"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>391</span>, <span class='fl'>340</span>, <span class='fl'>330</span>, <span class='fl'>660</span>, <span class='fl'>470</span>, <span class='fl'>500</span>, <span class='fl'>330</span>, <span class='fl'>287</span>, <span class='fl'>756</span>, <span class='fl'>673</span>, <span class='fl'>532</span>, <span class='fl'>351</span>, <span class='fl'>486</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>fit</span> <span class='op'>=</span> <span class='fu'><a href='fit_bycatch.html'>fit_bycatch</a></span><span class='op'>(</span><span class='va'>Takes</span> <span class='op'>~</span> <span class='fl'>1</span>, data<span class='op'>=</span><span class='va'>d</span>, time<span class='op'>=</span><span class='st'>"Year"</span>, effort<span class='op'>=</span><span class='st'>"Sets"</span>,
-family<span class='op'>=</span><span class='st'>"poisson"</span>, time_varying <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='va'>d</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
+  <span class='st'>"Year"</span> <span class='op'>=</span> <span class='fl'>2002</span><span class='op'>:</span><span class='fl'>2014</span>,
+  <span class='st'>"Takes"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>,
+  <span class='st'>"expansionRate"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>24</span>, <span class='fl'>22</span>, <span class='fl'>14</span>, <span class='fl'>32</span>, <span class='fl'>28</span>, <span class='fl'>25</span>, <span class='fl'>30</span>, <span class='fl'>7</span>, <span class='fl'>26</span>, <span class='fl'>21</span>, <span class='fl'>22</span>, <span class='fl'>23</span>, <span class='fl'>27</span><span class='op'>)</span>,
+  <span class='st'>"Sets"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>391</span>, <span class='fl'>340</span>, <span class='fl'>330</span>, <span class='fl'>660</span>, <span class='fl'>470</span>, <span class='fl'>500</span>, <span class='fl'>330</span>, <span class='fl'>287</span>, <span class='fl'>756</span>, <span class='fl'>673</span>, <span class='fl'>532</span>, <span class='fl'>351</span>, <span class='fl'>486</span><span class='op'>)</span>
+<span class='op'>)</span>
+<span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fit_bycatch.html'>fit_bycatch</a></span><span class='op'>(</span><span class='va'>Takes</span> <span class='op'>~</span> <span class='fl'>1</span>,
+  data <span class='op'>=</span> <span class='va'>d</span>, time <span class='op'>=</span> <span class='st'>"Year"</span>, effort <span class='op'>=</span> <span class='st'>"Sets"</span>,
+  family <span class='op'>=</span> <span class='st'>"poisson"</span>, time_varying <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 </div><div class='output co'>#&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 1).
 #&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 1.6e-05 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.16 seconds.
+#&gt; Chain 1: Gradient evaluation took 1.8e-05 seconds
+#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.18 seconds.
 #&gt; Chain 1: Adjust your expectations accordingly!
 #&gt; Chain 1: 
 #&gt; Chain 1: 
@@ -190,15 +194,15 @@ family<span class='op'>=</span><span class='st'>"poisson"</span>, time_varying <
 #&gt; Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.014832 seconds (Warm-up)
-#&gt; Chain 1:                0.012921 seconds (Sampling)
-#&gt; Chain 1:                0.027753 seconds (Total)
+#&gt; Chain 1:  Elapsed Time: 0.014831 seconds (Warm-up)
+#&gt; Chain 1:                0.012834 seconds (Sampling)
+#&gt; Chain 1:                0.027665 seconds (Total)
 #&gt; Chain 1: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
 #&gt; Chain 2: 
-#&gt; Chain 2: Gradient evaluation took 9e-06 seconds
-#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.09 seconds.
+#&gt; Chain 2: Gradient evaluation took 1e-05 seconds
+#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.1 seconds.
 #&gt; Chain 2: Adjust your expectations accordingly!
 #&gt; Chain 2: 
 #&gt; Chain 2: 
@@ -215,15 +219,15 @@ family<span class='op'>=</span><span class='st'>"poisson"</span>, time_varying <
 #&gt; Chain 2: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 2: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 0.015117 seconds (Warm-up)
-#&gt; Chain 2:                0.01471 seconds (Sampling)
-#&gt; Chain 2:                0.029827 seconds (Total)
+#&gt; Chain 2:  Elapsed Time: 0.013892 seconds (Warm-up)
+#&gt; Chain 2:                0.014364 seconds (Sampling)
+#&gt; Chain 2:                0.028256 seconds (Total)
 #&gt; Chain 2: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 3).
 #&gt; Chain 3: 
-#&gt; Chain 3: Gradient evaluation took 9e-06 seconds
-#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.09 seconds.
+#&gt; Chain 3: Gradient evaluation took 1.1e-05 seconds
+#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.11 seconds.
 #&gt; Chain 3: Adjust your expectations accordingly!
 #&gt; Chain 3: 
 #&gt; Chain 3: 
@@ -240,22 +244,26 @@ family<span class='op'>=</span><span class='st'>"poisson"</span>, time_varying <
 #&gt; Chain 3: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 3: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 3: 
-#&gt; Chain 3:  Elapsed Time: 0.014979 seconds (Warm-up)
-#&gt; Chain 3:                0.018834 seconds (Sampling)
-#&gt; Chain 3:                0.033813 seconds (Total)
-#&gt; Chain 3: </div><div class='input'><span class='fu'>plot_fitted</span><span class='op'>(</span><span class='va'>fit</span>, xlab<span class='op'>=</span><span class='st'>"Year"</span>, ylab <span class='op'>=</span> <span class='st'>"Fleet-level bycatch"</span>,
-include_points <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+#&gt; Chain 3:  Elapsed Time: 0.014566 seconds (Warm-up)
+#&gt; Chain 3:                0.015127 seconds (Sampling)
+#&gt; Chain 3:                0.029693 seconds (Total)
+#&gt; Chain 3: </div><div class='input'><span class='fu'>plot_fitted</span><span class='op'>(</span><span class='va'>fit</span>,
+  xlab <span class='op'>=</span> <span class='st'>"Year"</span>, ylab <span class='op'>=</span> <span class='st'>"Fleet-level bycatch"</span>,
+  include_points <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 </div><div class='img'><img src='plot_fitted-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># fit a negative binomial model, with more chains and control arguments</span>
-<span class='va'>fit_nb</span> <span class='op'>=</span> <span class='fu'><a href='fit_bycatch.html'>fit_bycatch</a></span><span class='op'>(</span><span class='va'>Takes</span> <span class='op'>~</span> <span class='fl'>1</span>, data<span class='op'>=</span><span class='va'>d</span>, time<span class='op'>=</span><span class='st'>"Year"</span>,
-effort<span class='op'>=</span><span class='st'>"Sets"</span>, family<span class='op'>=</span><span class='st'>"nbinom2"</span>,
-time_varying <span class='op'>=</span> <span class='cn'>FALSE</span>, iter<span class='op'>=</span><span class='fl'>2000</span>, chains<span class='op'>=</span><span class='fl'>4</span>,
-control<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>adapt_delta<span class='op'>=</span><span class='fl'>0.99</span>,max_treedepth<span class='op'>=</span><span class='fl'>20</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>fit_nb</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fit_bycatch.html'>fit_bycatch</a></span><span class='op'>(</span><span class='va'>Takes</span> <span class='op'>~</span> <span class='fl'>1</span>,
+  data <span class='op'>=</span> <span class='va'>d</span>, time <span class='op'>=</span> <span class='st'>"Year"</span>,
+  effort <span class='op'>=</span> <span class='st'>"Sets"</span>, family <span class='op'>=</span> <span class='st'>"nbinom2"</span>,
+  time_varying <span class='op'>=</span> <span class='cn'>FALSE</span>, iter <span class='op'>=</span> <span class='fl'>2000</span>, chains <span class='op'>=</span> <span class='fl'>4</span>,
+  control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>adapt_delta <span class='op'>=</span> <span class='fl'>0.99</span>, max_treedepth <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span>
+<span class='op'>)</span>
 </div><div class='output co'>#&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 1).
 #&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 3.4e-05 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.34 seconds.
+#&gt; Chain 1: Gradient evaluation took 5.4e-05 seconds
+#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.54 seconds.
 #&gt; Chain 1: Adjust your expectations accordingly!
 #&gt; Chain 1: 
 #&gt; Chain 1: 
@@ -272,9 +280,9 @@ control<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base
 #&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.123294 seconds (Warm-up)
-#&gt; Chain 1:                0.105251 seconds (Sampling)
-#&gt; Chain 1:                0.228545 seconds (Total)
+#&gt; Chain 1:  Elapsed Time: 0.121354 seconds (Warm-up)
+#&gt; Chain 1:                0.10455 seconds (Sampling)
+#&gt; Chain 1:                0.225904 seconds (Total)
 #&gt; Chain 1: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
@@ -297,9 +305,9 @@ control<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base
 #&gt; Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 0.108038 seconds (Warm-up)
-#&gt; Chain 2:                0.095632 seconds (Sampling)
-#&gt; Chain 2:                0.20367 seconds (Total)
+#&gt; Chain 2:  Elapsed Time: 0.106044 seconds (Warm-up)
+#&gt; Chain 2:                0.089008 seconds (Sampling)
+#&gt; Chain 2:                0.195052 seconds (Total)
 #&gt; Chain 2: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 3).
@@ -322,15 +330,15 @@ control<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base
 #&gt; Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 3: 
-#&gt; Chain 3:  Elapsed Time: 0.145246 seconds (Warm-up)
-#&gt; Chain 3:                0.086921 seconds (Sampling)
-#&gt; Chain 3:                0.232167 seconds (Total)
+#&gt; Chain 3:  Elapsed Time: 0.145026 seconds (Warm-up)
+#&gt; Chain 3:                0.083603 seconds (Sampling)
+#&gt; Chain 3:                0.228629 seconds (Total)
 #&gt; Chain 3: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 4).
 #&gt; Chain 4: 
-#&gt; Chain 4: Gradient evaluation took 1.4e-05 seconds
-#&gt; Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.14 seconds.
+#&gt; Chain 4: Gradient evaluation took 1.5e-05 seconds
+#&gt; Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.15 seconds.
 #&gt; Chain 4: Adjust your expectations accordingly!
 #&gt; Chain 4: 
 #&gt; Chain 4: 
@@ -347,20 +355,22 @@ control<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base
 #&gt; Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 4: 
-#&gt; Chain 4:  Elapsed Time: 0.102216 seconds (Warm-up)
-#&gt; Chain 4:                0.164372 seconds (Sampling)
-#&gt; Chain 4:                0.266588 seconds (Total)
+#&gt; Chain 4:  Elapsed Time: 0.102934 seconds (Warm-up)
+#&gt; Chain 4:                0.164257 seconds (Sampling)
+#&gt; Chain 4:                0.267191 seconds (Total)
 #&gt; Chain 4: </div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
 #&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
 #&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#tail-ess</span></div><div class='input'>
 <span class='co'># fit a time varying model</span>
-<span class='va'>fit</span> <span class='op'>=</span> <span class='fu'><a href='fit_bycatch.html'>fit_bycatch</a></span><span class='op'>(</span><span class='va'>Takes</span> <span class='op'>~</span> <span class='fl'>1</span>, data<span class='op'>=</span><span class='va'>d</span>, time<span class='op'>=</span><span class='st'>"Year"</span>,
-effort<span class='op'>=</span><span class='st'>"Sets"</span>, family<span class='op'>=</span><span class='st'>"poisson"</span>, time_varying <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fit_bycatch.html'>fit_bycatch</a></span><span class='op'>(</span><span class='va'>Takes</span> <span class='op'>~</span> <span class='fl'>1</span>,
+  data <span class='op'>=</span> <span class='va'>d</span>, time <span class='op'>=</span> <span class='st'>"Year"</span>,
+  effort <span class='op'>=</span> <span class='st'>"Sets"</span>, family <span class='op'>=</span> <span class='st'>"poisson"</span>, time_varying <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 </div><div class='output co'>#&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 1).
 #&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 2.9e-05 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.29 seconds.
+#&gt; Chain 1: Gradient evaluation took 3.4e-05 seconds
+#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.34 seconds.
 #&gt; Chain 1: Adjust your expectations accordingly!
 #&gt; Chain 1: 
 #&gt; Chain 1: 
@@ -377,15 +387,15 @@ effort<span class='op'>=</span><span class='st'>"Sets"</span>, family<span class
 #&gt; Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.149363 seconds (Warm-up)
-#&gt; Chain 1:                0.195397 seconds (Sampling)
-#&gt; Chain 1:                0.34476 seconds (Total)
+#&gt; Chain 1:  Elapsed Time: 0.194144 seconds (Warm-up)
+#&gt; Chain 1:                0.113731 seconds (Sampling)
+#&gt; Chain 1:                0.307875 seconds (Total)
 #&gt; Chain 1: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
 #&gt; Chain 2: 
-#&gt; Chain 2: Gradient evaluation took 1.4e-05 seconds
-#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.14 seconds.
+#&gt; Chain 2: Gradient evaluation took 1.3e-05 seconds
+#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.13 seconds.
 #&gt; Chain 2: Adjust your expectations accordingly!
 #&gt; Chain 2: 
 #&gt; Chain 2: 
@@ -402,9 +412,9 @@ effort<span class='op'>=</span><span class='st'>"Sets"</span>, family<span class
 #&gt; Chain 2: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 2: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 0.18031 seconds (Warm-up)
-#&gt; Chain 2:                0.118109 seconds (Sampling)
-#&gt; Chain 2:                0.298419 seconds (Total)
+#&gt; Chain 2:  Elapsed Time: 0.170937 seconds (Warm-up)
+#&gt; Chain 2:                0.137034 seconds (Sampling)
+#&gt; Chain 2:                0.307971 seconds (Total)
 #&gt; Chain 2: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 3).
@@ -427,13 +437,15 @@ effort<span class='op'>=</span><span class='st'>"Sets"</span>, family<span class
 #&gt; Chain 3: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 3: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 3: 
-#&gt; Chain 3:  Elapsed Time: 0.189004 seconds (Warm-up)
-#&gt; Chain 3:                0.103986 seconds (Sampling)
-#&gt; Chain 3:                0.29299 seconds (Total)
-#&gt; Chain 3: </div><div class='output co'>#&gt; <span class='warning'>Warning: There were 1 divergent transitions after warmup. See</span>
+#&gt; Chain 3:  Elapsed Time: 0.176142 seconds (Warm-up)
+#&gt; Chain 3:                0.118607 seconds (Sampling)
+#&gt; Chain 3:                0.294749 seconds (Total)
+#&gt; Chain 3: </div><div class='output co'>#&gt; <span class='warning'>Warning: There were 44 divergent transitions after warmup. See</span>
 #&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</span>
 #&gt; <span class='warning'>to find out why this is a problem and how to eliminate them.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There were 1 chains where the estimated Bayesian Fraction of Missing Information was low. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bfmi-low</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Examine the pairs() plot to diagnose sampling problems</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bfmi-low</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Examine the pairs() plot to diagnose sampling problems</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The largest R-hat is 1.18, indicating chains have not mixed.</span>
+#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#r-hat</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
 #&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
 #&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
 #&gt; <span class='warning'>Running the chains for more iterations may help. See</span>

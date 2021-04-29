@@ -95,7 +95,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/example.html">Bycatch Estimation and Expansion in STAN</a>
+      <a href="../articles/example.html">Intro to bycatch package</a>
     </li>
   </ul>
 </li>
@@ -134,7 +134,7 @@
   <span class='va'>data</span>,
   time <span class='op'>=</span> <span class='st'>"year"</span>,
   effort <span class='op'>=</span> <span class='st'>"effort"</span>,
-  family <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"poisson"</span>, <span class='st'>"nbinom2"</span><span class='op'>)</span>,
+  family <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"poisson"</span>, <span class='st'>"nbinom2"</span>, <span class='st'>"poisson-hurdle"</span>, <span class='st'>"nbinom2-hurdle"</span><span class='op'>)</span>,
   time_varying <span class='op'>=</span> <span class='cn'>FALSE</span>,
   iter <span class='op'>=</span> <span class='fl'>1000</span>,
   chains <span class='op'>=</span> <span class='fl'>3</span>,
@@ -163,7 +163,8 @@
     </tr>
     <tr>
       <th>family</th>
-      <td><p>"poisson" or "nbinom2", defaults to "poisson". Both default to using a log link function</p></td>
+      <td><p>Family for response distribution ("poisson", "nbinom2", "poisson-hurdle","nbinom2-hurdle"), defaults to "poisson". The hurdle variants estimate
+the probability of zeros (theta) separately from the other models and use truncated distribution to model positive counts. All use a log link function</p></td>
     </tr>
     <tr>
       <th>time_varying</th>
@@ -196,17 +197,21 @@ transitions: <code>control = list(adapt_delta = 0.99)</code>. By default,
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='va'>d</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='st'>"Year"</span><span class='op'>=</span> <span class='fl'>2002</span><span class='op'>:</span><span class='fl'>2014</span>,
-<span class='st'>"Takes"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>,
-<span class='st'>"expansionRate"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>24</span>, <span class='fl'>22</span>, <span class='fl'>14</span>, <span class='fl'>32</span>, <span class='fl'>28</span>, <span class='fl'>25</span>, <span class='fl'>30</span>,  <span class='fl'>7</span>, <span class='fl'>26</span>, <span class='fl'>21</span>, <span class='fl'>22</span>, <span class='fl'>23</span>, <span class='fl'>27</span><span class='op'>)</span>,
-<span class='st'>"Sets"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>391</span>, <span class='fl'>340</span>, <span class='fl'>330</span>, <span class='fl'>660</span>, <span class='fl'>470</span>, <span class='fl'>500</span>, <span class='fl'>330</span>, <span class='fl'>287</span>, <span class='fl'>756</span>, <span class='fl'>673</span>, <span class='fl'>532</span>, <span class='fl'>351</span>, <span class='fl'>486</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>fit</span> <span class='op'>=</span> <span class='fu'>fit_bycatch</span><span class='op'>(</span><span class='va'>Takes</span> <span class='op'>~</span> <span class='fl'>1</span>, data<span class='op'>=</span><span class='va'>d</span>, time<span class='op'>=</span><span class='st'>"Year"</span>,
-effort<span class='op'>=</span><span class='st'>"Sets"</span>, family<span class='op'>=</span><span class='st'>"poisson"</span>, time_varying <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='va'>d</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
+  <span class='st'>"Year"</span> <span class='op'>=</span> <span class='fl'>2002</span><span class='op'>:</span><span class='fl'>2014</span>,
+  <span class='st'>"Takes"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>,
+  <span class='st'>"expansionRate"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>24</span>, <span class='fl'>22</span>, <span class='fl'>14</span>, <span class='fl'>32</span>, <span class='fl'>28</span>, <span class='fl'>25</span>, <span class='fl'>30</span>, <span class='fl'>7</span>, <span class='fl'>26</span>, <span class='fl'>21</span>, <span class='fl'>22</span>, <span class='fl'>23</span>, <span class='fl'>27</span><span class='op'>)</span>,
+  <span class='st'>"Sets"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>391</span>, <span class='fl'>340</span>, <span class='fl'>330</span>, <span class='fl'>660</span>, <span class='fl'>470</span>, <span class='fl'>500</span>, <span class='fl'>330</span>, <span class='fl'>287</span>, <span class='fl'>756</span>, <span class='fl'>673</span>, <span class='fl'>532</span>, <span class='fl'>351</span>, <span class='fl'>486</span><span class='op'>)</span>
+<span class='op'>)</span>
+<span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'>fit_bycatch</span><span class='op'>(</span><span class='va'>Takes</span> <span class='op'>~</span> <span class='fl'>1</span>,
+  data <span class='op'>=</span> <span class='va'>d</span>, time <span class='op'>=</span> <span class='st'>"Year"</span>,
+  effort <span class='op'>=</span> <span class='st'>"Sets"</span>, family <span class='op'>=</span> <span class='st'>"poisson"</span>, time_varying <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 </div><div class='output co'>#&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 1).
 #&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 1.5e-05 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.15 seconds.
+#&gt; Chain 1: Gradient evaluation took 1.6e-05 seconds
+#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.16 seconds.
 #&gt; Chain 1: Adjust your expectations accordingly!
 #&gt; Chain 1: 
 #&gt; Chain 1: 
@@ -223,15 +228,15 @@ effort<span class='op'>=</span><span class='st'>"Sets"</span>, family<span class
 #&gt; Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.015561 seconds (Warm-up)
-#&gt; Chain 1:                0.017138 seconds (Sampling)
-#&gt; Chain 1:                0.032699 seconds (Total)
+#&gt; Chain 1:  Elapsed Time: 0.015674 seconds (Warm-up)
+#&gt; Chain 1:                0.016155 seconds (Sampling)
+#&gt; Chain 1:                0.031829 seconds (Total)
 #&gt; Chain 1: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
 #&gt; Chain 2: 
-#&gt; Chain 2: Gradient evaluation took 2.7e-05 seconds
-#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.27 seconds.
+#&gt; Chain 2: Gradient evaluation took 9e-06 seconds
+#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.09 seconds.
 #&gt; Chain 2: Adjust your expectations accordingly!
 #&gt; Chain 2: 
 #&gt; Chain 2: 
@@ -248,9 +253,9 @@ effort<span class='op'>=</span><span class='st'>"Sets"</span>, family<span class
 #&gt; Chain 2: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 2: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 0.016719 seconds (Warm-up)
-#&gt; Chain 2:                0.015545 seconds (Sampling)
-#&gt; Chain 2:                0.032264 seconds (Total)
+#&gt; Chain 2:  Elapsed Time: 0.015429 seconds (Warm-up)
+#&gt; Chain 2:                0.014501 seconds (Sampling)
+#&gt; Chain 2:                0.02993 seconds (Total)
 #&gt; Chain 2: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 3).
@@ -273,9 +278,9 @@ effort<span class='op'>=</span><span class='st'>"Sets"</span>, family<span class
 #&gt; Chain 3: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 3: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 3: 
-#&gt; Chain 3:  Elapsed Time: 0.016016 seconds (Warm-up)
-#&gt; Chain 3:                0.014223 seconds (Sampling)
-#&gt; Chain 3:                0.030239 seconds (Total)
+#&gt; Chain 3:  Elapsed Time: 0.014343 seconds (Warm-up)
+#&gt; Chain 3:                0.014311 seconds (Sampling)
+#&gt; Chain 3:                0.028654 seconds (Total)
 #&gt; Chain 3: </div><div class='input'><span class='fu'>loo</span><span class='fu'>::</span><span class='fu'><a href='https://mc-stan.org/loo/reference/loo.html'>loo</a></span><span class='op'>(</span><span class='va'>fit</span><span class='op'>$</span><span class='va'>fitted_model</span><span class='op'>)</span><span class='op'>$</span><span class='va'>estimates</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: Some Pareto k diagnostic values are slightly high. See help('pareto-k-diagnostic') for details.</span></div><div class='output co'>#&gt;            Estimate        SE
 #&gt; elpd_loo -10.945623  5.773197

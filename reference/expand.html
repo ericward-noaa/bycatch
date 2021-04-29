@@ -95,7 +95,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/example.html">Bycatch Estimation and Expansion in STAN</a>
+      <a href="../articles/example.html">Intro to bycatch package</a>
     </li>
   </ul>
 </li>
@@ -158,17 +158,21 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='va'>d</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='st'>"Year"</span><span class='op'>=</span> <span class='fl'>2002</span><span class='op'>:</span><span class='fl'>2014</span>,
-<span class='st'>"Takes"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>,
-<span class='st'>"expansionRate"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>24</span>, <span class='fl'>22</span>, <span class='fl'>14</span>, <span class='fl'>32</span>, <span class='fl'>28</span>, <span class='fl'>25</span>, <span class='fl'>30</span>,  <span class='fl'>7</span>, <span class='fl'>26</span>, <span class='fl'>21</span>, <span class='fl'>22</span>, <span class='fl'>23</span>, <span class='fl'>27</span><span class='op'>)</span>,
-<span class='st'>"Sets"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>391</span>, <span class='fl'>340</span>, <span class='fl'>330</span>, <span class='fl'>660</span>, <span class='fl'>470</span>, <span class='fl'>500</span>, <span class='fl'>330</span>, <span class='fl'>287</span>, <span class='fl'>756</span>, <span class='fl'>673</span>, <span class='fl'>532</span>, <span class='fl'>351</span>, <span class='fl'>486</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>fit</span> <span class='op'>=</span> <span class='fu'><a href='fit_bycatch.html'>fit_bycatch</a></span><span class='op'>(</span><span class='va'>Takes</span> <span class='op'>~</span> <span class='fl'>1</span>, data<span class='op'>=</span><span class='va'>d</span>,
-time<span class='op'>=</span><span class='st'>"Year"</span>, effort<span class='op'>=</span><span class='st'>"Sets"</span>, family<span class='op'>=</span><span class='st'>"poisson"</span>, time_varying <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='va'>d</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
+  <span class='st'>"Year"</span> <span class='op'>=</span> <span class='fl'>2002</span><span class='op'>:</span><span class='fl'>2014</span>,
+  <span class='st'>"Takes"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>,
+  <span class='st'>"expansionRate"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>24</span>, <span class='fl'>22</span>, <span class='fl'>14</span>, <span class='fl'>32</span>, <span class='fl'>28</span>, <span class='fl'>25</span>, <span class='fl'>30</span>, <span class='fl'>7</span>, <span class='fl'>26</span>, <span class='fl'>21</span>, <span class='fl'>22</span>, <span class='fl'>23</span>, <span class='fl'>27</span><span class='op'>)</span>,
+  <span class='st'>"Sets"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>391</span>, <span class='fl'>340</span>, <span class='fl'>330</span>, <span class='fl'>660</span>, <span class='fl'>470</span>, <span class='fl'>500</span>, <span class='fl'>330</span>, <span class='fl'>287</span>, <span class='fl'>756</span>, <span class='fl'>673</span>, <span class='fl'>532</span>, <span class='fl'>351</span>, <span class='fl'>486</span><span class='op'>)</span>
+<span class='op'>)</span>
+<span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fit_bycatch.html'>fit_bycatch</a></span><span class='op'>(</span><span class='va'>Takes</span> <span class='op'>~</span> <span class='fl'>1</span>,
+  data <span class='op'>=</span> <span class='va'>d</span>,
+  time <span class='op'>=</span> <span class='st'>"Year"</span>, effort <span class='op'>=</span> <span class='st'>"Sets"</span>, family <span class='op'>=</span> <span class='st'>"poisson"</span>, time_varying <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 </div><div class='output co'>#&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 1).
 #&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 3.6e-05 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.36 seconds.
+#&gt; Chain 1: Gradient evaluation took 4.7e-05 seconds
+#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.47 seconds.
 #&gt; Chain 1: Adjust your expectations accordingly!
 #&gt; Chain 1: 
 #&gt; Chain 1: 
@@ -185,15 +189,15 @@ time<span class='op'>=</span><span class='st'>"Year"</span>, effort<span class='
 #&gt; Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.014327 seconds (Warm-up)
-#&gt; Chain 1:                0.014613 seconds (Sampling)
-#&gt; Chain 1:                0.02894 seconds (Total)
+#&gt; Chain 1:  Elapsed Time: 0.014232 seconds (Warm-up)
+#&gt; Chain 1:                0.014188 seconds (Sampling)
+#&gt; Chain 1:                0.02842 seconds (Total)
 #&gt; Chain 1: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
 #&gt; Chain 2: 
-#&gt; Chain 2: Gradient evaluation took 1e-05 seconds
-#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.1 seconds.
+#&gt; Chain 2: Gradient evaluation took 8e-06 seconds
+#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.08 seconds.
 #&gt; Chain 2: Adjust your expectations accordingly!
 #&gt; Chain 2: 
 #&gt; Chain 2: 
@@ -210,15 +214,15 @@ time<span class='op'>=</span><span class='st'>"Year"</span>, effort<span class='
 #&gt; Chain 2: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 2: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 0.014303 seconds (Warm-up)
-#&gt; Chain 2:                0.012532 seconds (Sampling)
-#&gt; Chain 2:                0.026835 seconds (Total)
+#&gt; Chain 2:  Elapsed Time: 0.014064 seconds (Warm-up)
+#&gt; Chain 2:                0.012449 seconds (Sampling)
+#&gt; Chain 2:                0.026513 seconds (Total)
 #&gt; Chain 2: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 3).
 #&gt; Chain 3: 
-#&gt; Chain 3: Gradient evaluation took 9e-06 seconds
-#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.09 seconds.
+#&gt; Chain 3: Gradient evaluation took 8e-06 seconds
+#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.08 seconds.
 #&gt; Chain 3: Adjust your expectations accordingly!
 #&gt; Chain 3: 
 #&gt; Chain 3: 
@@ -235,10 +239,10 @@ time<span class='op'>=</span><span class='st'>"Year"</span>, effort<span class='
 #&gt; Chain 3: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 3: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 3: 
-#&gt; Chain 3:  Elapsed Time: 0.015258 seconds (Warm-up)
-#&gt; Chain 3:                0.011342 seconds (Sampling)
-#&gt; Chain 3:                0.0266 seconds (Total)
-#&gt; Chain 3: </div><div class='input'><span class='va'>expanded</span> <span class='op'>=</span> <span class='fu'>expand</span><span class='op'>(</span><span class='va'>fit</span>, coverage <span class='op'>=</span> <span class='va'>d</span><span class='op'>$</span><span class='va'>expansionRate</span><span class='op'>)</span>
+#&gt; Chain 3:  Elapsed Time: 0.015146 seconds (Warm-up)
+#&gt; Chain 3:                0.011322 seconds (Sampling)
+#&gt; Chain 3:                0.026468 seconds (Total)
+#&gt; Chain 3: </div><div class='input'><span class='va'>expanded</span> <span class='op'>&lt;-</span> <span class='fu'>expand</span><span class='op'>(</span><span class='va'>fit</span>, coverage <span class='op'>=</span> <span class='va'>d</span><span class='op'>$</span><span class='va'>expansionRate</span><span class='op'>)</span>
 <span class='co'># }</span>
 </div></pre>
   </div>
