@@ -1,5 +1,5 @@
 ---
-title: "Bycatch Estimation and Expansion in STAN"
+title: "Intro to bycatch package"
 author: "Eric J. Ward, Jason E. Jannot"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
