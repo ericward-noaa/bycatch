@@ -1,7 +1,7 @@
 Package: bycatch
 Type: Package
 Title: Fit Bayesian Models to Bycatch Data
-Version: 1.0.3
+Version: 1.0.4
 Encoding: UTF-8
 Date: 2020-01-28
 Authors@R: c(
