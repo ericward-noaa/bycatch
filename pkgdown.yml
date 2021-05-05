@@ -2,8 +2,8 @@ pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
-  background: background.html
-  example: example.html
-  expanding: expanding.html
-last_built: 2021-05-05T14:45Z
+  expanding_estimates: expanding_estimates.html
+  fitting_models: fitting_models.html
+  overview: overview.html
+last_built: 2021-05-05T21:08Z
 
