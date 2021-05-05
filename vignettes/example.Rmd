@@ -117,6 +117,22 @@ The degree of overdispersion here is stored in the variable `nb2_phi`, which we 
 phi = rstan::extract(fit$fitted_model)$nb2_phi
 ```
 
+## Zero - inflated example
+
+To accomodate excess zeros, we've included hurdle models that separately model the probability of zeros, and use a zero-truncated model for the positive component. We currently have 2 versions of the zero-inflated model included -- a Poisson, and Negative Binomial. These can be fit using
+
+```{r, results="hide", message=FALSE, warning=FALSE, eval = FALSE}
+fit = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets", family="poisson-hurdle",
+  time_varying = FALSE)
+```
+
+and 
+
+```{r, results="hide", message=FALSE, warning=FALSE, eval = FALSE}
+fit = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets", family="nbinom2-hurdle",
+  time_varying = FALSE)
+```
+
 ## Example with covariates
 
 Following [Martin et al. 2015](http://onlinelibrary.wiley.com/doi/10.1890/14-0059.1/abstract) we can include fixed or continuous covariates. 

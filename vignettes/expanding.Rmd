@@ -1,0 +1,80 @@
+---
+title: "Expanding estimates to unobserved bycatch"
+author: "Eric J. Ward, Jason E. Jannot"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Expanding estimates to unobserved bycatch}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+## Load library
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, results="hide", message=FALSE, warning=FALSE}
+#library(devtools)
+#devtools::install_github("ericward-noaa/bycatch")
+library(bycatch)
+set.seed(123)
+```
+
+### Overview
+
+Previous authors, including Gardner et al. (2008) and Martin et al. (2015) have assumed that rare even bycatch follows a Poisson process, where the observed bycatch events $y_{t}$ are modeled according to some estimated bycatch rate $\lambda$, 
+
+$$p(y_{t}|\lambda) = e^{-\lambda}\frac{\lambda^{y_{t}}}{y_{t}!}$$
+where $\lambda$ is the mean of the Poisson distribution. The mean rate parameter $\lambda$ can be further decomposed into a per - event (e.g. set) parameter and the number of observed sets $n_{t}$, $\lambda = \theta * n_{t}$. In a GLM setting, the log-link function is often used to model effects of covariates, e.g. $log(\lambda) = log(\theta) + B_{1}*x_{1} + B_{2}*x_{2}...$, and in this setting the known number of sets $n_{t}$ are treated as an offset, $log(\lambda) = log(\theta) + B_{1}*x_{1} + B_{2}*x_{2} + log(n_{t})$. 
+
+
+
+The reported effort (here, sets) represents the total events that are observed. Focusing on a single year of data, the expansion rate, $p_{obs}$, represents the fraction (n / 100) of the sets that are observed. The total sets are also assumed known, $N = e_{obs} + e_{unobs}$. So we are interested in estimating $e_{unobs}$ given $N$ and $e_{obs}$, where $N = e_{obs} / p_{obs}$ and $e_{unobs} = e_{obs} * (1/p_{obs} - 1)$. 
+
+
+### Load data
+```{r data}
+# replace this with your own data frame
+d = data.frame("Year"= 2002:2014, 
+  "Takes" = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0),
+  "expansionRate" = c(24, 22, 14, 32, 28, 25, 30,  7, 26, 21, 22, 23, 27),
+  "Sets" = c(391, 340, 330, 660, 470, 500, 330, 287, 756, 673, 532, 351, 486))
+```
+
+## Simple model with constant bycatch, no covariates
+
+We'll start by fitting a model with constant bycatch rate,  
+```{r, results="hide", message=FALSE, warning=FALSE, eval=FALSE}
+fit = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets", family="poisson",
+  time_varying = FALSE)
+```
+
+## Expanding bycatch estimates
+  
+Using our example above, the observer coverage for that dataset was less than 100% and so our estimates need to be expanded to the fleetwide level. There are some important `control` arguments here that are left at defaults, but should maybe be changed for huge numbers of bycatch.
+
+```{r, eval=FALSE}
+expanded = expand(fit, coverage = d$expansionRate)
+```
+
+And we can then plot these estimates. Like the previous function we can specify whether to include the raw points or not.
+  
+```{r, fig.pos="placeHere", fig.cap = "Estimated fleet-level expanded bycatch, incorporating data on takes, effort, and observer coverage. Dots represent observed bycatch events.", eval=FALSE}
+plot_expanded(fitted_model=fit, expanded_estimates = expanded, xlab="Year", ylab = "Fleet-level bycatch", include_points = TRUE)
+```
+
+### Make table of expanded bycatch estimates
+
+We can also do things like summarize the expanded estimates in table form
+
+```{r, eval=FALSE}
+df = data.frame("time" = d[,"Year"], 
+  "mean" = apply(expanded, 2, mean),
+  "median" = apply(expanded, 2, quantile, 0.5),
+  "lower95" = apply(expanded, 2, quantile, 0.025),
+  "upper95" = apply(expanded, 2, quantile, 0.975))
+
+write.table(df, "estimated_bycatch.csv", row.names=F, col.names=T, sep=",")
+```
