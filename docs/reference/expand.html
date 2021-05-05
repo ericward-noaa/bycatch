@@ -95,7 +95,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/background.html">Background</a>
+    </li>
+    <li>
       <a href="../articles/example.html">Intro to bycatch package</a>
+    </li>
+    <li>
+      <a href="../articles/expanding.html">Expanding estimates to unobserved bycatch</a>
     </li>
   </ul>
 </li>
@@ -171,8 +177,8 @@
 </div><div class='output co'>#&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 1).
 #&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 3.6e-05 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.36 seconds.
+#&gt; Chain 1: Gradient evaluation took 3.5e-05 seconds
+#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.35 seconds.
 #&gt; Chain 1: Adjust your expectations accordingly!
 #&gt; Chain 1: 
 #&gt; Chain 1: 
@@ -189,15 +195,15 @@
 #&gt; Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.009717 seconds (Warm-up)
-#&gt; Chain 1:                0.009193 seconds (Sampling)
-#&gt; Chain 1:                0.01891 seconds (Total)
+#&gt; Chain 1:  Elapsed Time: 0.008959 seconds (Warm-up)
+#&gt; Chain 1:                0.009076 seconds (Sampling)
+#&gt; Chain 1:                0.018035 seconds (Total)
 #&gt; Chain 1: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
 #&gt; Chain 2: 
-#&gt; Chain 2: Gradient evaluation took 9e-06 seconds
-#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.09 seconds.
+#&gt; Chain 2: Gradient evaluation took 6e-06 seconds
+#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.06 seconds.
 #&gt; Chain 2: Adjust your expectations accordingly!
 #&gt; Chain 2: 
 #&gt; Chain 2: 
@@ -214,15 +220,15 @@
 #&gt; Chain 2: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 2: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 0.009564 seconds (Warm-up)
-#&gt; Chain 2:                0.00856 seconds (Sampling)
-#&gt; Chain 2:                0.018124 seconds (Total)
+#&gt; Chain 2:  Elapsed Time: 0.008666 seconds (Warm-up)
+#&gt; Chain 2:                0.007795 seconds (Sampling)
+#&gt; Chain 2:                0.016461 seconds (Total)
 #&gt; Chain 2: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 3).
 #&gt; Chain 3: 
-#&gt; Chain 3: Gradient evaluation took 9e-06 seconds
-#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.09 seconds.
+#&gt; Chain 3: Gradient evaluation took 8e-06 seconds
+#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.08 seconds.
 #&gt; Chain 3: Adjust your expectations accordingly!
 #&gt; Chain 3: 
 #&gt; Chain 3: 
@@ -239,9 +245,9 @@
 #&gt; Chain 3: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 3: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 3: 
-#&gt; Chain 3:  Elapsed Time: 0.009925 seconds (Warm-up)
-#&gt; Chain 3:                0.007394 seconds (Sampling)
-#&gt; Chain 3:                0.017319 seconds (Total)
+#&gt; Chain 3:  Elapsed Time: 0.00942 seconds (Warm-up)
+#&gt; Chain 3:                0.007036 seconds (Sampling)
+#&gt; Chain 3:                0.016456 seconds (Total)
 #&gt; Chain 3: </div><div class='input'><span class='va'>expanded</span> <span class='op'>&lt;-</span> <span class='fu'>expand</span><span class='op'>(</span><span class='va'>fit</span>, coverage <span class='op'>=</span> <span class='va'>d</span><span class='op'>$</span><span class='va'>expansionRate</span><span class='op'>)</span>
 <span class='co'># }</span>
 </div></pre>

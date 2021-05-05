@@ -54,7 +54,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/background.html">Background</a>
+    </li>
+    <li>
       <a href="../articles/example.html">Intro to bycatch package</a>
+    </li>
+    <li>
+      <a href="../articles/expanding.html">Expanding estimates to unobserved bycatch</a>
     </li>
   </ul>
 </li>
@@ -82,7 +88,7 @@
       <h1 data-toc-skip>Intro to bycatch package</h1>
                         <h4 class="author">Eric J. Ward, Jason E. Jannot</h4>
             
-            <h4 class="date">2021-04-29</h4>
+            <h4 class="date">2021-05-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ericward-noaa/bycatch/blob/master/vignettes/example.Rmd"><code>vignettes/example.Rmd</code></a></small>
       <div class="hidden name"><code>example.Rmd</code></div>
@@ -197,20 +203,32 @@ Estimated fleet-level expanded bycatch, incorporating data on takes, effort, and
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">phi</span> <span class="op">=</span> <span class="fu">rstan</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/rstan/reference/stanfit-method-extract.html">extract</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">fitted_model</span><span class="op">)</span><span class="op">$</span><span class="va">nb2_phi</span></code></pre></div>
 </div>
+<div id="zero---inflated-example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#zero---inflated-example" class="anchor"></a>Zero - inflated example</h2>
+<p>To accomodate excess zeros, we’ve included hurdle models that separately model the probability of zeros, and use a zero-truncated model for the positive component. We currently have 2 versions of the zero-inflated model included – a Poisson, and Negative Binomial. These can be fit using</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">fit</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>, data<span class="op">=</span><span class="va">d</span>, time<span class="op">=</span><span class="st">"Year"</span>, effort<span class="op">=</span><span class="st">"Sets"</span>, family<span class="op">=</span><span class="st">"poisson-hurdle"</span>,
+  time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<p>and</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">fit</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>, data<span class="op">=</span><span class="va">d</span>, time<span class="op">=</span><span class="st">"Year"</span>, effort<span class="op">=</span><span class="st">"Sets"</span>, family<span class="op">=</span><span class="st">"nbinom2-hurdle"</span>,
+  time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+</div>
 <div id="example-with-covariates" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-with-covariates" class="anchor"></a>Example with covariates</h2>
 <p>Following <a href="http://onlinelibrary.wiley.com/doi/10.1890/14-0059.1/abstract">Martin et al. 2015</a> we can include fixed or continuous covariates.</p>
 <p>For example, we could include a julian day, and a break point (representing a regulatory change for example) in the data. We could model the first variable as a continuous predictor and the second as a factor.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d</span><span class="op">$</span><span class="va">Day</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">220</span>,<span class="fl">280</span><span class="op">)</span>,size<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>,replace<span class="op">=</span><span class="cn">T</span><span class="op">)</span>
 <span class="va">d</span><span class="op">$</span><span class="va">Reg</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Year</span> <span class="op">&lt;</span> <span class="fl">2008</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <p>Using the formula interface makes it easy to include covariates,</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fit</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="va">Day</span> <span class="op">+</span> <span class="va">Reg</span>, data<span class="op">=</span><span class="va">d</span>, time<span class="op">=</span><span class="st">"Year"</span>, effort<span class="op">=</span><span class="st">"Sets"</span>, family<span class="op">=</span><span class="st">"poisson"</span>,
   time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p>We can get the 3 covariate effects out with the following call:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">betas</span> <span class="op">=</span> <span class="fu">rstan</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/rstan/reference/stanfit-method-extract.html">extract</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">fitted_model</span><span class="op">)</span><span class="op">$</span><span class="va">beta</span></code></pre></div>
 <p>Note that ‘betas’ has 3 columns. These correspond to (1) the intercept, (2) continuous predictor, and (3) factor variable above. If we didn’t include the covariates, we’d still estimate beta[1] as the intercept.</p>
 
@@ -219,14 +237,14 @@ Estimated fleet-level expanded bycatch, incorporating data on takes, effort, and
 <h2 class="hasAnchor">
 <a href="#fit-model-with-time-varying-effects" class="anchor"></a>Fit model with time-varying effects</h2>
 <p>To incorporate potential autocorrelation, we can fit a model with time-varying random effects. This is equivalent to a dynamic linear model with time varying intercept in a Poisson GLM.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fit</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>, data<span class="op">=</span><span class="va">d</span>, time<span class="op">=</span><span class="st">"Year"</span>, effort<span class="op">=</span><span class="st">"Sets"</span>, family<span class="op">=</span><span class="st">"poisson"</span>,
   time_varying <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">expanded</span> <span class="op">=</span> <span class="fu"><a href="../reference/expand.html">expand</a></span><span class="op">(</span><span class="va">fit</span>, coverage<span class="op">=</span><span class="va">d</span><span class="op">$</span><span class="va">expansionRate</span><span class="op">)</span>
 <span class="fu"><a href="../reference/plot_expanded.html">plot_expanded</a></span><span class="op">(</span>fitted_model<span class="op">=</span><span class="va">fit</span>, expanded_estimates <span class="op">=</span> <span class="va">expanded</span>, xlab<span class="op">=</span><span class="st">"Year"</span>, ylab <span class="op">=</span> <span class="st">"Fleet-level bycatch"</span>, include_points <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <div class="figure">
-<img src="example_files/figure-html/unnamed-chunk-17-1.png" alt="Estimated fleet-level expanded bycatch from the model with time-varying effects, incorporating data on takes, effort, and observer coverage. Dots represent observed bycatch events." width="700"><p class="caption">
+<img src="example_files/figure-html/unnamed-chunk-19-1.png" alt="Estimated fleet-level expanded bycatch from the model with time-varying effects, incorporating data on takes, effort, and observer coverage. Dots represent observed bycatch events." width="700"><p class="caption">
 Estimated fleet-level expanded bycatch from the model with time-varying effects, incorporating data on takes, effort, and observer coverage. Dots represent observed bycatch events.
 </p>
 </div>
@@ -235,20 +253,20 @@ Estimated fleet-level expanded bycatch from the model with time-varying effects,
 <div id="fit-model-with-no-bycatch-events" class="section level2">
 <h2 class="hasAnchor">
 <a href="#fit-model-with-no-bycatch-events" class="anchor"></a>Fit model with no bycatch events</h2>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># replace this with your own data frame</span>
 <span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="st">"Year"</span><span class="op">=</span> <span class="fl">2002</span><span class="op">:</span><span class="fl">2014</span>, 
   <span class="st">"Takes"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,
   <span class="st">"expansionRate"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">22</span>, <span class="fl">14</span>, <span class="fl">32</span>, <span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">30</span>,  <span class="fl">7</span>, <span class="fl">26</span>, <span class="fl">21</span>, <span class="fl">22</span>, <span class="fl">23</span>, <span class="fl">27</span><span class="op">)</span>,
   <span class="st">"Sets"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">391</span>, <span class="fl">340</span>, <span class="fl">330</span>, <span class="fl">660</span>, <span class="fl">470</span>, <span class="fl">500</span>, <span class="fl">330</span>, <span class="fl">287</span>, <span class="fl">756</span>, <span class="fl">673</span>, <span class="fl">532</span>, <span class="fl">351</span>, <span class="fl">486</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fit</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>, data<span class="op">=</span><span class="va">d</span>, time<span class="op">=</span><span class="st">"Year"</span>, effort<span class="op">=</span><span class="st">"Sets"</span>, family<span class="op">=</span><span class="st">"poisson"</span>,
   time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">expanded</span> <span class="op">=</span> <span class="fu"><a href="../reference/expand.html">expand</a></span><span class="op">(</span><span class="va">fit</span>, coverage<span class="op">=</span><span class="va">d</span><span class="op">$</span><span class="va">expansionRate</span><span class="op">)</span>
 <span class="fu"><a href="../reference/plot_expanded.html">plot_expanded</a></span><span class="op">(</span>fitted_model<span class="op">=</span><span class="va">fit</span>, expanded_estimates <span class="op">=</span> <span class="va">expanded</span>, xlab<span class="op">=</span><span class="st">"Year"</span>, ylab <span class="op">=</span> <span class="st">"Fleet-level bycatch"</span>, include_points <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <div class="figure">
-<img src="example_files/figure-html/unnamed-chunk-19-1.png" alt="Estimated fleet-level expanded bycatch from the dataset with no events, incorporating effort, and observer coverage. Dots represent observed bycatch events." width="700"><p class="caption">
+<img src="example_files/figure-html/unnamed-chunk-21-1.png" alt="Estimated fleet-level expanded bycatch from the dataset with no events, incorporating effort, and observer coverage. Dots represent observed bycatch events." width="700"><p class="caption">
 Estimated fleet-level expanded bycatch from the dataset with no events, incorporating effort, and observer coverage. Dots represent observed bycatch events.
 </p>
 </div>
