@@ -12,7 +12,8 @@ plot_fitted(
 )
 }
 \arguments{
-\item{fitted_model}{Data and fitted model returned from bycatch_expansion()}
+\item{fitted_model}{Data and fitted model returned from fit_bycatch(). If a hurdle model, then only
+then the plot returns the total bycatch rate (including zero and non-zero components).}
 
 \item{xlab}{X-axis label for plot}
 
@@ -55,6 +56,15 @@ fit_nb <- fit_bycatch(Takes ~ 1,
 fit <- fit_bycatch(Takes ~ 1,
   data = d, time = "Year",
   effort = "Sets", family = "poisson", time_varying = TRUE
+)
+
+# include data for expansion to unobserved sets
+fit_nb <- fit_bycatch(Takes ~ 1,
+  data = d, time = "Year",
+  effort = "Sets", family = "nbinom2",
+  expansion_rate = "expansionRate",
+  time_varying = FALSE, iter = 2000, chains = 4,
+  control = list(adapt_delta = 0.99, max_treedepth = 20)
 )
 }
 }

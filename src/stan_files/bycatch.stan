@@ -1,6 +1,7 @@
 data {
   int<lower=0> n_row;
   vector[n_row] effort; // covariates
+  vector[n_row] new_effort; // covariate for unobserved sets
   int yint[n_row]; // vector[n_pos] y; # data
   int time[n_row]; // time variable
   int<lower=0> n_year; // number of unique years
@@ -96,14 +97,22 @@ model {
 }
 generated quantities {
   vector[n_row] log_lik;
+  int<lower = 0> y_new[n_row];
+
   if(family==1) {
     for(n in 1:n_row) {
       log_lik[n] = poisson_lpmf(yint[n] | lambda[n]);
+
+      // sample posterior predictive distribution
+      y_new[n] = poisson_rng(exp(pred[n] + log(new_effort[n])));
     }
   }
   if(family==2) {
     for(n in 1:n_row) {
       log_lik[n] = neg_binomial_2_lpmf(yint[n] | lambda[n], nb2_phi[1]);
+
+      // sample posterior predictive distribution
+      y_new[n] = neg_binomial_2_rng(exp(pred[n] + log(new_effort[n])), nb2_phi[1]);
     }
   }
   if(family==3) {
@@ -115,6 +124,9 @@ generated quantities {
         // (1 - theta) * Pr(Pois(y|lambda)) / (1 - PoissonCDF(0|lambda))
         log_lik[n] = log1m(theta[1]) + poisson_lpmf(yint[n] | lambda[n]) - poisson_lccdf(0 | lambda[n]);
       }
+
+      // sample posterior predictive distribution
+      y_new[n] = (1 - bernoulli_rng(theta[1])) * poisson_rng(exp(pred[n] + log(new_effort[n])));
     }
   }
   if(family==4) {
@@ -126,6 +138,10 @@ generated quantities {
         // (1 - theta) * Pr(NB2(y|lambda)) / (1 - NB2CDF(0|lambda))
         log_lik[n] = log1m(theta[1]) + neg_binomial_2_lpmf(yint[n] | lambda[n], nb2_phi[1]) - neg_binomial_2_lccdf(0 | lambda[n], nb2_phi[1]);
       }
+
+      // sample posterior predictive distribution
+      y_new[n] = (1 - bernoulli_rng(theta[1])) * neg_binomial_2_rng(exp(pred[n] + log(new_effort[n])), nb2_phi[1]);
+
     }
   }
 }

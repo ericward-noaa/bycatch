@@ -1,0 +1,49 @@
+---
+title: "Overview of bycatch package"
+author: "Eric J. Ward, Jason E. Jannot"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Overview of bycatch package}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+## Load library
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Overview
+
+Previous authors, including Gardner et al. (2008) and Martin et al. (2015) have assumed that rare even bycatch follows a Poisson process, where the observed bycatch events $y_{t}$ are modeled according to some estimated bycatch rate $\lambda$, 
+
+$$p(y_{t}|\lambda) = e^{-\lambda}\frac{\lambda^{y_{t}}}{y_{t}!}$$
+where $\lambda$ is the mean of the Poisson distribution. The mean rate parameter $\lambda$ can be further decomposed into a per - event (e.g. set) parameter and the number of observed sets $n_{t}$, $\lambda = \theta * n_{t}$. In a GLM setting, the log-link function is often used to model effects of covariates, e.g. $log(\lambda) = log(\theta) + b_{1}*x_{1} + b_{2}*x_{2}...$, and in this setting the known number of sets $n_{t}$ are treated as an offset, $log(\lambda) = log(\theta) + b_{1}*x_{1} + b_{2}*x_{2} + log(n_{t})$. 
+
+Estimation of $\lambda$ or $\theta$ can be done in a maximum likelihood or Bayesian setting, and here we use Bayesian methods to estimate the posterior distribution of the parameters given observed bycatch data, 
+
+$$p(\theta|\underline{\mathbf{y}}) \propto p(\theta)p(\underline{\mathbf{y}}|\theta)$$
+
+### Other families  
+
+In addition to the Poisson model described here, we include the Negative Binomial model, which allows for the variance to be greater than the mean. We use the 'nbinom2' alternative parameterization of the Negative Binomial, where $Var(Y) = u + \frac{u^2}{\tau}$, where $\tau$ controls the degree of overdispersion. Two additional extensions to these models are the zero-inflated extensions. We adopt hurdle models to model extra zeros, so that $p(y_{t}=0) = \phi$ and $p(y_{t}>0) = 1-\phi$. 
+
+### Fixed effect covariates
+
+As described above, any type of fixed effects can be included as a predictors of bycatch in the formula interface. Coefficients are estimated for all coefficients using the log-link, $log(\lambda) = log(\theta) + b_{1}*x_{1} + b_{2}*x_{2} + log(n_{t})$, where $x_{1}$ and $x_{2}$ are covariates. 
+
+### Time varying parameters
+
+In some cases, such as when covariates may be missing or not completely observed, it may be useful to include time effects as time - varying. We have implemented these as random effects, in link (log) space. We can modify the predictions of bycatch rate to be $log(\lambda) = log(\theta) + b_{1}*x_{1} + b_{2}*x_{2} + log(n_{t}) + \omega_{t}$, where $\omega_{t}$ is the latent time effect. We constrain the time effects to be a random walk, so that $\omega_{t} \sim Normal(\omega_{t-1},\sigma_{\omega})$. Extensions of this model could include autoregressive coefficients to help aid in stationarity. 
+
+### Expanding estimates
+
+A major goal of bycatch analyses with partially observed datasets is estimating the total unobserved bycatch. Because the total numbers of effort (sets, trips, etc) is known, and the number of observed units of effort is known, the numbers of unobserved units is also known, $N_{t}-n_{t}$. 
+
+Using the Bayesian framework, we can generate samples from the posterior predictive distribution of unobserved sets, using the same distribution that is assumed for the observed sets (Poisson, Negative Binomial, etc). This posterior predictive approach assumes that the distribution of unobserved bycatch is 
+
+$$P(Y_{t}-y_{t} | \theta, N_{t}, n_{t}) = \int_{\theta} p(Y_{t}-y_{t} | \theta, N_{t} - n_{t})p(\theta | \underline{\mathbf{y}})d\theta$$
+
+The integration includes a product of two quantities. The first is the probability of individual bycatch values (e.g. 0, 1, 2, ...) conditioned on the estimated parameters $\theta$ and number of unobserved units $N_{t}-n_{t}$, and the second represents the posterior distribution of the parameters given all data, $p(\theta | \underline{\mathbf{y}})$. By generating large numbers of samples from the posterior predictive distribution, we can generate credible intervals and other summary statistics on the distribution. 

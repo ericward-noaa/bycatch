@@ -1,9 +1,9 @@
 #' plot_expanded is makes plots of the expanded bycatch estimates, accounting for observer coverage and effort
 #'
 #' @param fitted_model Data and fitted model returned from estimation
-#' @param expanded_estimates values returned from a call to expansion()
 #' @param xlab X-axis label for plot
 #' @param ylab Y-axis label for plot
+#' @param show_total Whether to show the total predicted bycatch (by default, this is TRUE) or just the expanded unobserved events (=FALSE)
 #' @param include_points whether or not to include raw bycatch events on plots, defaults to FALSE
 #'
 #' @return plot called from ggplot
@@ -24,18 +24,22 @@
 #'   data = d, time = "Year",
 #'   effort = "Sets",
 #'   family = "poisson",
+#'   expansion_rate = "expansionRate",
 #'   time_varying = FALSE
 #' )
-#' expanded <- expand(fit, coverage = d$expansionRate)
 #' plot_expanded(
 #'   fitted_model = fit,
-#'   expanded_estimates = expanded,
 #'   xlab = "Year",
 #'   ylab = "Fleet-level bycatch",
 #'   include_points = TRUE
 #' )
 #' }
-plot_expanded <- function(fitted_model, expanded_estimates, xlab = "Time", ylab = "Events", include_points = FALSE) {
+plot_expanded <- function(fitted_model,
+                          xlab = "Time", ylab = "Events",
+                          show_total = TRUE,
+                          include_points = FALSE) {
+  expanded_estimates <- rstan::extract(fitted_model$fitted_model, "y_new")$y_new
+
   df <- data.frame(
     "time" = fitted_model$data[, fitted_model$time],
     "mean" = apply(expanded_estimates, 2, mean),
@@ -43,6 +47,13 @@ plot_expanded <- function(fitted_model, expanded_estimates, xlab = "Time", ylab 
     "high" = apply(expanded_estimates, 2, quantile, 0.975),
     "obs" = fitted_model$data[, fitted_model$events]
   )
+
+  if (show_total == TRUE) {
+    # show total bycatch, including observed events
+    df$mean <- df$mean + fitted_model$data[, fitted_model$events]
+    df$low <- df$low + fitted_model$data[, fitted_model$events]
+    df$high <- df$high + fitted_model$data[, fitted_model$events]
+  }
 
   g1 <- ggplot(df, aes(.data$time, mean)) +
     geom_ribbon(aes(ymin = .data$low, ymax = .data$high), fill = "blue", alpha = 0.3) +

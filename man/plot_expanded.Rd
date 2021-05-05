@@ -6,20 +6,20 @@
 \usage{
 plot_expanded(
   fitted_model,
-  expanded_estimates,
   xlab = "Time",
   ylab = "Events",
+  show_total = TRUE,
   include_points = FALSE
 )
 }
 \arguments{
 \item{fitted_model}{Data and fitted model returned from estimation}
 
-\item{expanded_estimates}{values returned from a call to expansion()}
-
 \item{xlab}{X-axis label for plot}
 
 \item{ylab}{Y-axis label for plot}
+
+\item{show_total}{Whether to show the total predicted bycatch (by default, this is TRUE) or just the expanded unobserved events (=FALSE)}
 
 \item{include_points}{whether or not to include raw bycatch events on plots, defaults to FALSE}
 }
@@ -41,12 +41,11 @@ fit <- fit_bycatch(Takes ~ 1,
   data = d, time = "Year",
   effort = "Sets",
   family = "poisson",
+  expansion_rate = "expansionRate",
   time_varying = FALSE
 )
-expanded <- expand(fit, coverage = d$expansionRate)
 plot_expanded(
   fitted_model = fit,
-  expanded_estimates = expanded,
   xlab = "Year",
   ylab = "Fleet-level bycatch",
   include_points = TRUE
