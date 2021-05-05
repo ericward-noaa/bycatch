@@ -30,7 +30,7 @@ Suggests:
     rmarkdown,
     devtools,
     MASS
-URL: https://github.com/ericward-noaa/bycatch
+URL: https://ericward-noaa.github.io/bycatch/
 BugReports: https://github.com/ericward-noaa/bycatch/issues
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr
