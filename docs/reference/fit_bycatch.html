@@ -221,8 +221,8 @@ transitions: <code>control = list(adapt_delta = 0.99)</code>. By default,
 </div><div class='output co'>#&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 1).
 #&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 3e-05 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.3 seconds.
+#&gt; Chain 1: Gradient evaluation took 3.9e-05 seconds
+#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.39 seconds.
 #&gt; Chain 1: Adjust your expectations accordingly!
 #&gt; Chain 1: 
 #&gt; Chain 1: 
@@ -239,92 +239,9 @@ transitions: <code>control = list(adapt_delta = 0.99)</code>. By default,
 #&gt; Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.010318 seconds (Warm-up)
-#&gt; Chain 1:                0.009151 seconds (Sampling)
-#&gt; Chain 1:                0.019469 seconds (Total)
-#&gt; Chain 1: 
-#&gt; 
-#&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
-#&gt; Chain 2: 
-#&gt; Chain 2: Gradient evaluation took 7e-06 seconds
-#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.07 seconds.
-#&gt; Chain 2: Adjust your expectations accordingly!
-#&gt; Chain 2: 
-#&gt; Chain 2: 
-#&gt; Chain 2: Iteration:   1 / 1000 [  0%]  (Warmup)
-#&gt; Chain 2: Iteration: 100 / 1000 [ 10%]  (Warmup)
-#&gt; Chain 2: Iteration: 200 / 1000 [ 20%]  (Warmup)
-#&gt; Chain 2: Iteration: 300 / 1000 [ 30%]  (Warmup)
-#&gt; Chain 2: Iteration: 400 / 1000 [ 40%]  (Warmup)
-#&gt; Chain 2: Iteration: 500 / 1000 [ 50%]  (Warmup)
-#&gt; Chain 2: Iteration: 501 / 1000 [ 50%]  (Sampling)
-#&gt; Chain 2: Iteration: 600 / 1000 [ 60%]  (Sampling)
-#&gt; Chain 2: Iteration: 700 / 1000 [ 70%]  (Sampling)
-#&gt; Chain 2: Iteration: 800 / 1000 [ 80%]  (Sampling)
-#&gt; Chain 2: Iteration: 900 / 1000 [ 90%]  (Sampling)
-#&gt; Chain 2: Iteration: 1000 / 1000 [100%]  (Sampling)
-#&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 0.00917 seconds (Warm-up)
-#&gt; Chain 2:                0.009104 seconds (Sampling)
-#&gt; Chain 2:                0.018274 seconds (Total)
-#&gt; Chain 2: 
-#&gt; 
-#&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 3).
-#&gt; Chain 3: 
-#&gt; Chain 3: Gradient evaluation took 6e-06 seconds
-#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.06 seconds.
-#&gt; Chain 3: Adjust your expectations accordingly!
-#&gt; Chain 3: 
-#&gt; Chain 3: 
-#&gt; Chain 3: Iteration:   1 / 1000 [  0%]  (Warmup)
-#&gt; Chain 3: Iteration: 100 / 1000 [ 10%]  (Warmup)
-#&gt; Chain 3: Iteration: 200 / 1000 [ 20%]  (Warmup)
-#&gt; Chain 3: Iteration: 300 / 1000 [ 30%]  (Warmup)
-#&gt; Chain 3: Iteration: 400 / 1000 [ 40%]  (Warmup)
-#&gt; Chain 3: Iteration: 500 / 1000 [ 50%]  (Warmup)
-#&gt; Chain 3: Iteration: 501 / 1000 [ 50%]  (Sampling)
-#&gt; Chain 3: Iteration: 600 / 1000 [ 60%]  (Sampling)
-#&gt; Chain 3: Iteration: 700 / 1000 [ 70%]  (Sampling)
-#&gt; Chain 3: Iteration: 800 / 1000 [ 80%]  (Sampling)
-#&gt; Chain 3: Iteration: 900 / 1000 [ 90%]  (Sampling)
-#&gt; Chain 3: Iteration: 1000 / 1000 [100%]  (Sampling)
-#&gt; Chain 3: 
-#&gt; Chain 3:  Elapsed Time: 0.008224 seconds (Warm-up)
-#&gt; Chain 3:                0.007877 seconds (Sampling)
-#&gt; Chain 3:                0.016101 seconds (Total)
-#&gt; Chain 3: </div><div class='input'><span class='fu'>loo</span><span class='fu'>::</span><span class='fu'><a href='https://mc-stan.org/loo/reference/loo.html'>loo</a></span><span class='op'>(</span><span class='va'>fit</span><span class='op'>$</span><span class='va'>fitted_model</span><span class='op'>)</span><span class='op'>$</span><span class='va'>estimates</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Some Pareto k diagnostic values are slightly high. See help('pareto-k-diagnostic') for details.</span></div><div class='output co'>#&gt;            Estimate        SE
-#&gt; elpd_loo -10.347863  5.261038
-#&gt; p_loo      1.646887  1.362585
-#&gt; looic     20.695727 10.522076</div><div class='input'>
-<span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'>fit_bycatch</span><span class='op'>(</span><span class='va'>Takes</span> <span class='op'>~</span> <span class='fl'>1</span>,
-  data <span class='op'>=</span> <span class='va'>d</span>, time <span class='op'>=</span> <span class='st'>"Year"</span>, effort <span class='op'>=</span> <span class='st'>"Sets"</span>,
-  family <span class='op'>=</span> <span class='st'>"poisson"</span>, time_varying <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 1).
-#&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 1e-05 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.1 seconds.
-#&gt; Chain 1: Adjust your expectations accordingly!
-#&gt; Chain 1: 
-#&gt; Chain 1: 
-#&gt; Chain 1: Iteration:   1 / 1000 [  0%]  (Warmup)
-#&gt; Chain 1: Iteration: 100 / 1000 [ 10%]  (Warmup)
-#&gt; Chain 1: Iteration: 200 / 1000 [ 20%]  (Warmup)
-#&gt; Chain 1: Iteration: 300 / 1000 [ 30%]  (Warmup)
-#&gt; Chain 1: Iteration: 400 / 1000 [ 40%]  (Warmup)
-#&gt; Chain 1: Iteration: 500 / 1000 [ 50%]  (Warmup)
-#&gt; Chain 1: Iteration: 501 / 1000 [ 50%]  (Sampling)
-#&gt; Chain 1: Iteration: 600 / 1000 [ 60%]  (Sampling)
-#&gt; Chain 1: Iteration: 700 / 1000 [ 70%]  (Sampling)
-#&gt; Chain 1: Iteration: 800 / 1000 [ 80%]  (Sampling)
-#&gt; Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
-#&gt; Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
-#&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.009323 seconds (Warm-up)
-#&gt; Chain 1:                0.008663 seconds (Sampling)
-#&gt; Chain 1:                0.017986 seconds (Total)
+#&gt; Chain 1:  Elapsed Time: 0.009873 seconds (Warm-up)
+#&gt; Chain 1:                0.00913 seconds (Sampling)
+#&gt; Chain 1:                0.019003 seconds (Total)
 #&gt; Chain 1: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
@@ -347,15 +264,15 @@ transitions: <code>control = list(adapt_delta = 0.99)</code>. By default,
 #&gt; Chain 2: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 2: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 0.009134 seconds (Warm-up)
-#&gt; Chain 2:                0.008494 seconds (Sampling)
-#&gt; Chain 2:                0.017628 seconds (Total)
+#&gt; Chain 2:  Elapsed Time: 0.009224 seconds (Warm-up)
+#&gt; Chain 2:                0.008932 seconds (Sampling)
+#&gt; Chain 2:                0.018156 seconds (Total)
 #&gt; Chain 2: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 3).
 #&gt; Chain 3: 
-#&gt; Chain 3: Gradient evaluation took 1e-05 seconds
-#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.1 seconds.
+#&gt; Chain 3: Gradient evaluation took 5e-06 seconds
+#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.05 seconds.
 #&gt; Chain 3: Adjust your expectations accordingly!
 #&gt; Chain 3: 
 #&gt; Chain 3: 
@@ -372,9 +289,92 @@ transitions: <code>control = list(adapt_delta = 0.99)</code>. By default,
 #&gt; Chain 3: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 3: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 3: 
-#&gt; Chain 3:  Elapsed Time: 0.008971 seconds (Warm-up)
-#&gt; Chain 3:                0.008338 seconds (Sampling)
-#&gt; Chain 3:                0.017309 seconds (Total)
+#&gt; Chain 3:  Elapsed Time: 0.00815 seconds (Warm-up)
+#&gt; Chain 3:                0.007997 seconds (Sampling)
+#&gt; Chain 3:                0.016147 seconds (Total)
+#&gt; Chain 3: </div><div class='input'><span class='fu'>loo</span><span class='fu'>::</span><span class='fu'><a href='https://mc-stan.org/loo/reference/loo.html'>loo</a></span><span class='op'>(</span><span class='va'>fit</span><span class='op'>$</span><span class='va'>fitted_model</span><span class='op'>)</span><span class='op'>$</span><span class='va'>estimates</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Some Pareto k diagnostic values are slightly high. See help('pareto-k-diagnostic') for details.</span></div><div class='output co'>#&gt;            Estimate        SE
+#&gt; elpd_loo -10.347863  5.261038
+#&gt; p_loo      1.646887  1.362585
+#&gt; looic     20.695727 10.522076</div><div class='input'>
+<span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'>fit_bycatch</span><span class='op'>(</span><span class='va'>Takes</span> <span class='op'>~</span> <span class='fl'>1</span>,
+  data <span class='op'>=</span> <span class='va'>d</span>, time <span class='op'>=</span> <span class='st'>"Year"</span>, effort <span class='op'>=</span> <span class='st'>"Sets"</span>,
+  family <span class='op'>=</span> <span class='st'>"poisson"</span>, time_varying <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
+</div><div class='output co'>#&gt; 
+#&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 1).
+#&gt; Chain 1: 
+#&gt; Chain 1: Gradient evaluation took 1.1e-05 seconds
+#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.11 seconds.
+#&gt; Chain 1: Adjust your expectations accordingly!
+#&gt; Chain 1: 
+#&gt; Chain 1: 
+#&gt; Chain 1: Iteration:   1 / 1000 [  0%]  (Warmup)
+#&gt; Chain 1: Iteration: 100 / 1000 [ 10%]  (Warmup)
+#&gt; Chain 1: Iteration: 200 / 1000 [ 20%]  (Warmup)
+#&gt; Chain 1: Iteration: 300 / 1000 [ 30%]  (Warmup)
+#&gt; Chain 1: Iteration: 400 / 1000 [ 40%]  (Warmup)
+#&gt; Chain 1: Iteration: 500 / 1000 [ 50%]  (Warmup)
+#&gt; Chain 1: Iteration: 501 / 1000 [ 50%]  (Sampling)
+#&gt; Chain 1: Iteration: 600 / 1000 [ 60%]  (Sampling)
+#&gt; Chain 1: Iteration: 700 / 1000 [ 70%]  (Sampling)
+#&gt; Chain 1: Iteration: 800 / 1000 [ 80%]  (Sampling)
+#&gt; Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
+#&gt; Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
+#&gt; Chain 1: 
+#&gt; Chain 1:  Elapsed Time: 0.010251 seconds (Warm-up)
+#&gt; Chain 1:                0.009644 seconds (Sampling)
+#&gt; Chain 1:                0.019895 seconds (Total)
+#&gt; Chain 1: 
+#&gt; 
+#&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
+#&gt; Chain 2: 
+#&gt; Chain 2: Gradient evaluation took 6e-06 seconds
+#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.06 seconds.
+#&gt; Chain 2: Adjust your expectations accordingly!
+#&gt; Chain 2: 
+#&gt; Chain 2: 
+#&gt; Chain 2: Iteration:   1 / 1000 [  0%]  (Warmup)
+#&gt; Chain 2: Iteration: 100 / 1000 [ 10%]  (Warmup)
+#&gt; Chain 2: Iteration: 200 / 1000 [ 20%]  (Warmup)
+#&gt; Chain 2: Iteration: 300 / 1000 [ 30%]  (Warmup)
+#&gt; Chain 2: Iteration: 400 / 1000 [ 40%]  (Warmup)
+#&gt; Chain 2: Iteration: 500 / 1000 [ 50%]  (Warmup)
+#&gt; Chain 2: Iteration: 501 / 1000 [ 50%]  (Sampling)
+#&gt; Chain 2: Iteration: 600 / 1000 [ 60%]  (Sampling)
+#&gt; Chain 2: Iteration: 700 / 1000 [ 70%]  (Sampling)
+#&gt; Chain 2: Iteration: 800 / 1000 [ 80%]  (Sampling)
+#&gt; Chain 2: Iteration: 900 / 1000 [ 90%]  (Sampling)
+#&gt; Chain 2: Iteration: 1000 / 1000 [100%]  (Sampling)
+#&gt; Chain 2: 
+#&gt; Chain 2:  Elapsed Time: 0.009231 seconds (Warm-up)
+#&gt; Chain 2:                0.007583 seconds (Sampling)
+#&gt; Chain 2:                0.016814 seconds (Total)
+#&gt; Chain 2: 
+#&gt; 
+#&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 3).
+#&gt; Chain 3: 
+#&gt; Chain 3: Gradient evaluation took 6e-06 seconds
+#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.06 seconds.
+#&gt; Chain 3: Adjust your expectations accordingly!
+#&gt; Chain 3: 
+#&gt; Chain 3: 
+#&gt; Chain 3: Iteration:   1 / 1000 [  0%]  (Warmup)
+#&gt; Chain 3: Iteration: 100 / 1000 [ 10%]  (Warmup)
+#&gt; Chain 3: Iteration: 200 / 1000 [ 20%]  (Warmup)
+#&gt; Chain 3: Iteration: 300 / 1000 [ 30%]  (Warmup)
+#&gt; Chain 3: Iteration: 400 / 1000 [ 40%]  (Warmup)
+#&gt; Chain 3: Iteration: 500 / 1000 [ 50%]  (Warmup)
+#&gt; Chain 3: Iteration: 501 / 1000 [ 50%]  (Sampling)
+#&gt; Chain 3: Iteration: 600 / 1000 [ 60%]  (Sampling)
+#&gt; Chain 3: Iteration: 700 / 1000 [ 70%]  (Sampling)
+#&gt; Chain 3: Iteration: 800 / 1000 [ 80%]  (Sampling)
+#&gt; Chain 3: Iteration: 900 / 1000 [ 90%]  (Sampling)
+#&gt; Chain 3: Iteration: 1000 / 1000 [100%]  (Sampling)
+#&gt; Chain 3: 
+#&gt; Chain 3:  Elapsed Time: 0.00835 seconds (Warm-up)
+#&gt; Chain 3:                0.008245 seconds (Sampling)
+#&gt; Chain 3:                0.016595 seconds (Total)
 #&gt; Chain 3: </div><div class='input'><span class='fu'><a href='plot_fitted.html'>plot_fitted</a></span><span class='op'>(</span><span class='va'>fit</span>,
   xlab <span class='op'>=</span> <span class='st'>"Year"</span>, ylab <span class='op'>=</span> <span class='st'>"Fleet-level bycatch"</span>,
   include_points <span class='op'>=</span> <span class='cn'>TRUE</span>
@@ -384,6 +384,204 @@ transitions: <code>control = list(adapt_delta = 0.99)</code>. By default,
 <span class='va'>fit_nb</span> <span class='op'>&lt;-</span> <span class='fu'>fit_bycatch</span><span class='op'>(</span><span class='va'>Takes</span> <span class='op'>~</span> <span class='fl'>1</span>,
   data <span class='op'>=</span> <span class='va'>d</span>, time <span class='op'>=</span> <span class='st'>"Year"</span>,
   effort <span class='op'>=</span> <span class='st'>"Sets"</span>, family <span class='op'>=</span> <span class='st'>"nbinom2"</span>,
+  time_varying <span class='op'>=</span> <span class='cn'>FALSE</span>, iter <span class='op'>=</span> <span class='fl'>2000</span>, chains <span class='op'>=</span> <span class='fl'>4</span>,
+  control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>adapt_delta <span class='op'>=</span> <span class='fl'>0.99</span>, max_treedepth <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span>
+<span class='op'>)</span>
+</div><div class='output co'>#&gt; 
+#&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 1).
+#&gt; Chain 1: 
+#&gt; Chain 1: Gradient evaluation took 2.1e-05 seconds
+#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.21 seconds.
+#&gt; Chain 1: Adjust your expectations accordingly!
+#&gt; Chain 1: 
+#&gt; Chain 1: 
+#&gt; Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
+#&gt; Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
+#&gt; Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
+#&gt; Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
+#&gt; Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
+#&gt; Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+#&gt; Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+#&gt; Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+#&gt; Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+#&gt; Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+#&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+#&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
+#&gt; Chain 1: 
+#&gt; Chain 1:  Elapsed Time: 0.057047 seconds (Warm-up)
+#&gt; Chain 1:                0.062813 seconds (Sampling)
+#&gt; Chain 1:                0.11986 seconds (Total)
+#&gt; Chain 1: 
+#&gt; 
+#&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
+#&gt; Chain 2: 
+#&gt; Chain 2: Gradient evaluation took 3.1e-05 seconds
+#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.31 seconds.
+#&gt; Chain 2: Adjust your expectations accordingly!
+#&gt; Chain 2: 
+#&gt; Chain 2: 
+#&gt; Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
+#&gt; Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
+#&gt; Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
+#&gt; Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
+#&gt; Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
+#&gt; Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+#&gt; Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+#&gt; Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+#&gt; Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+#&gt; Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+#&gt; Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+#&gt; Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
+#&gt; Chain 2: 
+#&gt; Chain 2:  Elapsed Time: 0.061214 seconds (Warm-up)
+#&gt; Chain 2:                0.052684 seconds (Sampling)
+#&gt; Chain 2:                0.113898 seconds (Total)
+#&gt; Chain 2: 
+#&gt; 
+#&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 3).
+#&gt; Chain 3: 
+#&gt; Chain 3: Gradient evaluation took 8e-06 seconds
+#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.08 seconds.
+#&gt; Chain 3: Adjust your expectations accordingly!
+#&gt; Chain 3: 
+#&gt; Chain 3: 
+#&gt; Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
+#&gt; Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
+#&gt; Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
+#&gt; Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
+#&gt; Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
+#&gt; Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+#&gt; Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+#&gt; Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+#&gt; Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+#&gt; Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+#&gt; Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+#&gt; Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
+#&gt; Chain 3: 
+#&gt; Chain 3:  Elapsed Time: 0.062959 seconds (Warm-up)
+#&gt; Chain 3:                0.06065 seconds (Sampling)
+#&gt; Chain 3:                0.123609 seconds (Total)
+#&gt; Chain 3: 
+#&gt; 
+#&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 4).
+#&gt; Chain 4: 
+#&gt; Chain 4: Gradient evaluation took 1.4e-05 seconds
+#&gt; Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.14 seconds.
+#&gt; Chain 4: Adjust your expectations accordingly!
+#&gt; Chain 4: 
+#&gt; Chain 4: 
+#&gt; Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
+#&gt; Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
+#&gt; Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
+#&gt; Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
+#&gt; Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
+#&gt; Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+#&gt; Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+#&gt; Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+#&gt; Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+#&gt; Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+#&gt; Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+#&gt; Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
+#&gt; Chain 4: 
+#&gt; Chain 4:  Elapsed Time: 0.060504 seconds (Warm-up)
+#&gt; Chain 4:                0.04886 seconds (Sampling)
+#&gt; Chain 4:                0.109364 seconds (Total)
+#&gt; Chain 4: </div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
+#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#tail-ess</span></div><div class='input'>
+<span class='co'># fit a time varying model</span>
+<span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'>fit_bycatch</span><span class='op'>(</span><span class='va'>Takes</span> <span class='op'>~</span> <span class='fl'>1</span>,
+  data <span class='op'>=</span> <span class='va'>d</span>, time <span class='op'>=</span> <span class='st'>"Year"</span>,
+  effort <span class='op'>=</span> <span class='st'>"Sets"</span>, family <span class='op'>=</span> <span class='st'>"poisson"</span>, time_varying <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
+</div><div class='output co'>#&gt; 
+#&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 1).
+#&gt; Chain 1: 
+#&gt; Chain 1: Gradient evaluation took 2.2e-05 seconds
+#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.22 seconds.
+#&gt; Chain 1: Adjust your expectations accordingly!
+#&gt; Chain 1: 
+#&gt; Chain 1: 
+#&gt; Chain 1: Iteration:   1 / 1000 [  0%]  (Warmup)
+#&gt; Chain 1: Iteration: 100 / 1000 [ 10%]  (Warmup)
+#&gt; Chain 1: Iteration: 200 / 1000 [ 20%]  (Warmup)
+#&gt; Chain 1: Iteration: 300 / 1000 [ 30%]  (Warmup)
+#&gt; Chain 1: Iteration: 400 / 1000 [ 40%]  (Warmup)
+#&gt; Chain 1: Iteration: 500 / 1000 [ 50%]  (Warmup)
+#&gt; Chain 1: Iteration: 501 / 1000 [ 50%]  (Sampling)
+#&gt; Chain 1: Iteration: 600 / 1000 [ 60%]  (Sampling)
+#&gt; Chain 1: Iteration: 700 / 1000 [ 70%]  (Sampling)
+#&gt; Chain 1: Iteration: 800 / 1000 [ 80%]  (Sampling)
+#&gt; Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
+#&gt; Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
+#&gt; Chain 1: 
+#&gt; Chain 1:  Elapsed Time: 0.084773 seconds (Warm-up)
+#&gt; Chain 1:                0.071299 seconds (Sampling)
+#&gt; Chain 1:                0.156072 seconds (Total)
+#&gt; Chain 1: 
+#&gt; 
+#&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
+#&gt; Chain 2: 
+#&gt; Chain 2: Gradient evaluation took 8e-06 seconds
+#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.08 seconds.
+#&gt; Chain 2: Adjust your expectations accordingly!
+#&gt; Chain 2: 
+#&gt; Chain 2: 
+#&gt; Chain 2: Iteration:   1 / 1000 [  0%]  (Warmup)
+#&gt; Chain 2: Iteration: 100 / 1000 [ 10%]  (Warmup)
+#&gt; Chain 2: Iteration: 200 / 1000 [ 20%]  (Warmup)
+#&gt; Chain 2: Iteration: 300 / 1000 [ 30%]  (Warmup)
+#&gt; Chain 2: Iteration: 400 / 1000 [ 40%]  (Warmup)
+#&gt; Chain 2: Iteration: 500 / 1000 [ 50%]  (Warmup)
+#&gt; Chain 2: Iteration: 501 / 1000 [ 50%]  (Sampling)
+#&gt; Chain 2: Iteration: 600 / 1000 [ 60%]  (Sampling)
+#&gt; Chain 2: Iteration: 700 / 1000 [ 70%]  (Sampling)
+#&gt; Chain 2: Iteration: 800 / 1000 [ 80%]  (Sampling)
+#&gt; Chain 2: Iteration: 900 / 1000 [ 90%]  (Sampling)
+#&gt; Chain 2: Iteration: 1000 / 1000 [100%]  (Sampling)
+#&gt; Chain 2: 
+#&gt; Chain 2:  Elapsed Time: 0.087219 seconds (Warm-up)
+#&gt; Chain 2:                0.075961 seconds (Sampling)
+#&gt; Chain 2:                0.16318 seconds (Total)
+#&gt; Chain 2: 
+#&gt; 
+#&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 3).
+#&gt; Chain 3: 
+#&gt; Chain 3: Gradient evaluation took 1.3e-05 seconds
+#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.13 seconds.
+#&gt; Chain 3: Adjust your expectations accordingly!
+#&gt; Chain 3: 
+#&gt; Chain 3: 
+#&gt; Chain 3: Iteration:   1 / 1000 [  0%]  (Warmup)
+#&gt; Chain 3: Iteration: 100 / 1000 [ 10%]  (Warmup)
+#&gt; Chain 3: Iteration: 200 / 1000 [ 20%]  (Warmup)
+#&gt; Chain 3: Iteration: 300 / 1000 [ 30%]  (Warmup)
+#&gt; Chain 3: Iteration: 400 / 1000 [ 40%]  (Warmup)
+#&gt; Chain 3: Iteration: 500 / 1000 [ 50%]  (Warmup)
+#&gt; Chain 3: Iteration: 501 / 1000 [ 50%]  (Sampling)
+#&gt; Chain 3: Iteration: 600 / 1000 [ 60%]  (Sampling)
+#&gt; Chain 3: Iteration: 700 / 1000 [ 70%]  (Sampling)
+#&gt; Chain 3: Iteration: 800 / 1000 [ 80%]  (Sampling)
+#&gt; Chain 3: Iteration: 900 / 1000 [ 90%]  (Sampling)
+#&gt; Chain 3: Iteration: 1000 / 1000 [100%]  (Sampling)
+#&gt; Chain 3: 
+#&gt; Chain 3:  Elapsed Time: 0.096708 seconds (Warm-up)
+#&gt; Chain 3:                0.254435 seconds (Sampling)
+#&gt; Chain 3:                0.351143 seconds (Total)
+#&gt; Chain 3: </div><div class='output co'>#&gt; <span class='warning'>Warning: There were 1 divergent transitions after warmup. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</span>
+#&gt; <span class='warning'>to find out why this is a problem and how to eliminate them.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Examine the pairs() plot to diagnose sampling problems</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The largest R-hat is 1.06, indicating chains have not mixed.</span>
+#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#r-hat</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
+#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
+#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#tail-ess</span></div><div class='input'>
+<span class='co'># include data for expansion to unobserved sets</span>
+<span class='va'>fit_nb</span> <span class='op'>&lt;-</span> <span class='fu'>fit_bycatch</span><span class='op'>(</span><span class='va'>Takes</span> <span class='op'>~</span> <span class='fl'>1</span>,
+  data <span class='op'>=</span> <span class='va'>d</span>, time <span class='op'>=</span> <span class='st'>"Year"</span>,
+  effort <span class='op'>=</span> <span class='st'>"Sets"</span>, family <span class='op'>=</span> <span class='st'>"nbinom2"</span>,
+  expansion_rate <span class='op'>=</span> <span class='st'>"expansionRate"</span>,
   time_varying <span class='op'>=</span> <span class='cn'>FALSE</span>, iter <span class='op'>=</span> <span class='fl'>2000</span>, chains <span class='op'>=</span> <span class='fl'>4</span>,
   control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>adapt_delta <span class='op'>=</span> <span class='fl'>0.99</span>, max_treedepth <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span>
 <span class='op'>)</span>
@@ -408,15 +606,15 @@ transitions: <code>control = list(adapt_delta = 0.99)</code>. By default,
 #&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.056948 seconds (Warm-up)
-#&gt; Chain 1:                0.058928 seconds (Sampling)
-#&gt; Chain 1:                0.115876 seconds (Total)
+#&gt; Chain 1:  Elapsed Time: 0.066525 seconds (Warm-up)
+#&gt; Chain 1:                0.062415 seconds (Sampling)
+#&gt; Chain 1:                0.12894 seconds (Total)
 #&gt; Chain 1: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
 #&gt; Chain 2: 
-#&gt; Chain 2: Gradient evaluation took 2.4e-05 seconds
-#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.24 seconds.
+#&gt; Chain 2: Gradient evaluation took 1.2e-05 seconds
+#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.12 seconds.
 #&gt; Chain 2: Adjust your expectations accordingly!
 #&gt; Chain 2: 
 #&gt; Chain 2: 
@@ -433,15 +631,15 @@ transitions: <code>control = list(adapt_delta = 0.99)</code>. By default,
 #&gt; Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 0.07934 seconds (Warm-up)
-#&gt; Chain 2:                0.055988 seconds (Sampling)
-#&gt; Chain 2:                0.135328 seconds (Total)
+#&gt; Chain 2:  Elapsed Time: 0.063371 seconds (Warm-up)
+#&gt; Chain 2:                0.055194 seconds (Sampling)
+#&gt; Chain 2:                0.118565 seconds (Total)
 #&gt; Chain 2: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 3).
 #&gt; Chain 3: 
-#&gt; Chain 3: Gradient evaluation took 9e-06 seconds
-#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.09 seconds.
+#&gt; Chain 3: Gradient evaluation took 1.4e-05 seconds
+#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.14 seconds.
 #&gt; Chain 3: Adjust your expectations accordingly!
 #&gt; Chain 3: 
 #&gt; Chain 3: 
@@ -458,15 +656,15 @@ transitions: <code>control = list(adapt_delta = 0.99)</code>. By default,
 #&gt; Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 3: 
-#&gt; Chain 3:  Elapsed Time: 0.065312 seconds (Warm-up)
-#&gt; Chain 3:                0.057446 seconds (Sampling)
-#&gt; Chain 3:                0.122758 seconds (Total)
+#&gt; Chain 3:  Elapsed Time: 0.05339 seconds (Warm-up)
+#&gt; Chain 3:                0.055285 seconds (Sampling)
+#&gt; Chain 3:                0.108675 seconds (Total)
 #&gt; Chain 3: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 4).
 #&gt; Chain 4: 
-#&gt; Chain 4: Gradient evaluation took 1.1e-05 seconds
-#&gt; Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.11 seconds.
+#&gt; Chain 4: Gradient evaluation took 7e-06 seconds
+#&gt; Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.07 seconds.
 #&gt; Chain 4: Adjust your expectations accordingly!
 #&gt; Chain 4: 
 #&gt; Chain 4: 
@@ -483,207 +681,9 @@ transitions: <code>control = list(adapt_delta = 0.99)</code>. By default,
 #&gt; Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 4: 
-#&gt; Chain 4:  Elapsed Time: 0.060235 seconds (Warm-up)
-#&gt; Chain 4:                0.05021 seconds (Sampling)
-#&gt; Chain 4:                0.110445 seconds (Total)
-#&gt; Chain 4: </div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
-#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#tail-ess</span></div><div class='input'>
-<span class='co'># fit a time varying model</span>
-<span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'>fit_bycatch</span><span class='op'>(</span><span class='va'>Takes</span> <span class='op'>~</span> <span class='fl'>1</span>,
-  data <span class='op'>=</span> <span class='va'>d</span>, time <span class='op'>=</span> <span class='st'>"Year"</span>,
-  effort <span class='op'>=</span> <span class='st'>"Sets"</span>, family <span class='op'>=</span> <span class='st'>"poisson"</span>, time_varying <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 1).
-#&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 2.1e-05 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.21 seconds.
-#&gt; Chain 1: Adjust your expectations accordingly!
-#&gt; Chain 1: 
-#&gt; Chain 1: 
-#&gt; Chain 1: Iteration:   1 / 1000 [  0%]  (Warmup)
-#&gt; Chain 1: Iteration: 100 / 1000 [ 10%]  (Warmup)
-#&gt; Chain 1: Iteration: 200 / 1000 [ 20%]  (Warmup)
-#&gt; Chain 1: Iteration: 300 / 1000 [ 30%]  (Warmup)
-#&gt; Chain 1: Iteration: 400 / 1000 [ 40%]  (Warmup)
-#&gt; Chain 1: Iteration: 500 / 1000 [ 50%]  (Warmup)
-#&gt; Chain 1: Iteration: 501 / 1000 [ 50%]  (Sampling)
-#&gt; Chain 1: Iteration: 600 / 1000 [ 60%]  (Sampling)
-#&gt; Chain 1: Iteration: 700 / 1000 [ 70%]  (Sampling)
-#&gt; Chain 1: Iteration: 800 / 1000 [ 80%]  (Sampling)
-#&gt; Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
-#&gt; Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
-#&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.079603 seconds (Warm-up)
-#&gt; Chain 1:                0.072466 seconds (Sampling)
-#&gt; Chain 1:                0.152069 seconds (Total)
-#&gt; Chain 1: 
-#&gt; 
-#&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
-#&gt; Chain 2: 
-#&gt; Chain 2: Gradient evaluation took 3.8e-05 seconds
-#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.38 seconds.
-#&gt; Chain 2: Adjust your expectations accordingly!
-#&gt; Chain 2: 
-#&gt; Chain 2: 
-#&gt; Chain 2: Iteration:   1 / 1000 [  0%]  (Warmup)
-#&gt; Chain 2: Iteration: 100 / 1000 [ 10%]  (Warmup)
-#&gt; Chain 2: Iteration: 200 / 1000 [ 20%]  (Warmup)
-#&gt; Chain 2: Iteration: 300 / 1000 [ 30%]  (Warmup)
-#&gt; Chain 2: Iteration: 400 / 1000 [ 40%]  (Warmup)
-#&gt; Chain 2: Iteration: 500 / 1000 [ 50%]  (Warmup)
-#&gt; Chain 2: Iteration: 501 / 1000 [ 50%]  (Sampling)
-#&gt; Chain 2: Iteration: 600 / 1000 [ 60%]  (Sampling)
-#&gt; Chain 2: Iteration: 700 / 1000 [ 70%]  (Sampling)
-#&gt; Chain 2: Iteration: 800 / 1000 [ 80%]  (Sampling)
-#&gt; Chain 2: Iteration: 900 / 1000 [ 90%]  (Sampling)
-#&gt; Chain 2: Iteration: 1000 / 1000 [100%]  (Sampling)
-#&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 0.083184 seconds (Warm-up)
-#&gt; Chain 2:                0.074224 seconds (Sampling)
-#&gt; Chain 2:                0.157408 seconds (Total)
-#&gt; Chain 2: 
-#&gt; 
-#&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 3).
-#&gt; Chain 3: 
-#&gt; Chain 3: Gradient evaluation took 1.1e-05 seconds
-#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.11 seconds.
-#&gt; Chain 3: Adjust your expectations accordingly!
-#&gt; Chain 3: 
-#&gt; Chain 3: 
-#&gt; Chain 3: Iteration:   1 / 1000 [  0%]  (Warmup)
-#&gt; Chain 3: Iteration: 100 / 1000 [ 10%]  (Warmup)
-#&gt; Chain 3: Iteration: 200 / 1000 [ 20%]  (Warmup)
-#&gt; Chain 3: Iteration: 300 / 1000 [ 30%]  (Warmup)
-#&gt; Chain 3: Iteration: 400 / 1000 [ 40%]  (Warmup)
-#&gt; Chain 3: Iteration: 500 / 1000 [ 50%]  (Warmup)
-#&gt; Chain 3: Iteration: 501 / 1000 [ 50%]  (Sampling)
-#&gt; Chain 3: Iteration: 600 / 1000 [ 60%]  (Sampling)
-#&gt; Chain 3: Iteration: 700 / 1000 [ 70%]  (Sampling)
-#&gt; Chain 3: Iteration: 800 / 1000 [ 80%]  (Sampling)
-#&gt; Chain 3: Iteration: 900 / 1000 [ 90%]  (Sampling)
-#&gt; Chain 3: Iteration: 1000 / 1000 [100%]  (Sampling)
-#&gt; Chain 3: 
-#&gt; Chain 3:  Elapsed Time: 0.094503 seconds (Warm-up)
-#&gt; Chain 3:                0.249722 seconds (Sampling)
-#&gt; Chain 3:                0.344225 seconds (Total)
-#&gt; Chain 3: </div><div class='output co'>#&gt; <span class='warning'>Warning: There were 1 divergent transitions after warmup. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</span>
-#&gt; <span class='warning'>to find out why this is a problem and how to eliminate them.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Examine the pairs() plot to diagnose sampling problems</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The largest R-hat is 1.06, indicating chains have not mixed.</span>
-#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#r-hat</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
-#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
-#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#tail-ess</span></div><div class='input'>
-<span class='co'># include data for expansion to unobserved sets</span>
-<span class='va'>fit_nb</span> <span class='op'>&lt;-</span> <span class='fu'>fit_bycatch</span><span class='op'>(</span><span class='va'>Takes</span> <span class='op'>~</span> <span class='fl'>1</span>,
-  data <span class='op'>=</span> <span class='va'>d</span>, time <span class='op'>=</span> <span class='st'>"Year"</span>,
-  effort <span class='op'>=</span> <span class='st'>"Sets"</span>, family <span class='op'>=</span> <span class='st'>"nbinom2"</span>,
-  expansion_rate <span class='op'>=</span> <span class='st'>"expansionRate"</span>,
-  time_varying <span class='op'>=</span> <span class='cn'>FALSE</span>, iter <span class='op'>=</span> <span class='fl'>2000</span>, chains <span class='op'>=</span> <span class='fl'>4</span>,
-  control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>adapt_delta <span class='op'>=</span> <span class='fl'>0.99</span>, max_treedepth <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 1).
-#&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 1.7e-05 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.17 seconds.
-#&gt; Chain 1: Adjust your expectations accordingly!
-#&gt; Chain 1: 
-#&gt; Chain 1: 
-#&gt; Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
-#&gt; Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
-#&gt; Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
-#&gt; Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
-#&gt; Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
-#&gt; Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-#&gt; Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-#&gt; Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-#&gt; Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-#&gt; Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-#&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-#&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
-#&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.06686 seconds (Warm-up)
-#&gt; Chain 1:                0.066292 seconds (Sampling)
-#&gt; Chain 1:                0.133152 seconds (Total)
-#&gt; Chain 1: 
-#&gt; 
-#&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
-#&gt; Chain 2: 
-#&gt; Chain 2: Gradient evaluation took 1.8e-05 seconds
-#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.18 seconds.
-#&gt; Chain 2: Adjust your expectations accordingly!
-#&gt; Chain 2: 
-#&gt; Chain 2: 
-#&gt; Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
-#&gt; Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
-#&gt; Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
-#&gt; Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
-#&gt; Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
-#&gt; Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-#&gt; Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-#&gt; Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-#&gt; Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-#&gt; Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-#&gt; Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-#&gt; Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
-#&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 0.0624 seconds (Warm-up)
-#&gt; Chain 2:                0.051917 seconds (Sampling)
-#&gt; Chain 2:                0.114317 seconds (Total)
-#&gt; Chain 2: 
-#&gt; 
-#&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 3).
-#&gt; Chain 3: 
-#&gt; Chain 3: Gradient evaluation took 1.2e-05 seconds
-#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.12 seconds.
-#&gt; Chain 3: Adjust your expectations accordingly!
-#&gt; Chain 3: 
-#&gt; Chain 3: 
-#&gt; Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
-#&gt; Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
-#&gt; Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
-#&gt; Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
-#&gt; Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
-#&gt; Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-#&gt; Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-#&gt; Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-#&gt; Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-#&gt; Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-#&gt; Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-#&gt; Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
-#&gt; Chain 3: 
-#&gt; Chain 3:  Elapsed Time: 0.05452 seconds (Warm-up)
-#&gt; Chain 3:                0.059163 seconds (Sampling)
-#&gt; Chain 3:                0.113683 seconds (Total)
-#&gt; Chain 3: 
-#&gt; 
-#&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 4).
-#&gt; Chain 4: 
-#&gt; Chain 4: Gradient evaluation took 1e-05 seconds
-#&gt; Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.1 seconds.
-#&gt; Chain 4: Adjust your expectations accordingly!
-#&gt; Chain 4: 
-#&gt; Chain 4: 
-#&gt; Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
-#&gt; Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
-#&gt; Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
-#&gt; Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
-#&gt; Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
-#&gt; Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-#&gt; Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-#&gt; Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-#&gt; Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-#&gt; Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-#&gt; Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-#&gt; Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
-#&gt; Chain 4: 
-#&gt; Chain 4:  Elapsed Time: 0.057735 seconds (Warm-up)
-#&gt; Chain 4:                0.052893 seconds (Sampling)
-#&gt; Chain 4:                0.110628 seconds (Total)
+#&gt; Chain 4:  Elapsed Time: 0.063336 seconds (Warm-up)
+#&gt; Chain 4:                0.053223 seconds (Sampling)
+#&gt; Chain 4:                0.116559 seconds (Total)
 #&gt; Chain 4: </div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
 #&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
 #&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#tail-ess</span></div><div class='input'><span class='co'># }</span>
