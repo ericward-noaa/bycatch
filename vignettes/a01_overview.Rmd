@@ -9,8 +9,6 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-## Load library
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```

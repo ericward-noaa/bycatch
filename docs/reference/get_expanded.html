@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>get_expanded is a helper function to return a matrix of posterior predictive values — get_expanded • bycatch</title>
+<title>get_expanded is a helper function to return a matrix of posterior predictive values for unobserved bycatch — get_expanded • bycatch</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="get_expanded is a helper function to return a matrix of posterior predictive values — get_expanded" />
-<meta property="og:description" content="get_expanded is a helper function to return a matrix of posterior predictive values" />
+<meta property="og:title" content="get_expanded is a helper function to return a matrix of posterior predictive values for unobserved bycatch — get_expanded" />
+<meta property="og:description" content="get_expanded is a helper function to return a matrix of posterior predictive values for unobserved bycatch" />
 
 
 
@@ -126,13 +126,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>get_expanded is a helper function to return a matrix of posterior predictive values</h1>
+    <h1>get_expanded is a helper function to return a matrix of posterior predictive values for unobserved bycatch</h1>
     <small class="dont-index">Source: <a href='https://github.com/ericward-noaa/bycatch/blob/master/R/get_expanded.R'><code>R/get_expanded.R</code></a></small>
     <div class="hidden name"><code>get_expanded.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>get_expanded is a helper function to return a matrix of posterior predictive values</p>
+    <p>get_expanded is a helper function to return a matrix of posterior predictive values for unobserved bycatch</p>
     </div>
 
     <pre class="usage"><span class='fu'>get_expanded</span><span class='op'>(</span><span class='va'>fitted_model</span><span class='op'>)</span></pre>
@@ -148,7 +148,7 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>matrix (MCMC draws x time steps)</p>
+    <p>matrix (MCMC draws x time steps) of posterior predictive values for unobserved bycatch</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
@@ -186,9 +186,9 @@
 #&gt; Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.010127 seconds (Warm-up)
-#&gt; Chain 1:                0.008418 seconds (Sampling)
-#&gt; Chain 1:                0.018545 seconds (Total)
+#&gt; Chain 1:  Elapsed Time: 0.008207 seconds (Warm-up)
+#&gt; Chain 1:                0.007037 seconds (Sampling)
+#&gt; Chain 1:                0.015244 seconds (Total)
 #&gt; Chain 1: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
@@ -211,9 +211,9 @@
 #&gt; Chain 2: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 2: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 0.008502 seconds (Warm-up)
-#&gt; Chain 2:                0.009461 seconds (Sampling)
-#&gt; Chain 2:                0.017963 seconds (Total)
+#&gt; Chain 2:  Elapsed Time: 0.008143 seconds (Warm-up)
+#&gt; Chain 2:                0.008582 seconds (Sampling)
+#&gt; Chain 2:                0.016725 seconds (Total)
 #&gt; Chain 2: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 3).
@@ -236,9 +236,9 @@
 #&gt; Chain 3: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 3: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 3: 
-#&gt; Chain 3:  Elapsed Time: 0.00832 seconds (Warm-up)
-#&gt; Chain 3:                0.010228 seconds (Sampling)
-#&gt; Chain 3:                0.018548 seconds (Total)
+#&gt; Chain 3:  Elapsed Time: 0.008079 seconds (Warm-up)
+#&gt; Chain 3:                0.008129 seconds (Sampling)
+#&gt; Chain 3:                0.016208 seconds (Total)
 #&gt; Chain 3: </div><div class='input'><span class='va'>expanded</span> <span class='op'>&lt;-</span> <span class='fu'>get_expanded</span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span>
 <span class='co'># }</span>
 </div></pre>

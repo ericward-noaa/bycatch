@@ -1,8 +1,8 @@
-#' get_expanded is a helper function to return a matrix of posterior predictive values
+#' get_expanded is a helper function to return a matrix of posterior predictive values for unobserved bycatch
 #'
 #' @param fitted_model Data and fitted model returned from estimation
 
-#' @return matrix (MCMC draws x time steps)
+#' @return matrix (MCMC draws x time steps) of posterior predictive values for unobserved bycatch
 #'
 #' @export
 #' @importFrom rstan extract

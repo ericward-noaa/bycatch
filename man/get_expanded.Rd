@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_expanded.R
 \name{get_expanded}
 \alias{get_expanded}
-\title{get_expanded is a helper function to return a matrix of posterior predictive values}
+\title{get_expanded is a helper function to return a matrix of posterior predictive values for unobserved bycatch}
 \usage{
 get_expanded(fitted_model)
 }
@@ -10,10 +10,10 @@ get_expanded(fitted_model)
 \item{fitted_model}{Data and fitted model returned from estimation}
 }
 \value{
-matrix (MCMC draws x time steps)
+matrix (MCMC draws x time steps) of posterior predictive values for unobserved bycatch
 }
 \description{
-get_expanded is a helper function to return a matrix of posterior predictive values
+get_expanded is a helper function to return a matrix of posterior predictive values for unobserved bycatch
 }
 \examples{
 \donttest{
