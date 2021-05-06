@@ -86,7 +86,7 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansi
     stop("The family must be specified as poisson, nbinom2, poisson-hurdle, or nbinom2-hurdle")
   }
 
-  pars <- c("beta", "lambda", "log_lik", "y_new")
+  pars <- c("beta", "lambda", "log_lambda", "log_lik", "y_new")
   if (family != "poisson") pars <- c(pars, "nb2_phi")
   if (family %in% c("poisson-hurdle", "nbinom2-hurdle")) pars <- c(pars, "theta")
   if (time_varying == TRUE) {

@@ -112,9 +112,11 @@ d$Day = sample(seq(220,280),size=nrow(d),replace=T)
 d$Reg = ifelse(d$Year < 2008, 0, 1)
 ```
 
-Using the formula interface makes it easy to include covariates,
+Using the formula interface makes it easy to include covariates (in general it's a good idea to standardize these)
 
 ```{r message=FALSE, warning=FALSE,results="hide"}
+d$Day = (d$Day - mean(d$Day)) / sd(d$Day)
+
 fit = fit_bycatch(Takes ~ Day + Reg, data=d, time="Year", effort="Sets", family="poisson",
   time_varying = FALSE)
 ```

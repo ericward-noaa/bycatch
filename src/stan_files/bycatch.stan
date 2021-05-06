@@ -30,6 +30,7 @@ parameters {
   real<lower=0,upper=1> theta[est_theta];
 }
 transformed parameters {
+  vector[n_row] log_lambda;
   vector[n_row] lambda;
   vector[n_row] pred;
   vector[time_varying*n_year] time_dev;
@@ -46,7 +47,8 @@ transformed parameters {
     if(time_varying == 1) {
       pred[i] = pred[i] + time_varying*time_dev[time[i]];
     }
-    lambda[i] = exp(pred[i] + log(effort[i])); // exp(pred) = theta
+    log_lambda[i] = pred[i] + log(effort[i]); // exp(pred) = theta
+    lambda[i] = exp(log_lambda[i]);
   }
 }
 model {
@@ -66,11 +68,11 @@ model {
   }
 
   if(family == 1) {
-    yint ~ poisson(lambda);
+    yint ~ poisson_log(log_lambda);
   }
   if(family == 2) {
     nb2_phi ~ student_t(3, 0, 2);
-    yint ~ neg_binomial_2(lambda, nb2_phi[1]);
+    yint ~ neg_binomial_2_log(log_lambda, nb2_phi[1]);
   }
   if(family == 3) {
     for(i in 1:n_row) {
@@ -101,18 +103,18 @@ generated quantities {
 
   if(family==1) {
     for(n in 1:n_row) {
-      log_lik[n] = poisson_lpmf(yint[n] | lambda[n]);
+      log_lik[n] = poisson_log_lpmf(yint[n] | log_lambda[n]);
 
       // sample posterior predictive distribution
-      y_new[n] = poisson_rng(exp(pred[n] + log(new_effort[n])));
+      y_new[n] = poisson_log_rng(pred[n] + log(new_effort[n]));
     }
   }
   if(family==2) {
     for(n in 1:n_row) {
-      log_lik[n] = neg_binomial_2_lpmf(yint[n] | lambda[n], nb2_phi[1]);
+      log_lik[n] = neg_binomial_2_log_lpmf(yint[n] | log_lambda[n], nb2_phi[1]);
 
       // sample posterior predictive distribution
-      y_new[n] = neg_binomial_2_rng(exp(pred[n] + log(new_effort[n])), nb2_phi[1]);
+      y_new[n] = neg_binomial_2_log_rng(pred[n] + log(new_effort[n]), nb2_phi[1]);
     }
   }
   if(family==3) {
@@ -122,11 +124,11 @@ generated quantities {
         log_lik[n] = log(theta[1]);
       } else {
         // (1 - theta) * Pr(Pois(y|lambda)) / (1 - PoissonCDF(0|lambda))
-        log_lik[n] = log1m(theta[1]) + poisson_lpmf(yint[n] | lambda[n]) - poisson_lccdf(0 | lambda[n]);
+        log_lik[n] = log1m(theta[1]) + poisson_log_lpmf(yint[n] | log_lambda[n]) - poisson_lccdf(0 | lambda[n]);
       }
 
       // sample posterior predictive distribution
-      y_new[n] = (1 - bernoulli_rng(theta[1])) * poisson_rng(exp(pred[n] + log(new_effort[n])));
+      y_new[n] = (1 - bernoulli_rng(theta[1])) * poisson_log_rng(pred[n] + log(new_effort[n]));
     }
   }
   if(family==4) {
@@ -136,12 +138,11 @@ generated quantities {
         log_lik[n] = log(theta[1]);
       } else {
         // (1 - theta) * Pr(NB2(y|lambda)) / (1 - NB2CDF(0|lambda))
-        log_lik[n] = log1m(theta[1]) + neg_binomial_2_lpmf(yint[n] | lambda[n], nb2_phi[1]) - neg_binomial_2_lccdf(0 | lambda[n], nb2_phi[1]);
+        log_lik[n] = log1m(theta[1]) + neg_binomial_2_log_lpmf(yint[n] | log_lambda[n], nb2_phi[1]) - neg_binomial_2_lccdf(0 | lambda[n], nb2_phi[1]);
       }
 
       // sample posterior predictive distribution
-      y_new[n] = (1 - bernoulli_rng(theta[1])) * neg_binomial_2_rng(exp(pred[n] + log(new_effort[n])), nb2_phi[1]);
-
+      y_new[n] = (1 - bernoulli_rng(theta[1])) * neg_binomial_2_log_rng(pred[n] + log(new_effort[n]), nb2_phi[1]);
     }
   }
 }
