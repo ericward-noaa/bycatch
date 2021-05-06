@@ -97,8 +97,7 @@ fit = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets", family="poisson
 and 
 
 ```{r, results="hide", message=FALSE, warning=FALSE, eval = FALSE}
-fit = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets", family="nbinom2-hurdle",
-  time_varying = FALSE)
+fit = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets", family="nbinom2-hurdle",time_varying = FALSE)
 ```
 
 ## Example with covariates
@@ -122,7 +121,7 @@ fit = fit_bycatch(Takes ~ Day + Reg, data=d, time="Year", effort="Sets", family=
 ```
 
 We can get the 3 covariate effects out with the following call:
-```{r}
+```{r message=FALSE, warning=FALSE,results="hide"}
 betas = rstan::extract(fit$fitted_model)$beta
 ```
 
@@ -137,12 +136,14 @@ include the covariates, we'd still estimate beta[1] as the intercept.
 To incorporate potential autocorrelation, we can fit a model with time-varying random effects. This is equivalent to a dynamic linear model with time varying intercept in a Poisson GLM. 
 
 ```{r, results="hide", message=FALSE, warning=FALSE}
-fit = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets", family="poisson",
-  time_varying = TRUE)
+fit = fit_bycatch(Takes ~ 1, data=d, time="Year", 
+    effort="Sets", family="poisson",
+    time_varying = TRUE)
 ```
 
 ```{r, fig.pos="placeHere", fig.cap = "Estimated bycatch from the model with time-varying effects, incorporating data on takes, effort, and observer coverage. Dots represent observed bycatch events."}
-plot_fitted(fitted_model=fit, xlab="Year", ylab = "Fleet-level bycatch", include_points = TRUE)
+plot_fitted(fitted_model=fit, xlab="Year", 
+            ylab = "Fleet-level bycatch", include_points = TRUE)
 ```
 
 \break 
@@ -158,11 +159,14 @@ d = data.frame("Year"= 2002:2014,
 ```
 
 ```{r warning=FALSE,message=FALSE,results='hide'}
-fit = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets", family="poisson",
+fit = fit_bycatch(Takes ~ 1, data=d, time="Year", 
+                  effort="Sets", family="poisson",
   time_varying = FALSE)
 ```
 
 ```{r fig.pos="placeHere", fig.cap = "Estimated bycatch from the dataset with no events, incorporating effort, and observer coverage. Dots represent observed bycatch events."}
-plot_fitted(fitted_model=fit, xlab="Year", ylab = "Fleet-level bycatch", include_points = TRUE)
+plot_fitted(fitted_model=fit, xlab="Year", 
+            ylab = "Fleet-level bycatch", 
+            include_points = TRUE)
 ```
 

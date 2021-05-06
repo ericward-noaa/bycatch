@@ -1,7 +1,7 @@
 Package: bycatch
 Type: Package
 Title: Fit Bayesian Models to Bycatch Data
-Version: 1.0.4
+Version: 1.0.5
 Authors@R: c(
     person(c("Eric", "J."), "Ward", email = "eric.ward@noaa.gov",
       role = c("aut", "cre")),
