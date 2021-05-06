@@ -6,4 +6,6 @@ articles:
   a02_fitting_models: a02_fitting_models.html
   a03_expanding_estimates: a03_expanding_estimates.html
 last_built: 2021-05-06T03:02Z
-
+urls:
+  reference: https://ericward-noaa.github.io/bycatch//reference
+  article: https://ericward-noaa.github.io/bycatch//articles
