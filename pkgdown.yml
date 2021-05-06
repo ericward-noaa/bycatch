@@ -2,8 +2,8 @@ pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
-  a01_overview: a01_overview.html
+  a01overview: a01overview.html
   a02_fitting_models: a02_fitting_models.html
   a03_expanding_estimates: a03_expanding_estimates.html
-last_built: 2021-05-05T23:49Z
+last_built: 2021-05-06T00:37Z
 
