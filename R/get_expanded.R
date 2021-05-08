@@ -25,6 +25,11 @@
 #' expanded <- get_expanded(fit)
 #' }
 get_expanded <- function(fitted_model) {
-  expanded_estimates <- rstan::extract(fitted_model$fitted_model, "y_new")$y_new
+  if (fitted_model$family %in% c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle")) {
+    expanded_estimates <- rstan::extract(fitted_model$fitted_model, "y_new")$y_new
+  }
+  else {
+    expanded_estimates <- rstan::extract(fitted_model$fitted_model, "y_new_real")$y_new_real
+  }
   return(expanded_estimates)
 }

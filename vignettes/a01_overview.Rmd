@@ -28,6 +28,8 @@ $$p(\theta|\underline{\mathbf{y}}) \propto p(\theta)p(\underline{\mathbf{y}}|\th
 
 In addition to the Poisson model described here, we include the Negative Binomial model, which allows for the variance to be greater than the mean. We use the 'nbinom2' alternative parameterization of the Negative Binomial, where $Var(Y) = u + \frac{u^2}{\tau}$, where $\tau$ controls the degree of overdispersion. Two additional extensions to these models are the zero-inflated extensions. We adopt hurdle models to model extra zeros, so that $p(y_{t}=0) = \phi$ and $p(y_{t}>0) = 1-\phi$. 
 
+In addition to the Poisson and Negative Binomial models, we adopt three continuous distributions: the Gaussian ("normal"), Gamma ("gamma") and lognormal ("lognormal"). Log-link functions are specified on the mean of each distribution. For the Gaussian model, we estimate the variance parameter, $\sigma$, which is given a Student-t(3,0,2) prior distribution. Similarly, for the Gamma distribution, we put a Student-t(3,0,2) prior on the coefficient of variation (CV), which is assumed constant across observations. Finally, for the lognormal distribution, we estimate the lognormal variance and assume it is constant across observations. 
+
 ### Fixed effect covariates
 
 As described above, any type of fixed effects can be included as a predictors of bycatch in the formula interface. Coefficients are estimated for all coefficients using the log-link, $log(\lambda) = log(\theta) + b_{1}*x_{1} + b_{2}*x_{2} + log(n_{t})$, where $x_{1}$ and $x_{2}$ are covariates. 

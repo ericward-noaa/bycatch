@@ -21,6 +21,14 @@ d_pois <- data.frame(
   "Sets" = 100
 )
 
+set.seed(123)
+d_pos <- data.frame(
+  "Year" = 1:sample_size,
+  "Takes" = rnorm(sample_size, 5, 0.1),
+  "expansionRate" = 100,
+  "Sets" = 100
+)
+
 test_that("fitting function works for poisson model", {
   set.seed(123)
   # simulate data
@@ -120,4 +128,81 @@ test_that("fitting function works for time varying nbinom2 hurdle model", {
   expect_type(fit, "list")
   # pars <- rstan::extract(fit$fitted_model, "lambda")
   # expect_equal(apply(pars$lambda, 2, mean)[1:5], c(0.5550384, 2.1295139, 2.2619993, 1.9444669, 1.7304549), tol = 0.001)
+})
+
+
+test_that("fitting function works for gamma model", {
+  set.seed(123)
+  fit <- fit_bycatch(Takes ~ 1,
+    data = d_pos, time = "Year",
+    effort = "Sets", family = "gamma", time_varying = FALSE,
+    chains = 1, iter = 1000
+  )
+
+  pars <- rstan::extract(fit$fitted_model, "lambda")
+  expect_equal(apply(pars$lambda, 2, mean)[1], 5.012824, tol = 0.1)
+})
+
+test_that("fitting function works for normal model", {
+  set.seed(123)
+  fit <- fit_bycatch(Takes ~ 1,
+    data = d_pos, time = "Year",
+    effort = "Sets", family = "normal", time_varying = FALSE,
+    chains = 1, iter = 1000
+  )
+
+  pars <- rstan::extract(fit$fitted_model, "lambda")
+  expect_equal(apply(pars$lambda, 2, mean)[1], 5.015625, tol = 0.1)
+})
+
+test_that("fitting function works for lognormal model", {
+  set.seed(123)
+  fit <- fit_bycatch(Takes ~ 1,
+    data = d_pos, time = "Year",
+    effort = "Sets", family = "lognormal", time_varying = FALSE,
+    chains = 1, iter = 1000
+  )
+
+  pars <- rstan::extract(fit$fitted_model, "lambda")
+  expect_equal(apply(pars$lambda, 2, mean)[1], 5.014376, tol = 0.1)
+})
+
+
+test_that("fitting function works for normal-hurdle model", {
+  set.seed(123)
+  d_pos$Takes[c(1, 8, 13)] <- 0
+  fit <- fit_bycatch(Takes ~ 1,
+    data = d_pos, time = "Year",
+    effort = "Sets", family = "normal-hurdle", time_varying = FALSE,
+    chains = 1, iter = 1000
+  )
+
+  pars <- rstan::extract(fit$fitted_model, "lambda")
+  expect_equal(apply(pars$lambda, 2, mean)[1], 5.02, tol = 0.1)
+})
+
+test_that("fitting function works for lognormal-hurdle model", {
+  set.seed(123)
+  d_pos$Takes[c(1, 8, 13)] <- 0
+  fit <- fit_bycatch(Takes ~ 1,
+    data = d_pos, time = "Year",
+    effort = "Sets", family = "lognormal-hurdle", time_varying = FALSE,
+    chains = 1, iter = 1000
+  )
+
+  pars <- rstan::extract(fit$fitted_model, "lambda")
+  expect_equal(apply(pars$lambda, 2, mean)[1], 5.02, tol = 0.1)
+})
+
+test_that("fitting function works for gamma-hurdle model", {
+  set.seed(123)
+  d_pos$Takes[c(1, 8, 13)] <- 0
+  fit <- fit_bycatch(Takes ~ 1,
+    data = d_pos, time = "Year",
+    effort = "Sets", family = "gamma-hurdle", time_varying = FALSE,
+    chains = 1, iter = 1000
+  )
+
+  pars <- rstan::extract(fit$fitted_model, "lambda")
+  expect_equal(apply(pars$lambda, 2, mean)[1], 5.02, tol = 0.1)
 })

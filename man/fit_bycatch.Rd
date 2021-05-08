@@ -10,7 +10,8 @@ fit_bycatch(
   time = "year",
   effort = "effort",
   expansion_rate = NULL,
-  family = c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle"),
+  family = c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle", "lognormal",
+    "gamma", "lognormal-hurdle", "gamma-hurdle", "normal", "normal-hurdle"),
   time_varying = FALSE,
   iter = 1000,
   chains = 3,
@@ -29,8 +30,13 @@ fit_bycatch(
 
 \item{expansion_rate}{The expansion rate to be used in generating distributions for unobserved sets. If NULL, defaults to 100\% coverage (= 100)}
 
-\item{family}{Family for response distribution ("poisson", "nbinom2", "poisson-hurdle","nbinom2-hurdle"), defaults to "poisson". The hurdle variants estimate
-the probability of zeros (theta) separately from the other models and use truncated distribution to model positive counts. All use a log link function}
+\item{family}{Family for response distribution can be discrete ("poisson",
+"nbinom2", "poisson-hurdle","nbinom2-hurdle"), or continuous ("normal",
+"gamma","lognormal", "normal-hurdle", "gamma-hurdle", "lognormal-hurdle"). The
+default distribution is "poisson". The hurdle variants estimate the
+probability of zeros (theta) separately from the other models and use
+truncated distribution to model positive counts. All use a log
+link function.}
 
 \item{time_varying}{boolean TRUE/FALSE, whether to include time varying component (this is a random walk, analogous to making this a Dynamic linear model)}
 
@@ -92,6 +98,27 @@ fit <- fit_bycatch(Takes ~ 1,
 fit_nb <- fit_bycatch(Takes ~ 1,
   data = d, time = "Year",
   effort = "Sets", family = "nbinom2",
+  expansion_rate = "expansionRate",
+  time_varying = FALSE, iter = 2000, chains = 4,
+  control = list(adapt_delta = 0.99, max_treedepth = 20)
+)
+
+# fit a model with a lognormal distribution
+d$Takes <- rnorm(nrow(d), 5, 0.1)
+fit_ln <- fit_bycatch(Takes ~ 1,
+  data = d, time = "Year",
+  effort = "Sets", family = "lognormal",
+  expansion_rate = "expansionRate",
+  time_varying = FALSE, iter = 2000, chains = 4,
+  control = list(adapt_delta = 0.99, max_treedepth = 20)
+)
+
+# add zeros and fit a delta-gamma distribution
+d$Takes <- rnorm(nrow(d), 5, 0.1)
+d$Takes[c(1, 5, 10)] <- 0
+fit_ln <- fit_bycatch(Takes ~ 1,
+  data = d, time = "Year",
+  effort = "Sets", family = "gamma-hurdle",
   expansion_rate = "expansionRate",
   time_varying = FALSE, iter = 2000, chains = 4,
   control = list(adapt_delta = 0.99, max_treedepth = 20)

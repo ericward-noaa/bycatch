@@ -4,8 +4,13 @@
 #' @param time Named column of the 'data' data frame with the label for the time (e.g. year) variable
 #' @param effort Named column of the 'effort' variable in the data frame with the label for the fishing effort to be used in estimation of mean bycatch rate
 #' @param expansion_rate The expansion rate to be used in generating distributions for unobserved sets. If NULL, defaults to 100% coverage (= 100)
-#' @param family Family for response distribution ("poisson", "nbinom2", "poisson-hurdle","nbinom2-hurdle"), defaults to "poisson". The hurdle variants estimate
-#' the probability of zeros (theta) separately from the other models and use truncated distribution to model positive counts. All use a log link function
+#' @param family Family for response distribution can be discrete ("poisson",
+#' "nbinom2", "poisson-hurdle","nbinom2-hurdle"), or continuous ("normal",
+#' "gamma","lognormal", "normal-hurdle", "gamma-hurdle", "lognormal-hurdle"). The
+#' default distribution is "poisson". The hurdle variants estimate the
+#' probability of zeros (theta) separately from the other models and use
+#' truncated distribution to model positive counts. All use a log
+#' link function.
 #' @param time_varying boolean TRUE/FALSE, whether to include time varying component (this is a random walk, analogous to making this a Dynamic linear model)
 #' @param iter the number of mcmc iterations, defaults to 1000
 #' @param chains the number of mcmc chains, defaults to 3
@@ -68,10 +73,34 @@
 #'   time_varying = FALSE, iter = 2000, chains = 4,
 #'   control = list(adapt_delta = 0.99, max_treedepth = 20)
 #' )
+#'
+#' # fit a model with a lognormal distribution
+#' d$Takes <- rnorm(nrow(d), 5, 0.1)
+#' fit_ln <- fit_bycatch(Takes ~ 1,
+#'   data = d, time = "Year",
+#'   effort = "Sets", family = "lognormal",
+#'   expansion_rate = "expansionRate",
+#'   time_varying = FALSE, iter = 2000, chains = 4,
+#'   control = list(adapt_delta = 0.99, max_treedepth = 20)
+#' )
+#'
+#' # add zeros and fit a delta-gamma distribution
+#' d$Takes <- rnorm(nrow(d), 5, 0.1)
+#' d$Takes[c(1, 5, 10)] <- 0
+#' fit_ln <- fit_bycatch(Takes ~ 1,
+#'   data = d, time = "Year",
+#'   effort = "Sets", family = "gamma-hurdle",
+#'   expansion_rate = "expansionRate",
+#'   time_varying = FALSE, iter = 2000, chains = 4,
+#'   control = list(adapt_delta = 0.99, max_treedepth = 20)
+#' )
 #' }
 fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansion_rate = NULL,
-                        family = c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle"), time_varying = FALSE,
-                        iter = 1000, chains = 3, control = list(adapt_delta = 0.9, max_treedepth = 20), ...) {
+                        family = c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle", "lognormal", "gamma", "lognormal-hurdle", "gamma-hurdle", "normal", "normal-hurdle"),
+                        time_varying = FALSE,
+                        iter = 1000,
+                        chains = 3,
+                        control = list(adapt_delta = 0.9, max_treedepth = 20), ...) {
   mf <- model.frame(formula, data)
   X <- model.matrix(formula, mf)
   y <- as.numeric(model.response(mf, "numeric"))
@@ -82,19 +111,26 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansi
   if (effort %in% colnames(data) == FALSE) {
     stop("The effort variable needs to be specified as a named column in the data frame")
   }
-  if (family %in% c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle") == FALSE) {
-    stop("The family must be specified as poisson, nbinom2, poisson-hurdle, or nbinom2-hurdle")
+  if (family %in% c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle", "lognormal", "gamma", "lognormal-hurdle", "gamma-hurdle", "normal", "normal-hurdle") == FALSE) {
+    stop("The family must be specified as a distribution in the recognized list")
   }
 
   pars <- c("beta", "lambda", "log_lambda", "log_lik", "y_new")
-  if (family != "poisson") pars <- c(pars, "nb2_phi")
+  if (family %in% c("nbinom2", "nbinom2-hurdle")) pars <- c(pars, "nb2_phi")
   if (family %in% c("poisson-hurdle", "nbinom2-hurdle")) pars <- c(pars, "theta")
+  if (family %in% c("lognormal", "lognormal-hurdle", "normal", "normal-hurdle")) pars <- c(pars, "sigma_logn")
+  if (family %in% c("gamma", "gamma-hurdle")) pars <- c(pars, "cv_gamma")
+
   if (time_varying == TRUE) {
     pars <- c(pars, "est_time_dev", "sigma_rw")
   }
 
-  family_id <- match(family, c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle")) # 1, 2, 3, 4
-
+  family_id <- match(family, c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle", "lognormal", "gamma", "lognormal-hurdle", "gamma-hurdle", "normal", "normal-hurdle")) # 1, 2, 3, 4, 5, 6, 7, 8
+  if (family %in% c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle") == FALSE) {
+    yint <- ifelse(y > 0, 1, 0)
+  } else {
+    yint <- y
+  }
   # add unobserved effort. obs_effort = p * total_effort, total_effort = obs_effort / p
   if (is.null(expansion_rate)) {
     p_expansion <- rep(1, nrow(data))
@@ -108,7 +144,8 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansi
     n_row = nrow(data),
     effort = data[, effort],
     new_effort = new_effort,
-    yint = y,
+    yint = yint,
+    yreal = y,
     time = data[, time] - min(data[, time]) + 1,
     n_year = length(seq(min(data[, time]), max(data[, time]))),
     K = ncol(X),

@@ -54,7 +54,7 @@
 plot_fitted <- function(fitted_model, xlab = "Time", ylab = "Events", include_points = FALSE) {
   lambda <- rstan::extract(fitted_model$fitted_model, c("lambda"))$lambda
 
-  if (fitted_model$family %in% c("poisson-hurdle", "nbinom2-hurdle")) {
+  if (fitted_model$family %in% c("poisson-hurdle", "nbinom2-hurdle", "gamma-hurdle", "lognormal-hurdle", "normal-hurdle")) {
     # adjust lambda estimates by including theta. theta = pr(0), (1-theta) = pr(>0)
     theta <- rstan::extract(fitted_model$fitted_model, c("theta"))$theta
     for (i in 1:nrow(lambda)) lambda[i, ] <- lambda[i, ] * (1 - theta[i, 1])

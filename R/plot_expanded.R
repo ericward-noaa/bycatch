@@ -38,7 +38,7 @@ plot_expanded <- function(fitted_model,
                           xlab = "Time", ylab = "Events",
                           show_total = TRUE,
                           include_points = FALSE) {
-  expanded_estimates <- rstan::extract(fitted_model$fitted_model, "y_new")$y_new
+  expanded_estimates <- get_expanded(fitted_model)
 
   df <- data.frame(
     "time" = fitted_model$data[, fitted_model$time],
