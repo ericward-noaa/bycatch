@@ -185,18 +185,48 @@ Observed bycatch (not expanded by observer coverage), incorporating data on obse
 <a href="#continuous-models" class="anchor"></a>Continuous models</h2>
 <p>As above, we can construct the models to be zero-inflated or not. Three different families are currently included (“normal”, “gamma”, “lognormal”). These can be fit as follows,</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fit_normal</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>, data<span class="op">=</span><span class="va">d</span>, time<span class="op">=</span><span class="st">"Year"</span>, effort<span class="op">=</span><span class="st">"Sets"</span>, family<span class="op">=</span><span class="st">"normal"</span>,time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">fit_normal</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>,
+    data<span class="op">=</span><span class="va">d</span>, 
+    time<span class="op">=</span><span class="st">"Year"</span>, 
+    effort<span class="op">=</span><span class="st">"Sets"</span>,
+    family<span class="op">=</span><span class="st">"normal"</span>,
+    time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
-<span class="va">fit_lognormal</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>, data<span class="op">=</span><span class="va">d</span>, time<span class="op">=</span><span class="st">"Year"</span>, effort<span class="op">=</span><span class="st">"Sets"</span>, family<span class="op">=</span><span class="st">"lognormal"</span>,time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="va">fit_lognormal</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>, 
+    data<span class="op">=</span><span class="va">d</span>, 
+    time<span class="op">=</span><span class="st">"Year"</span>, 
+    effort<span class="op">=</span><span class="st">"Sets"</span>, 
+    family<span class="op">=</span><span class="st">"lognormal"</span>,
+    time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
-<span class="va">fit_gamma</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>, data<span class="op">=</span><span class="va">d</span>, time<span class="op">=</span><span class="st">"Year"</span>, effort<span class="op">=</span><span class="st">"Sets"</span>, family<span class="op">=</span><span class="st">"gamma"</span>,time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<span class="va">fit_gamma</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>, 
+    data<span class="op">=</span><span class="va">d</span>,
+    time<span class="op">=</span><span class="st">"Year"</span>,
+    effort<span class="op">=</span><span class="st">"Sets"</span>,
+    family<span class="op">=</span><span class="st">"gamma"</span>,
+    time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p>And similarly to the discrete models, we can fit zero-inflated models by changing the models to the hurdle equivalents</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fit_normal</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>, data<span class="op">=</span><span class="va">d</span>, time<span class="op">=</span><span class="st">"Year"</span>, effort<span class="op">=</span><span class="st">"Sets"</span>, family<span class="op">=</span><span class="st">"normal-hurdle"</span>,time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">fit_normal</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>,
+      data<span class="op">=</span><span class="va">d</span>,
+      time<span class="op">=</span><span class="st">"Year"</span>,
+      effort<span class="op">=</span><span class="st">"Sets"</span>,
+      family<span class="op">=</span><span class="st">"normal-hurdle"</span>,
+      time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
-<span class="va">fit_lognormal</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>, data<span class="op">=</span><span class="va">d</span>, time<span class="op">=</span><span class="st">"Year"</span>, effort<span class="op">=</span><span class="st">"Sets"</span>, family<span class="op">=</span><span class="st">"lognormal-hurdle"</span>,time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="va">fit_lognormal</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>,
+      data<span class="op">=</span><span class="va">d</span>,
+      time<span class="op">=</span><span class="st">"Year"</span>,
+      effort<span class="op">=</span><span class="st">"Sets"</span>,
+      family<span class="op">=</span><span class="st">"lognormal-hurdle"</span>,
+      time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
-<span class="va">fit_gamma</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>, data<span class="op">=</span><span class="va">d</span>, time<span class="op">=</span><span class="st">"Year"</span>, effort<span class="op">=</span><span class="st">"Sets"</span>, family<span class="op">=</span><span class="st">"gamma-hurdle"</span>,time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<span class="va">fit_gamma</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>,
+      data<span class="op">=</span><span class="va">d</span>,
+      time<span class="op">=</span><span class="st">"Year"</span>,
+      effort<span class="op">=</span><span class="st">"Sets"</span>,
+      family<span class="op">=</span><span class="st">"gamma-hurdle"</span>,
+      time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="example-with-covariates" class="section level2">
 <h2 class="hasAnchor">
