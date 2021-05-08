@@ -105,21 +105,51 @@ fit = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets", family="nbinom2
 As above, we can construct the models to be zero-inflated or not. Three different families are currently included ("normal", "gamma", "lognormal"). These can be fit as follows, 
 
 ```{r, results="hide", message=FALSE, warning=FALSE, eval = FALSE}
-fit_normal = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets", family="normal",time_varying = FALSE)
+fit_normal = fit_bycatch(Takes ~ 1,
+    data=d, 
+    time="Year", 
+    effort="Sets",
+    family="normal",
+    time_varying = FALSE)
 
-fit_lognormal = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets", family="lognormal",time_varying = FALSE)
+fit_lognormal = fit_bycatch(Takes ~ 1, 
+    data=d, 
+    time="Year", 
+    effort="Sets", 
+    family="lognormal",
+    time_varying = FALSE)
 
-fit_gamma = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets", family="gamma",time_varying = FALSE)
+fit_gamma = fit_bycatch(Takes ~ 1, 
+    data=d,
+    time="Year",
+    effort="Sets",
+    family="gamma",
+    time_varying = FALSE)
 ```
 
 And similarly to the discrete models, we can fit zero-inflated models by changing the models to the hurdle equivalents
 
 ```{r, results="hide", message=FALSE, warning=FALSE, eval = FALSE}
-fit_normal = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets", family="normal-hurdle",time_varying = FALSE)
+fit_normal = fit_bycatch(Takes ~ 1,
+      data=d,
+      time="Year",
+      effort="Sets",
+      family="normal-hurdle",
+      time_varying = FALSE)
 
-fit_lognormal = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets", family="lognormal-hurdle",time_varying = FALSE)
+fit_lognormal = fit_bycatch(Takes ~ 1,
+      data=d,
+      time="Year",
+      effort="Sets",
+      family="lognormal-hurdle",
+      time_varying = FALSE)
 
-fit_gamma = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets", family="gamma-hurdle",time_varying = FALSE)
+fit_gamma = fit_bycatch(Takes ~ 1,
+      data=d,
+      time="Year",
+      effort="Sets",
+      family="gamma-hurdle",
+      time_varying = FALSE)
 ```
 
 ## Example with covariates
