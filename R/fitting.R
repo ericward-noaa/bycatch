@@ -138,7 +138,7 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansi
     p_expansion <- data[, expansion_rate] / 100
   }
 
-  new_effort <- ceiling(data[, effort] / p_expansion)
+  new_effort <- ceiling(data[, effort] * (1-p_expansion))
 
   datalist <- list(
     n_row = nrow(data),
@@ -163,5 +163,5 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansi
     control = control, ...
   )
 
-  return(list("data" = data, "effort" = effort, "events" = names(mf)[1], "time" = time, "fitted_model" = mod, "family" = family))
+  return(list("data" = data, "effort" = effort, "new_effort"=new_effort, "events" = names(mf)[1], "time" = time, "fitted_model" = mod, "family" = family))
 }

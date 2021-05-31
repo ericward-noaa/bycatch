@@ -185,7 +185,8 @@ generated quantities {
       log_lik[n] = poisson_log_lpmf(yint[n] | log_lambda[n]);
 
       // sample posterior predictive distribution
-      y_new[n] = poisson_log_rng(pred[n] + log(new_effort[n]));
+      y_new[n] = 0;
+      if(new_effort[n] > 0) y_new[n] = poisson_log_rng(pred[n] + log(new_effort[n]));
     }
   }
   else if(family==2) {
@@ -193,7 +194,8 @@ generated quantities {
       log_lik[n] = neg_binomial_2_log_lpmf(yint[n] | log_lambda[n], nb2_phi[1]);
 
       // sample posterior predictive distribution
-      y_new[n] = neg_binomial_2_log_rng(pred[n] + log(new_effort[n]), nb2_phi[1]);
+      y_new[n] = 0;
+      if(new_effort[n] > 0) y_new[n] = neg_binomial_2_log_rng(pred[n] + log(new_effort[n]), nb2_phi[1]);
     }
   }
   else if(family==3) {
@@ -207,7 +209,8 @@ generated quantities {
       }
 
       // sample posterior predictive distribution
-      y_new[n] = (1 - bernoulli_rng(theta[1])) * poisson_log_rng(pred[n] + log(new_effort[n]));
+      y_new[n] = 0;
+      if(new_effort[n] > 0) y_new[n] = (1 - bernoulli_rng(theta[1])) * poisson_log_rng(pred[n] + log(new_effort[n]));
     }
   }
   else if(family==4) {
@@ -221,7 +224,8 @@ generated quantities {
       }
 
       // sample posterior predictive distribution
-      y_new[n] = (1 - bernoulli_rng(theta[1])) * neg_binomial_2_log_rng(pred[n] + log(new_effort[n]), nb2_phi[1]);
+      y_new[n] = 0;
+      if(new_effort[n] > 0) y_new[n] = (1 - bernoulli_rng(theta[1])) * neg_binomial_2_log_rng(pred[n] + log(new_effort[n]), nb2_phi[1]);
     }
   }
   else if(family==5) {
@@ -229,7 +233,8 @@ generated quantities {
       log_lik[n] = lognormal_lpdf(yreal[n] | log_lambda[n], sigma_logn[1]);
 
       // sample posterior predictive distribution
-      y_new_real[n] = lognormal_rng(pred[n] + log(new_effort[n]), sigma_logn[1]);
+      y_new_real[n] = 0;
+      if(new_effort[n] > 0) y_new_real[n] = lognormal_rng(pred[n] + log(new_effort[n]), sigma_logn[1]);
     }
   }
   else if(family==6) {
@@ -237,7 +242,8 @@ generated quantities {
       log_lik[n] = gamma_lpdf(yreal[n] | gammaA[1], gammaA[1] / lambda[n]);
 
       // sample posterior predictive distribution
-      y_new_real[n] = gamma_rng(gammaA[1], gammaA[1] / exp(pred[n] + log(new_effort[n])));
+      y_new_real[n] = 0;
+      if(new_effort[n] > 0) y_new_real[n] = gamma_rng(gammaA[1], gammaA[1] / exp(pred[n] + log(new_effort[n])));
     }
   }
   else if(family==7) {
@@ -250,7 +256,8 @@ generated quantities {
       }
 
       // sample posterior predictive distribution
-      y_new_real[n] = (1 - bernoulli_rng(theta[1])) * lognormal_rng(pred[n] + log(new_effort[n]), sigma_logn[1]);
+      y_new_real[n] = 0;
+      if(new_effort[n] > 0) y_new_real[n] = (1 - bernoulli_rng(theta[1])) * lognormal_rng(pred[n] + log(new_effort[n]), sigma_logn[1]);
     }
   }
   else if(family==8) {
@@ -263,7 +270,8 @@ generated quantities {
       }
 
       // sample posterior predictive distribution
-      y_new_real[n] = (1 - bernoulli_rng(theta[1])) * gamma_rng(gammaA[1], gammaA[1] / exp(pred[n] + log(new_effort[n])));;
+      y_new_real[n] = 0;
+      if(new_effort[n] > 0) y_new_real[n] = (1 - bernoulli_rng(theta[1])) * gamma_rng(gammaA[1], gammaA[1] / exp(pred[n] + log(new_effort[n])));;
     }
   }
   else if(family==9) {
@@ -271,7 +279,8 @@ generated quantities {
       log_lik[n] = normal_lpdf(yreal[n] | lambda[n], sigma_logn[1]);
 
       // sample posterior predictive distribution
-      y_new_real[n] = normal_rng(exp(pred[n] + log(new_effort[n])), sigma_logn[1]);
+      y_new_real[n] = 0;
+      if(new_effort[n] > 0) y_new_real[n] = normal_rng(exp(pred[n] + log(new_effort[n])), sigma_logn[1]);
     }
   }
   else if(family==10) {
@@ -284,7 +293,8 @@ generated quantities {
       }
 
       // sample posterior predictive distribution
-      y_new_real[n] = (1 - bernoulli_rng(theta[1])) * normal_rng(exp(pred[n] + log(new_effort[n])), sigma_logn[1]);
+      y_new_real[n] = 0;
+      if(new_effort[n] > 0) y_new_real[n] = (1 - bernoulli_rng(theta[1])) * normal_rng(exp(pred[n] + log(new_effort[n])), sigma_logn[1]);
     }
   }
 }

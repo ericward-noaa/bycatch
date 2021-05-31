@@ -36,7 +36,7 @@ static int current_statement_begin__;
 stan::io::program_reader prog_reader__() {
     stan::io::program_reader reader;
     reader.add_event(0, 0, "start", "model_bycatch");
-    reader.add_event(292, 290, "end", "model_bycatch");
+    reader.add_event(302, 300, "end", "model_bycatch");
     return reader;
 }
 
@@ -1217,207 +1217,287 @@ public:
                     current_statement_begin__ = 188;
                     stan::model::assign(y_new, 
                                 stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
-                                poisson_log_rng((get_base1(pred, n, "pred", 1) + stan::math::log(get_base1(new_effort, n, "new_effort", 1))), base_rng__), 
+                                0, 
                                 "assigning variable y_new");
+                    current_statement_begin__ = 189;
+                    if (as_bool(logical_gt(get_base1(new_effort, n, "new_effort", 1), 0))) {
+                        current_statement_begin__ = 189;
+                        stan::model::assign(y_new, 
+                                    stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
+                                    poisson_log_rng((get_base1(pred, n, "pred", 1) + stan::math::log(get_base1(new_effort, n, "new_effort", 1))), base_rng__), 
+                                    "assigning variable y_new");
+                    }
                 }
             } else if (as_bool(logical_eq(family, 2))) {
 
-                current_statement_begin__ = 192;
+                current_statement_begin__ = 193;
                 for (int n = 1; n <= n_row; ++n) {
 
-                    current_statement_begin__ = 193;
+                    current_statement_begin__ = 194;
                     stan::model::assign(log_lik, 
                                 stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
                                 neg_binomial_2_log_log(get_base1(yint, n, "yint", 1), get_base1(log_lambda, n, "log_lambda", 1), get_base1(nb2_phi, 1, "nb2_phi", 1)), 
                                 "assigning variable log_lik");
-                    current_statement_begin__ = 196;
+                    current_statement_begin__ = 197;
                     stan::model::assign(y_new, 
                                 stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
-                                neg_binomial_2_log_rng((get_base1(pred, n, "pred", 1) + stan::math::log(get_base1(new_effort, n, "new_effort", 1))), get_base1(nb2_phi, 1, "nb2_phi", 1), base_rng__), 
+                                0, 
                                 "assigning variable y_new");
+                    current_statement_begin__ = 198;
+                    if (as_bool(logical_gt(get_base1(new_effort, n, "new_effort", 1), 0))) {
+                        current_statement_begin__ = 198;
+                        stan::model::assign(y_new, 
+                                    stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
+                                    neg_binomial_2_log_rng((get_base1(pred, n, "pred", 1) + stan::math::log(get_base1(new_effort, n, "new_effort", 1))), get_base1(nb2_phi, 1, "nb2_phi", 1), base_rng__), 
+                                    "assigning variable y_new");
+                    }
                 }
             } else if (as_bool(logical_eq(family, 3))) {
 
-                current_statement_begin__ = 200;
+                current_statement_begin__ = 202;
                 for (int n = 1; n <= n_row; ++n) {
 
-                    current_statement_begin__ = 201;
+                    current_statement_begin__ = 203;
                     if (as_bool(logical_eq(get_base1(yint, n, "yint", 1), 0))) {
 
-                        current_statement_begin__ = 203;
+                        current_statement_begin__ = 205;
                         stan::model::assign(log_lik, 
                                     stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
                                     stan::math::log(get_base1(theta, 1, "theta", 1)), 
                                     "assigning variable log_lik");
                     } else {
 
-                        current_statement_begin__ = 206;
+                        current_statement_begin__ = 208;
                         stan::model::assign(log_lik, 
                                     stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
                                     ((log1m(get_base1(theta, 1, "theta", 1)) + poisson_log_log(get_base1(yint, n, "yint", 1), get_base1(log_lambda, n, "log_lambda", 1))) - poisson_ccdf_log(0, get_base1(lambda, n, "lambda", 1))), 
                                     "assigning variable log_lik");
                     }
-                    current_statement_begin__ = 210;
+                    current_statement_begin__ = 212;
                     stan::model::assign(y_new, 
                                 stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
-                                ((1 - bernoulli_rng(get_base1(theta, 1, "theta", 1), base_rng__)) * poisson_log_rng((get_base1(pred, n, "pred", 1) + stan::math::log(get_base1(new_effort, n, "new_effort", 1))), base_rng__)), 
+                                0, 
                                 "assigning variable y_new");
+                    current_statement_begin__ = 213;
+                    if (as_bool(logical_gt(get_base1(new_effort, n, "new_effort", 1), 0))) {
+                        current_statement_begin__ = 213;
+                        stan::model::assign(y_new, 
+                                    stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
+                                    ((1 - bernoulli_rng(get_base1(theta, 1, "theta", 1), base_rng__)) * poisson_log_rng((get_base1(pred, n, "pred", 1) + stan::math::log(get_base1(new_effort, n, "new_effort", 1))), base_rng__)), 
+                                    "assigning variable y_new");
+                    }
                 }
             } else if (as_bool(logical_eq(family, 4))) {
 
-                current_statement_begin__ = 214;
+                current_statement_begin__ = 217;
                 for (int n = 1; n <= n_row; ++n) {
 
-                    current_statement_begin__ = 215;
+                    current_statement_begin__ = 218;
                     if (as_bool(logical_eq(get_base1(yint, n, "yint", 1), 0))) {
 
-                        current_statement_begin__ = 217;
+                        current_statement_begin__ = 220;
                         stan::model::assign(log_lik, 
                                     stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
                                     stan::math::log(get_base1(theta, 1, "theta", 1)), 
                                     "assigning variable log_lik");
                     } else {
 
-                        current_statement_begin__ = 220;
+                        current_statement_begin__ = 223;
                         stan::model::assign(log_lik, 
                                     stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
                                     ((log1m(get_base1(theta, 1, "theta", 1)) + neg_binomial_2_log_log(get_base1(yint, n, "yint", 1), get_base1(log_lambda, n, "log_lambda", 1), get_base1(nb2_phi, 1, "nb2_phi", 1))) - neg_binomial_2_ccdf_log(0, get_base1(lambda, n, "lambda", 1), get_base1(nb2_phi, 1, "nb2_phi", 1))), 
                                     "assigning variable log_lik");
                     }
-                    current_statement_begin__ = 224;
+                    current_statement_begin__ = 227;
                     stan::model::assign(y_new, 
                                 stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
-                                ((1 - bernoulli_rng(get_base1(theta, 1, "theta", 1), base_rng__)) * neg_binomial_2_log_rng((get_base1(pred, n, "pred", 1) + stan::math::log(get_base1(new_effort, n, "new_effort", 1))), get_base1(nb2_phi, 1, "nb2_phi", 1), base_rng__)), 
+                                0, 
                                 "assigning variable y_new");
+                    current_statement_begin__ = 228;
+                    if (as_bool(logical_gt(get_base1(new_effort, n, "new_effort", 1), 0))) {
+                        current_statement_begin__ = 228;
+                        stan::model::assign(y_new, 
+                                    stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
+                                    ((1 - bernoulli_rng(get_base1(theta, 1, "theta", 1), base_rng__)) * neg_binomial_2_log_rng((get_base1(pred, n, "pred", 1) + stan::math::log(get_base1(new_effort, n, "new_effort", 1))), get_base1(nb2_phi, 1, "nb2_phi", 1), base_rng__)), 
+                                    "assigning variable y_new");
+                    }
                 }
             } else if (as_bool(logical_eq(family, 5))) {
 
-                current_statement_begin__ = 228;
+                current_statement_begin__ = 232;
                 for (int n = 1; n <= n_row; ++n) {
 
-                    current_statement_begin__ = 229;
+                    current_statement_begin__ = 233;
                     stan::model::assign(log_lik, 
                                 stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
                                 lognormal_log(get_base1(yreal, n, "yreal", 1), get_base1(log_lambda, n, "log_lambda", 1), get_base1(sigma_logn, 1, "sigma_logn", 1)), 
                                 "assigning variable log_lik");
-                    current_statement_begin__ = 232;
+                    current_statement_begin__ = 236;
                     stan::model::assign(y_new_real, 
                                 stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
-                                lognormal_rng((get_base1(pred, n, "pred", 1) + stan::math::log(get_base1(new_effort, n, "new_effort", 1))), get_base1(sigma_logn, 1, "sigma_logn", 1), base_rng__), 
+                                0, 
                                 "assigning variable y_new_real");
+                    current_statement_begin__ = 237;
+                    if (as_bool(logical_gt(get_base1(new_effort, n, "new_effort", 1), 0))) {
+                        current_statement_begin__ = 237;
+                        stan::model::assign(y_new_real, 
+                                    stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
+                                    lognormal_rng((get_base1(pred, n, "pred", 1) + stan::math::log(get_base1(new_effort, n, "new_effort", 1))), get_base1(sigma_logn, 1, "sigma_logn", 1), base_rng__), 
+                                    "assigning variable y_new_real");
+                    }
                 }
             } else if (as_bool(logical_eq(family, 6))) {
 
-                current_statement_begin__ = 236;
+                current_statement_begin__ = 241;
                 for (int n = 1; n <= n_row; ++n) {
 
-                    current_statement_begin__ = 237;
+                    current_statement_begin__ = 242;
                     stan::model::assign(log_lik, 
                                 stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
                                 gamma_log(get_base1(yreal, n, "yreal", 1), get_base1(gammaA, 1, "gammaA", 1), (get_base1(gammaA, 1, "gammaA", 1) / get_base1(lambda, n, "lambda", 1))), 
                                 "assigning variable log_lik");
-                    current_statement_begin__ = 240;
+                    current_statement_begin__ = 245;
                     stan::model::assign(y_new_real, 
                                 stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
-                                gamma_rng(get_base1(gammaA, 1, "gammaA", 1), (get_base1(gammaA, 1, "gammaA", 1) / stan::math::exp((get_base1(pred, n, "pred", 1) + stan::math::log(get_base1(new_effort, n, "new_effort", 1))))), base_rng__), 
+                                0, 
                                 "assigning variable y_new_real");
+                    current_statement_begin__ = 246;
+                    if (as_bool(logical_gt(get_base1(new_effort, n, "new_effort", 1), 0))) {
+                        current_statement_begin__ = 246;
+                        stan::model::assign(y_new_real, 
+                                    stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
+                                    gamma_rng(get_base1(gammaA, 1, "gammaA", 1), (get_base1(gammaA, 1, "gammaA", 1) / stan::math::exp((get_base1(pred, n, "pred", 1) + stan::math::log(get_base1(new_effort, n, "new_effort", 1))))), base_rng__), 
+                                    "assigning variable y_new_real");
+                    }
                 }
             } else if (as_bool(logical_eq(family, 7))) {
 
-                current_statement_begin__ = 244;
+                current_statement_begin__ = 250;
                 for (int n = 1; n <= n_row; ++n) {
 
-                    current_statement_begin__ = 245;
+                    current_statement_begin__ = 251;
                     if (as_bool(logical_eq(get_base1(yint, n, "yint", 1), 0))) {
 
-                        current_statement_begin__ = 247;
+                        current_statement_begin__ = 253;
                         stan::model::assign(log_lik, 
                                     stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
                                     stan::math::log(get_base1(theta, 1, "theta", 1)), 
                                     "assigning variable log_lik");
                     } else {
 
-                        current_statement_begin__ = 249;
+                        current_statement_begin__ = 255;
                         stan::model::assign(log_lik, 
                                     stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
                                     lognormal_log(get_base1(yreal, n, "yreal", 1), get_base1(log_lambda, n, "log_lambda", 1), get_base1(sigma_logn, 1, "sigma_logn", 1)), 
                                     "assigning variable log_lik");
                     }
-                    current_statement_begin__ = 253;
+                    current_statement_begin__ = 259;
                     stan::model::assign(y_new_real, 
                                 stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
-                                ((1 - bernoulli_rng(get_base1(theta, 1, "theta", 1), base_rng__)) * lognormal_rng((get_base1(pred, n, "pred", 1) + stan::math::log(get_base1(new_effort, n, "new_effort", 1))), get_base1(sigma_logn, 1, "sigma_logn", 1), base_rng__)), 
+                                0, 
                                 "assigning variable y_new_real");
+                    current_statement_begin__ = 260;
+                    if (as_bool(logical_gt(get_base1(new_effort, n, "new_effort", 1), 0))) {
+                        current_statement_begin__ = 260;
+                        stan::model::assign(y_new_real, 
+                                    stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
+                                    ((1 - bernoulli_rng(get_base1(theta, 1, "theta", 1), base_rng__)) * lognormal_rng((get_base1(pred, n, "pred", 1) + stan::math::log(get_base1(new_effort, n, "new_effort", 1))), get_base1(sigma_logn, 1, "sigma_logn", 1), base_rng__)), 
+                                    "assigning variable y_new_real");
+                    }
                 }
             } else if (as_bool(logical_eq(family, 8))) {
 
-                current_statement_begin__ = 257;
+                current_statement_begin__ = 264;
                 for (int n = 1; n <= n_row; ++n) {
 
-                    current_statement_begin__ = 258;
+                    current_statement_begin__ = 265;
                     if (as_bool(logical_eq(get_base1(yint, n, "yint", 1), 0))) {
 
-                        current_statement_begin__ = 260;
+                        current_statement_begin__ = 267;
                         stan::model::assign(log_lik, 
                                     stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
                                     stan::math::log(get_base1(theta, 1, "theta", 1)), 
                                     "assigning variable log_lik");
                     } else {
 
-                        current_statement_begin__ = 262;
+                        current_statement_begin__ = 269;
                         stan::model::assign(log_lik, 
                                     stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
                                     gamma_log(get_base1(yreal, n, "yreal", 1), get_base1(gammaA, 1, "gammaA", 1), (get_base1(gammaA, 1, "gammaA", 1) / get_base1(lambda, n, "lambda", 1))), 
                                     "assigning variable log_lik");
                     }
-                    current_statement_begin__ = 266;
+                    current_statement_begin__ = 273;
                     stan::model::assign(y_new_real, 
                                 stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
-                                ((1 - bernoulli_rng(get_base1(theta, 1, "theta", 1), base_rng__)) * gamma_rng(get_base1(gammaA, 1, "gammaA", 1), (get_base1(gammaA, 1, "gammaA", 1) / stan::math::exp((get_base1(pred, n, "pred", 1) + stan::math::log(get_base1(new_effort, n, "new_effort", 1))))), base_rng__)), 
+                                0, 
                                 "assigning variable y_new_real");
+                    current_statement_begin__ = 274;
+                    if (as_bool(logical_gt(get_base1(new_effort, n, "new_effort", 1), 0))) {
+                        current_statement_begin__ = 274;
+                        stan::model::assign(y_new_real, 
+                                    stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
+                                    ((1 - bernoulli_rng(get_base1(theta, 1, "theta", 1), base_rng__)) * gamma_rng(get_base1(gammaA, 1, "gammaA", 1), (get_base1(gammaA, 1, "gammaA", 1) / stan::math::exp((get_base1(pred, n, "pred", 1) + stan::math::log(get_base1(new_effort, n, "new_effort", 1))))), base_rng__)), 
+                                    "assigning variable y_new_real");
+                    }
                 }
             } else if (as_bool(logical_eq(family, 9))) {
-
-                current_statement_begin__ = 270;
-                for (int n = 1; n <= n_row; ++n) {
-
-                    current_statement_begin__ = 271;
-                    stan::model::assign(log_lik, 
-                                stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
-                                normal_log(get_base1(yreal, n, "yreal", 1), get_base1(lambda, n, "lambda", 1), get_base1(sigma_logn, 1, "sigma_logn", 1)), 
-                                "assigning variable log_lik");
-                    current_statement_begin__ = 274;
-                    stan::model::assign(y_new_real, 
-                                stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
-                                normal_rng(stan::math::exp((get_base1(pred, n, "pred", 1) + stan::math::log(get_base1(new_effort, n, "new_effort", 1)))), get_base1(sigma_logn, 1, "sigma_logn", 1), base_rng__), 
-                                "assigning variable y_new_real");
-                }
-            } else if (as_bool(logical_eq(family, 10))) {
 
                 current_statement_begin__ = 278;
                 for (int n = 1; n <= n_row; ++n) {
 
                     current_statement_begin__ = 279;
+                    stan::model::assign(log_lik, 
+                                stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
+                                normal_log(get_base1(yreal, n, "yreal", 1), get_base1(lambda, n, "lambda", 1), get_base1(sigma_logn, 1, "sigma_logn", 1)), 
+                                "assigning variable log_lik");
+                    current_statement_begin__ = 282;
+                    stan::model::assign(y_new_real, 
+                                stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
+                                0, 
+                                "assigning variable y_new_real");
+                    current_statement_begin__ = 283;
+                    if (as_bool(logical_gt(get_base1(new_effort, n, "new_effort", 1), 0))) {
+                        current_statement_begin__ = 283;
+                        stan::model::assign(y_new_real, 
+                                    stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
+                                    normal_rng(stan::math::exp((get_base1(pred, n, "pred", 1) + stan::math::log(get_base1(new_effort, n, "new_effort", 1)))), get_base1(sigma_logn, 1, "sigma_logn", 1), base_rng__), 
+                                    "assigning variable y_new_real");
+                    }
+                }
+            } else if (as_bool(logical_eq(family, 10))) {
+
+                current_statement_begin__ = 287;
+                for (int n = 1; n <= n_row; ++n) {
+
+                    current_statement_begin__ = 288;
                     if (as_bool(logical_eq(get_base1(yint, n, "yint", 1), 0))) {
 
-                        current_statement_begin__ = 281;
+                        current_statement_begin__ = 290;
                         stan::model::assign(log_lik, 
                                     stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
                                     stan::math::log(get_base1(theta, 1, "theta", 1)), 
                                     "assigning variable log_lik");
                     } else {
 
-                        current_statement_begin__ = 283;
+                        current_statement_begin__ = 292;
                         stan::model::assign(log_lik, 
                                     stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
                                     normal_log(get_base1(yreal, n, "yreal", 1), get_base1(lambda, n, "lambda", 1), get_base1(sigma_logn, 1, "sigma_logn", 1)), 
                                     "assigning variable log_lik");
                     }
-                    current_statement_begin__ = 287;
+                    current_statement_begin__ = 296;
                     stan::model::assign(y_new_real, 
                                 stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
-                                ((1 - bernoulli_rng(get_base1(theta, 1, "theta", 1), base_rng__)) * normal_rng(stan::math::exp((get_base1(pred, n, "pred", 1) + stan::math::log(get_base1(new_effort, n, "new_effort", 1)))), get_base1(sigma_logn, 1, "sigma_logn", 1), base_rng__)), 
+                                0, 
                                 "assigning variable y_new_real");
+                    current_statement_begin__ = 297;
+                    if (as_bool(logical_gt(get_base1(new_effort, n, "new_effort", 1), 0))) {
+                        current_statement_begin__ = 297;
+                        stan::model::assign(y_new_real, 
+                                    stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
+                                    ((1 - bernoulli_rng(get_base1(theta, 1, "theta", 1), base_rng__)) * normal_rng(stan::math::exp((get_base1(pred, n, "pred", 1) + stan::math::log(get_base1(new_effort, n, "new_effort", 1)))), get_base1(sigma_logn, 1, "sigma_logn", 1), base_rng__)), 
+                                    "assigning variable y_new_real");
+                    }
                 }
             }
 
