@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>get_expanded is a helper function to return a matrix of posterior predictive values for unobserved bycatch — get_expanded • bycatch</title>
+<title>get_total is a helper function to return a matrix of total estimated bycatch — get_total • bycatch</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="get_expanded is a helper function to return a matrix of posterior predictive values for unobserved bycatch — get_expanded" />
-<meta property="og:description" content="get_expanded is a helper function to return a matrix of posterior predictive values for unobserved bycatch" />
+<meta property="og:title" content="get_total is a helper function to return a matrix of total estimated bycatch — get_total" />
+<meta property="og:description" content="get_total is a helper function to return a matrix of total estimated bycatch" />
 
 
 
@@ -128,16 +128,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>get_expanded is a helper function to return a matrix of posterior predictive values for unobserved bycatch</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ericward-noaa/bycatch/blob/master/R/get_expanded.R'><code>R/get_expanded.R</code></a></small>
-    <div class="hidden name"><code>get_expanded.Rd</code></div>
+    <h1>get_total is a helper function to return a matrix of total estimated bycatch</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ericward-noaa/bycatch/blob/master/R/get_total.R'><code>R/get_total.R</code></a></small>
+    <div class="hidden name"><code>get_total.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>get_expanded is a helper function to return a matrix of posterior predictive values for unobserved bycatch</p>
+    <p>get_total is a helper function to return a matrix of total estimated bycatch</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_expanded</span><span class='op'>(</span><span class='va'>fitted_model</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_total</span><span class='op'>(</span><span class='va'>fitted_model</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -188,15 +188,15 @@
 #&gt; Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.012166 seconds (Warm-up)
-#&gt; Chain 1:                0.01085 seconds (Sampling)
-#&gt; Chain 1:                0.023016 seconds (Total)
+#&gt; Chain 1:  Elapsed Time: 0.010766 seconds (Warm-up)
+#&gt; Chain 1:                0.010274 seconds (Sampling)
+#&gt; Chain 1:                0.02104 seconds (Total)
 #&gt; Chain 1: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
 #&gt; Chain 2: 
-#&gt; Chain 2: Gradient evaluation took 1e-05 seconds
-#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.1 seconds.
+#&gt; Chain 2: Gradient evaluation took 8e-06 seconds
+#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.08 seconds.
 #&gt; Chain 2: Adjust your expectations accordingly!
 #&gt; Chain 2: 
 #&gt; Chain 2: 
@@ -213,15 +213,15 @@
 #&gt; Chain 2: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 2: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 0.012462 seconds (Warm-up)
-#&gt; Chain 2:                0.010359 seconds (Sampling)
-#&gt; Chain 2:                0.022821 seconds (Total)
+#&gt; Chain 2:  Elapsed Time: 0.009847 seconds (Warm-up)
+#&gt; Chain 2:                0.008279 seconds (Sampling)
+#&gt; Chain 2:                0.018126 seconds (Total)
 #&gt; Chain 2: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 3).
 #&gt; Chain 3: 
-#&gt; Chain 3: Gradient evaluation took 9e-06 seconds
-#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.09 seconds.
+#&gt; Chain 3: Gradient evaluation took 1e-05 seconds
+#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.1 seconds.
 #&gt; Chain 3: Adjust your expectations accordingly!
 #&gt; Chain 3: 
 #&gt; Chain 3: 
@@ -238,10 +238,10 @@
 #&gt; Chain 3: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 3: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 3: 
-#&gt; Chain 3:  Elapsed Time: 0.01079 seconds (Warm-up)
-#&gt; Chain 3:                0.009375 seconds (Sampling)
-#&gt; Chain 3:                0.020165 seconds (Total)
-#&gt; Chain 3: </div><div class='input'><span class='va'>expanded</span> <span class='op'>&lt;-</span> <span class='fu'>get_expanded</span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span>
+#&gt; Chain 3:  Elapsed Time: 0.011309 seconds (Warm-up)
+#&gt; Chain 3:                0.010023 seconds (Sampling)
+#&gt; Chain 3:                0.021332 seconds (Total)
+#&gt; Chain 3: </div><div class='input'><span class='va'>expanded</span> <span class='op'>&lt;-</span> <span class='fu'>get_total</span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span>
 <span class='co'># }</span>
 </div></pre>
   </div>
