@@ -2,6 +2,7 @@
 
 export(fit_bycatch)
 export(get_expanded)
+export(get_total)
 export(plot_expanded)
 export(plot_fitted)
 import(Rcpp)

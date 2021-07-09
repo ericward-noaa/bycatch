@@ -7,3 +7,15 @@
 
 .Rbuildignore
 docs
+docs/reference/Rplot001.png
+docs/reference/plot_fitted.html
+docs/reference/plot_fitted-1.png
+docs/reference/plot_expanded.html
+docs/reference/plot_expanded-1.png
+docs/reference/index.html
+docs/reference/get_expanded.html
+docs/reference/fit_bycatch.html
+docs/pkgdown.yml
+docs/articles/a03_expanding_estimates.html
+docs/articles/a02_fitting_models.html
+docs/articles/a01_overview.html

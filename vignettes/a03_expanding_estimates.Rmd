@@ -94,3 +94,16 @@ pr_pos = 1 - apply(expanded,2, pr_zero)
 print(pr_pos)
 ```
 
+### Make table of total bycatch estimates
+
+Like the `get_expanded` helper function, we have a `get_total` helper function to summarize the total observed + expanded unobserved bycatch. This function also takes a fitted model object, 
+
+```{r}
+total = get_total(fit)
+
+df = data.frame("time" = d[,"Year"], 
+  "mean" = apply(total, 2, mean),
+  "median" = apply(total, 2, quantile, 0.5),
+  "lower95" = apply(total, 2, quantile, 0.025),
+  "upper95" = apply(total, 2, quantile, 0.975))
+```

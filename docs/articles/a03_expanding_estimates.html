@@ -89,7 +89,7 @@
       <h1 data-toc-skip>Expanding bycatch estimates</h1>
                         <h4 class="author">Eric J. Ward, Jason E. Jannot</h4>
             
-            <h4 class="date">2021-06-17</h4>
+            <h4 class="date">2021-07-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ericward-noaa/bycatch/blob/master/vignettes/a03_expanding_estimates.Rmd"><code>vignettes/a03_expanding_estimates.Rmd</code></a></small>
       <div class="hidden name"><code>a03_expanding_estimates.Rmd</code></div>
@@ -164,6 +164,19 @@
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">pr_pos</span><span class="op">)</span></code></pre></div>
 <pre><code>##  [1] 0.2026667 0.1580000 0.1853333 0.2713333 0.2166667 0.2446667 0.1586667
 ##  [8] 0.1780000 0.2893333 0.3220000 0.2240000 0.1886667 0.2240000</code></pre>
+</div>
+<div id="make-table-of-total-bycatch-estimates" class="section level3">
+<h3 class="hasAnchor">
+<a href="#make-table-of-total-bycatch-estimates" class="anchor"></a>Make table of total bycatch estimates</h3>
+<p>Like the <code>get_expanded</code> helper function, we have a <code>get_total</code> helper function to summarize the total observed + expanded unobserved bycatch. This function also takes a fitted model object,</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">total</span> <span class="op">=</span> <span class="fu"><a href="../reference/get_total.html">get_total</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span>
+
+<span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="st">"time"</span> <span class="op">=</span> <span class="va">d</span><span class="op">[</span>,<span class="st">"Year"</span><span class="op">]</span>, 
+  <span class="st">"mean"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">total</span>, <span class="fl">2</span>, <span class="va">mean</span><span class="op">)</span>,
+  <span class="st">"median"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">total</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.5</span><span class="op">)</span>,
+  <span class="st">"lower95"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">total</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.025</span><span class="op">)</span>,
+  <span class="st">"upper95"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">total</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
   </div>
