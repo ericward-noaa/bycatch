@@ -28,7 +28,7 @@ get_total <- function(fitted_model) {
   expanded_estimates <- get_expanded(fitted_model)
   total_estimates <- expanded_estimates
   for(i in 1:ncol(total_estimates)) {
-    total_estimates[,i] = total_estimates[,i] + fitted_model$data$Takes[i]
+    total_estimates[,i] = total_estimates[,i] + fitted_model$data[[fitted_model$events]][i]
   }
   return(total_estimates)
 }

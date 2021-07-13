@@ -2,7 +2,8 @@
 #' @param formula The model formula.
 #' @param data A data frame.
 #' @param time Named column of the 'data' data frame with the label for the time (e.g. year) variable
-#' @param effort Named column of the 'effort' variable in the data frame with the label for the fishing effort to be used in estimation of mean bycatch rate
+#' @param effort Named column of the 'effort' variable in the data frame with the label for the fishing effort to be used in estimation of mean bycatch rate. This
+#' represents total observed effort
 #' @param expansion_rate The expansion rate to be used in generating distributions for unobserved sets. If NULL, defaults to 100% coverage (= 100)
 #' @param family Family for response distribution can be discrete ("poisson",
 #' "nbinom2", "poisson-hurdle","nbinom2-hurdle"), or continuous ("normal",
@@ -138,8 +139,10 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansi
     p_expansion <- data[, expansion_rate] / 100
   }
 
-  new_effort <- ceiling(data[, effort] * (1-p_expansion))
+  total_effort <- ceiling(data[, effort] / p_expansion)
+  new_effort <- ceiling(total_effort * (1-p_expansion))
 
+  # effort multiplied
   datalist <- list(
     n_row = nrow(data),
     effort = data[, effort],
