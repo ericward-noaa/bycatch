@@ -141,7 +141,6 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansi
 
   total_effort <- ceiling(data[, effort] / p_expansion)
   new_effort <- ceiling(total_effort * (1-p_expansion))
-
   # effort multiplied
   datalist <- list(
     n_row = nrow(data),
