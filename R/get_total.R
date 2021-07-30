@@ -1,7 +1,7 @@
 #' get_total is a helper function to return a matrix of total estimated bycatch
 #'
 #' @param fitted_model Data and fitted model returned from estimation
-
+#'
 #' @return matrix (MCMC draws x time steps) of posterior predictive values for unobserved bycatch
 #'
 #' @export
