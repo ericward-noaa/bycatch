@@ -83,13 +83,13 @@
 
       
 
-      </header><script src="a02_fitting_models_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><script src="a02_fitting_models_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Fitting models with the bycatch package</h1>
                         <h4 class="author">Eric J. Ward, Jason E. Jannot</h4>
             
-            <h4 class="date">2021-10-05</h4>
+            <h4 class="date">2021-10-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ericward-noaa/bycatch/blob/master/vignettes/a02_fitting_models.Rmd"><code>vignettes/a02_fitting_models.Rmd</code></a></small>
       <div class="hidden name"><code>a02_fitting_models.Rmd</code></div>
@@ -156,6 +156,7 @@ Observed bycatch (not expanded by observer coverage), incorporating data on obse
 ## elpd_loo -11.186424  5.948376
 ## p_loo      2.559857  2.146439
 ## looic     22.372849 11.896752</code></pre>
+
 </div>
 </div>
 <div id="negative-binomial-example" class="section level2">
@@ -246,6 +247,7 @@ Observed bycatch (not expanded by observer coverage), incorporating data on obse
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">betas</span> <span class="op">=</span> <span class="fu">rstan</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/rstan/reference/stanfit-method-extract.html">extract</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">fitted_model</span><span class="op">)</span><span class="op">$</span><span class="va">beta</span></code></pre></div>
 <p>Note that ‘betas’ has 3 columns. These correspond to (1) the intercept, (2) continuous predictor, and (3) factor variable above. If we didn’t include the covariates, we’d still estimate beta[1] as the intercept.</p>
+
 </div>
 <div id="fit-model-with-time-varying-effects" class="section level2">
 <h2 class="hasAnchor">
@@ -263,6 +265,7 @@ Observed bycatch (not expanded by observer coverage), incorporating data on obse
 Estimated bycatch from the model with time-varying effects, incorporating data on takes, effort, and observer coverage. Dots represent observed bycatch events.
 </p>
 </div>
+
 </div>
 <div id="fit-model-with-no-bycatch-events" class="section level2">
 <h2 class="hasAnchor">
