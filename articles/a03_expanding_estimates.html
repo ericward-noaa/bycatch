@@ -11,7 +11,8 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Expanding bycatch estimates">
+<script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<meta property="og:title" content="Expanding bycatch estimates">
 <meta property="og:description" content="bycatch">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -88,7 +89,7 @@
       <h1 data-toc-skip>Expanding bycatch estimates</h1>
                         <h4 class="author">Eric J. Ward, Jason E. Jannot</h4>
             
-            <h4 class="date">2021-05-08</h4>
+            <h4 class="date">2021-10-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ericward-noaa/bycatch/blob/master/vignettes/a03_expanding_estimates.Rmd"><code>vignettes/a03_expanding_estimates.Rmd</code></a></small>
       <div class="hidden name"><code>a03_expanding_estimates.Rmd</code></div>
@@ -161,8 +162,21 @@
 
 <span class="va">pr_pos</span> <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">expanded</span>,<span class="fl">2</span>, <span class="va">pr_zero</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">pr_pos</span><span class="op">)</span></code></pre></div>
-<pre><code>##  [1] 0.6500000 0.6333333 0.7540000 0.7486667 0.6513333 0.7253333 0.5213333
-##  [8] 0.9033333 0.8326667 0.8420000 0.7600000 0.6233333 0.6866667</code></pre>
+<pre><code>##  [1] 0.5940000 0.5586667 0.7186667 0.6126667 0.5606667 0.6386667 0.4220000
+##  [8] 0.8866667 0.7300000 0.7880000 0.6893333 0.5380000 0.5800000</code></pre>
+</div>
+<div id="make-table-of-total-bycatch-estimates" class="section level3">
+<h3 class="hasAnchor">
+<a href="#make-table-of-total-bycatch-estimates" class="anchor"></a>Make table of total bycatch estimates</h3>
+<p>Like the <code>get_expanded</code> helper function, we have a <code>get_total</code> helper function to summarize the total observed + expanded unobserved bycatch. This function also takes a fitted model object,</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">total</span> <span class="op">=</span> <span class="fu"><a href="../reference/get_total.html">get_total</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span>
+
+<span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="st">"time"</span> <span class="op">=</span> <span class="va">d</span><span class="op">[</span>,<span class="st">"Year"</span><span class="op">]</span>, 
+  <span class="st">"mean"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">total</span>, <span class="fl">2</span>, <span class="va">mean</span><span class="op">)</span>,
+  <span class="st">"median"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">total</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.5</span><span class="op">)</span>,
+  <span class="st">"lower95"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">total</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.025</span><span class="op">)</span>,
+  <span class="st">"upper95"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">total</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
   </div>

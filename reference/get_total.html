@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>plot_expanded is makes plots of the expanded bycatch estimates, accounting for observer coverage and effort — plot_expanded • bycatch</title>
+<title>get_total is a helper function to return a matrix of total estimated bycatch — get_total • bycatch</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="plot_expanded is makes plots of the expanded bycatch estimates, accounting for observer coverage and effort — plot_expanded" />
-<meta property="og:description" content="plot_expanded is makes plots of the expanded bycatch estimates, accounting for observer coverage and effort" />
+<meta property="og:title" content="get_total is a helper function to return a matrix of total estimated bycatch — get_total" />
+<meta property="og:description" content="get_total is a helper function to return a matrix of total estimated bycatch" />
 
 
 
@@ -128,22 +128,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>plot_expanded is makes plots of the expanded bycatch estimates, accounting for observer coverage and effort</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ericward-noaa/bycatch/blob/master/R/plot_expanded.R'><code>R/plot_expanded.R</code></a></small>
-    <div class="hidden name"><code>plot_expanded.Rd</code></div>
+    <h1>get_total is a helper function to return a matrix of total estimated bycatch</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ericward-noaa/bycatch/blob/master/R/get_total.R'><code>R/get_total.R</code></a></small>
+    <div class="hidden name"><code>get_total.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>plot_expanded is makes plots of the expanded bycatch estimates, accounting for observer coverage and effort</p>
+    <p>get_total is a helper function to return a matrix of total estimated bycatch</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot_expanded</span><span class='op'>(</span>
-  <span class='va'>fitted_model</span>,
-  xlab <span class='op'>=</span> <span class='st'>"Time"</span>,
-  ylab <span class='op'>=</span> <span class='st'>"Events"</span>,
-  show_total <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  include_points <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_total</span><span class='op'>(</span><span class='va'>fitted_model</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,27 +146,11 @@
       <th>fitted_model</th>
       <td><p>Data and fitted model returned from estimation</p></td>
     </tr>
-    <tr>
-      <th>xlab</th>
-      <td><p>X-axis label for plot</p></td>
-    </tr>
-    <tr>
-      <th>ylab</th>
-      <td><p>Y-axis label for plot</p></td>
-    </tr>
-    <tr>
-      <th>show_total</th>
-      <td><p>Whether to show the total predicted bycatch (by default, this is TRUE) or just the expanded unobserved events (=FALSE)</p></td>
-    </tr>
-    <tr>
-      <th>include_points</th>
-      <td><p>whether or not to include raw bycatch events on plots, defaults to FALSE</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>plot called from ggplot</p>
+    <p>matrix (MCMC draws x time steps) of posterior predictive values for unobserved bycatch</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
@@ -192,8 +170,8 @@
 </div><div class='output co'>#&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 1).
 #&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 1.6e-05 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.16 seconds.
+#&gt; Chain 1: Gradient evaluation took 1.8e-05 seconds
+#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.18 seconds.
 #&gt; Chain 1: Adjust your expectations accordingly!
 #&gt; Chain 1: 
 #&gt; Chain 1: 
@@ -210,9 +188,9 @@
 #&gt; Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.016627 seconds (Warm-up)
-#&gt; Chain 1:                0.014436 seconds (Sampling)
-#&gt; Chain 1:                0.031063 seconds (Total)
+#&gt; Chain 1:  Elapsed Time: 0.015708 seconds (Warm-up)
+#&gt; Chain 1:                0.015197 seconds (Sampling)
+#&gt; Chain 1:                0.030905 seconds (Total)
 #&gt; Chain 1: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
@@ -235,15 +213,15 @@
 #&gt; Chain 2: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 2: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 0.016434 seconds (Warm-up)
-#&gt; Chain 2:                0.014885 seconds (Sampling)
-#&gt; Chain 2:                0.031319 seconds (Total)
+#&gt; Chain 2:  Elapsed Time: 0.015611 seconds (Warm-up)
+#&gt; Chain 2:                0.014887 seconds (Sampling)
+#&gt; Chain 2:                0.030498 seconds (Total)
 #&gt; Chain 2: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 3).
 #&gt; Chain 3: 
-#&gt; Chain 3: Gradient evaluation took 1e-05 seconds
-#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.1 seconds.
+#&gt; Chain 3: Gradient evaluation took 1.4e-05 seconds
+#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.14 seconds.
 #&gt; Chain 3: Adjust your expectations accordingly!
 #&gt; Chain 3: 
 #&gt; Chain 3: 
@@ -260,16 +238,11 @@
 #&gt; Chain 3: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #&gt; Chain 3: Iteration: 1000 / 1000 [100%]  (Sampling)
 #&gt; Chain 3: 
-#&gt; Chain 3:  Elapsed Time: 0.016071 seconds (Warm-up)
-#&gt; Chain 3:                0.014778 seconds (Sampling)
-#&gt; Chain 3:                0.030849 seconds (Total)
-#&gt; Chain 3: </div><div class='input'><span class='fu'>plot_expanded</span><span class='op'>(</span>
-  fitted_model <span class='op'>=</span> <span class='va'>fit</span>,
-  xlab <span class='op'>=</span> <span class='st'>"Year"</span>,
-  ylab <span class='op'>=</span> <span class='st'>"Fleet-level bycatch"</span>,
-  include_points <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span>
-</div><div class='img'><img src='plot_expanded-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+#&gt; Chain 3:  Elapsed Time: 0.015193 seconds (Warm-up)
+#&gt; Chain 3:                0.014886 seconds (Sampling)
+#&gt; Chain 3:                0.030079 seconds (Total)
+#&gt; Chain 3: </div><div class='input'><span class='va'>expanded</span> <span class='op'>&lt;-</span> <span class='fu'>get_total</span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span>
+<span class='co'># }</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
