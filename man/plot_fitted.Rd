@@ -8,7 +8,8 @@ plot_fitted(
   fitted_model,
   xlab = "Time",
   ylab = "Events",
-  include_points = FALSE
+  include_points = FALSE,
+  alpha = 0.05
 )
 }
 \arguments{
@@ -20,6 +21,8 @@ then the plot returns the total bycatch rate (including zero and non-zero compon
 \item{ylab}{Y-axis label for plot}
 
 \item{include_points}{whether or not to include raw bycatch events on plots, defaults to FALSE}
+
+\item{alpha}{The alpha level for the credible interval, defaults to 0.05}
 }
 \value{
 plot called from ggplot
