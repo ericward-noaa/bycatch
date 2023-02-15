@@ -20,6 +20,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -32,23 +34,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bycatch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.6</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -63,12 +59,15 @@
     <li>
       <a href="../articles/a03_expanding_estimates.html">Expanding bycatch estimates</a>
     </li>
+    <li>
+      <a href="../articles/a04_diagnosing_problems.html">Diagnosing errors</a>
+    </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/ericward-noaa/bycatch/">
+  <a href="https://github.com/ericward-noaa/bycatch/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -83,52 +82,113 @@
 
       
 
-      </header><script src="a01_overview_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Overview of bycatch package</h1>
-                        <h4 class="author">Eric J. Ward, Jason E. Jannot</h4>
+                        <h4 data-toc-skip class="author">Eric J. Ward,
+Jason E. Jannot</h4>
             
-            <h4 class="date">2021-10-14</h4>
+            <h4 data-toc-skip class="date">2023-02-15</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/ericward-noaa/bycatch/blob/master/vignettes/a01_overview.Rmd"><code>vignettes/a01_overview.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ericward-noaa/bycatch/blob/HEAD/vignettes/a01_overview.Rmd" class="external-link"><code>vignettes/a01_overview.Rmd</code></a></small>
       <div class="hidden name"><code>a01_overview.Rmd</code></div>
 
     </div>
 
     
     
-<div id="overview" class="section level3">
-<h3 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h3>
-<p>Previous authors, including Gardner et al. (2008) and Martin et al. (2015) have assumed that rare even bycatch follows a Poisson process, where the observed bycatch events <span class="math inline">\(y_{t}\)</span> are modeled according to some estimated bycatch rate <span class="math inline">\(\lambda\)</span>,</p>
-<p><span class="math display">\[p(y_{t}|\lambda) = e^{-\lambda}\frac{\lambda^{y_{t}}}{y_{t}!}\]</span> where <span class="math inline">\(\lambda\)</span> is the mean of the Poisson distribution. The mean rate parameter <span class="math inline">\(\lambda\)</span> can be further decomposed into a per - event (e.g. set) parameter and the number of observed sets <span class="math inline">\(n_{t}\)</span>, <span class="math inline">\(\lambda = \theta * n_{t}\)</span>. In a GLM setting, the log-link function is often used to model effects of covariates, e.g. <span class="math inline">\(log(\lambda) = log(\theta) + b_{1}*x_{1} + b_{2}*x_{2}...\)</span>, and in this setting the known number of sets <span class="math inline">\(n_{t}\)</span> are treated as an offset, <span class="math inline">\(log(\lambda) = log(\theta) + b_{1}*x_{1} + b_{2}*x_{2} + log(n_{t})\)</span>.</p>
-<p>Estimation of <span class="math inline">\(\lambda\)</span> or <span class="math inline">\(\theta\)</span> can be done in a maximum likelihood or Bayesian setting, and here we use Bayesian methods to estimate the posterior distribution of the parameters given observed bycatch data,</p>
-<p><span class="math display">\[p(\theta|\underline{\mathbf{y}}) \propto p(\theta)p(\underline{\mathbf{y}}|\theta)\]</span></p>
+<div class="section level3">
+<h3 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h3>
+<p>Previous authors, including Gardner et al. (2008) and Martin et
+al. (2015) have assumed that rare even bycatch follows a Poisson
+process, where the observed bycatch events <span class="math inline">\(y_{t}\)</span> are modeled according to some
+estimated bycatch rate <span class="math inline">\(\lambda\)</span>,</p>
+<p><span class="math display">\[p(y_{t}|\lambda) =
+e^{-\lambda}\frac{\lambda^{y_{t}}}{y_{t}!}\]</span> where <span class="math inline">\(\lambda\)</span> is the mean of the Poisson
+distribution. The mean rate parameter <span class="math inline">\(\lambda\)</span> can be further decomposed into a
+per - event (e.g. set) parameter and the number of observed sets <span class="math inline">\(n_{t}\)</span>, <span class="math inline">\(\lambda = \theta * n_{t}\)</span>. In a GLM
+setting, the log-link function is often used to model effects of
+covariates, e.g. <span class="math inline">\(log(\lambda) = log(\theta)
++ b_{1}*x_{1} + b_{2}*x_{2}...\)</span>, and in this setting the known
+number of sets <span class="math inline">\(n_{t}\)</span> are treated as
+an offset, <span class="math inline">\(log(\lambda) = log(\theta) +
+b_{1}*x_{1} + b_{2}*x_{2} + log(n_{t})\)</span>.</p>
+<p>Estimation of <span class="math inline">\(\lambda\)</span> or <span class="math inline">\(\theta\)</span> can be done in a maximum
+likelihood or Bayesian setting, and here we use Bayesian methods to
+estimate the posterior distribution of the parameters given observed
+bycatch data,</p>
+<p><span class="math display">\[p(\theta|\underline{\mathbf{y}}) \propto
+p(\theta)p(\underline{\mathbf{y}}|\theta)\]</span></p>
 </div>
-<div id="other-families" class="section level3">
-<h3 class="hasAnchor">
-<a href="#other-families" class="anchor"></a>Other families</h3>
-<p>In addition to the Poisson model described here, we include the Negative Binomial model, which allows for the variance to be greater than the mean. We use the ‘nbinom2’ alternative parameterization of the Negative Binomial, where <span class="math inline">\(Var(Y) = u + \frac{u^2}{\tau}\)</span>, where <span class="math inline">\(\tau\)</span> controls the degree of overdispersion. Two additional extensions to these models are the zero-inflated extensions. We adopt hurdle models to model extra zeros, so that <span class="math inline">\(p(y_{t}=0) = \phi\)</span> and <span class="math inline">\(p(y_{t}&gt;0) = 1-\phi\)</span>.</p>
-<p>In addition to the Poisson and Negative Binomial models, we adopt three continuous distributions: the Gaussian (“normal”), Gamma (“gamma”) and lognormal (“lognormal”). Log-link functions are specified on the mean of each distribution. For the Gaussian model, we estimate the variance parameter, <span class="math inline">\(\sigma\)</span>, which is given a Student-t(3,0,2) prior distribution. Similarly, for the Gamma distribution, we put a Student-t(3,0,2) prior on the coefficient of variation (CV), which is assumed constant across observations. Finally, for the lognormal distribution, we estimate the lognormal variance and assume it is constant across observations.</p>
+<div class="section level3">
+<h3 id="other-families">Other families<a class="anchor" aria-label="anchor" href="#other-families"></a>
+</h3>
+<p>In addition to the Poisson model described here, we include the
+Negative Binomial model, which allows for the variance to be greater
+than the mean. We use the ‘nbinom2’ alternative parameterization of the
+Negative Binomial, where <span class="math inline">\(Var(Y) = u +
+\frac{u^2}{\tau}\)</span>, where <span class="math inline">\(\tau\)</span> controls the degree of
+overdispersion. Two additional extensions to these models are the
+zero-inflated extensions. We adopt hurdle models to model extra zeros,
+so that <span class="math inline">\(p(y_{t}=0) = \phi\)</span> and <span class="math inline">\(p(y_{t}&gt;0) = 1-\phi\)</span>.</p>
+<p>In addition to the Poisson and Negative Binomial models, we adopt
+three continuous distributions: the Gaussian (“normal”), Gamma (“gamma”)
+and lognormal (“lognormal”). Log-link functions are specified on the
+mean of each distribution. For the Gaussian model, we estimate the
+variance parameter, <span class="math inline">\(\sigma\)</span>, which
+is given a Student-t(3,0,2) prior distribution. Similarly, for the Gamma
+distribution, we put a Student-t(3,0,2) prior on the coefficient of
+variation (CV), which is assumed constant across observations. Finally,
+for the lognormal distribution, we estimate the lognormal variance and
+assume it is constant across observations.</p>
 </div>
-<div id="fixed-effect-covariates" class="section level3">
-<h3 class="hasAnchor">
-<a href="#fixed-effect-covariates" class="anchor"></a>Fixed effect covariates</h3>
-<p>As described above, any type of fixed effects can be included as a predictors of bycatch in the formula interface. Coefficients are estimated for all coefficients using the log-link, <span class="math inline">\(log(\lambda) = log(\theta) + b_{1}*x_{1} + b_{2}*x_{2} + log(n_{t})\)</span>, where <span class="math inline">\(x_{1}\)</span> and <span class="math inline">\(x_{2}\)</span> are covariates.</p>
+<div class="section level3">
+<h3 id="fixed-effect-covariates">Fixed effect covariates<a class="anchor" aria-label="anchor" href="#fixed-effect-covariates"></a>
+</h3>
+<p>As described above, any type of fixed effects can be included as a
+predictors of bycatch in the formula interface. Coefficients are
+estimated for all coefficients using the log-link, <span class="math inline">\(log(\lambda) = log(\theta) + b_{1}*x_{1} +
+b_{2}*x_{2} + log(n_{t})\)</span>, where <span class="math inline">\(x_{1}\)</span> and <span class="math inline">\(x_{2}\)</span> are covariates.</p>
 </div>
-<div id="time-varying-parameters" class="section level3">
-<h3 class="hasAnchor">
-<a href="#time-varying-parameters" class="anchor"></a>Time varying parameters</h3>
-<p>In some cases, such as when covariates may be missing or not completely observed, it may be useful to include time effects as time - varying. We have implemented these as random effects, in link (log) space. We can modify the predictions of bycatch rate to be <span class="math inline">\(log(\lambda) = log(\theta) + b_{1}*x_{1} + b_{2}*x_{2} + log(n_{t}) + \omega_{t}\)</span>, where <span class="math inline">\(\omega_{t}\)</span> is the latent time effect. We constrain the time effects to be a random walk, so that <span class="math inline">\(\omega_{t} \sim Normal(\omega_{t-1},\sigma_{\omega})\)</span>. Extensions of this model could include autoregressive coefficients to help aid in stationarity.</p>
+<div class="section level3">
+<h3 id="time-varying-parameters">Time varying parameters<a class="anchor" aria-label="anchor" href="#time-varying-parameters"></a>
+</h3>
+<p>In some cases, such as when covariates may be missing or not
+completely observed, it may be useful to include time effects as time -
+varying. We have implemented these as random effects, in link (log)
+space. We can modify the predictions of bycatch rate to be <span class="math inline">\(log(\lambda) = log(\theta) + b_{1}*x_{1} +
+b_{2}*x_{2} + log(n_{t}) + \omega_{t}\)</span>, where <span class="math inline">\(\omega_{t}\)</span> is the latent time effect. We
+constrain the time effects to be a random walk, so that <span class="math inline">\(\omega_{t} \sim
+Normal(\omega_{t-1},\sigma_{\omega})\)</span>. Extensions of this model
+could include autoregressive coefficients to help aid in
+stationarity.</p>
 </div>
-<div id="expanding-estimates" class="section level3">
-<h3 class="hasAnchor">
-<a href="#expanding-estimates" class="anchor"></a>Expanding estimates</h3>
-<p>A major goal of bycatch analyses with partially observed datasets is estimating the total unobserved bycatch. Because the total numbers of effort (sets, trips, etc) is known, and the number of observed units of effort is known, the numbers of unobserved units is also known, <span class="math inline">\(N_{t}-n_{t}\)</span>.</p>
-<p>Using the Bayesian framework, we can generate samples from the posterior predictive distribution of unobserved sets, using the same distribution that is assumed for the observed sets (Poisson, Negative Binomial, etc). This posterior predictive approach assumes that the distribution of unobserved bycatch is</p>
-<p><span class="math display">\[P(Y_{t}-y_{t} | \theta, N_{t}, n_{t}) = \int_{\theta} p(Y_{t}-y_{t} | \theta, N_{t} - n_{t})p(\theta | \underline{\mathbf{y}})d\theta\]</span></p>
-<p>The integration includes a product of two quantities. The first is the probability of individual bycatch values (e.g. 0, 1, 2, …) conditioned on the estimated parameters <span class="math inline">\(\theta\)</span> and number of unobserved units <span class="math inline">\(N_{t}-n_{t}\)</span>, and the second represents the posterior distribution of the parameters given all data, <span class="math inline">\(p(\theta | \underline{\mathbf{y}})\)</span>. By generating large numbers of samples from the posterior predictive distribution, we can generate credible intervals and other summary statistics on the distribution.</p>
+<div class="section level3">
+<h3 id="expanding-estimates">Expanding estimates<a class="anchor" aria-label="anchor" href="#expanding-estimates"></a>
+</h3>
+<p>A major goal of bycatch analyses with partially observed datasets is
+estimating the total unobserved bycatch. Because the total numbers of
+effort (sets, trips, etc) is known, and the number of observed units of
+effort is known, the numbers of unobserved units is also known, <span class="math inline">\(N_{t}-n_{t}\)</span>.</p>
+<p>Using the Bayesian framework, we can generate samples from the
+posterior predictive distribution of unobserved sets, using the same
+distribution that is assumed for the observed sets (Poisson, Negative
+Binomial, etc). This posterior predictive approach assumes that the
+distribution of unobserved bycatch is</p>
+<p><span class="math display">\[P(Y_{t}-y_{t} | \theta, N_{t}, n_{t}) =
+\int_{\theta} p(Y_{t}-y_{t} | \theta, N_{t} - n_{t})p(\theta |
+\underline{\mathbf{y}})d\theta\]</span></p>
+<p>The integration includes a product of two quantities. The first is
+the probability of individual bycatch values (e.g. 0, 1, 2, …)
+conditioned on the estimated parameters <span class="math inline">\(\theta\)</span> and number of unobserved units
+<span class="math inline">\(N_{t}-n_{t}\)</span>, and the second
+represents the posterior distribution of the parameters given all data,
+<span class="math inline">\(p(\theta | \underline{\mathbf{y}})\)</span>.
+By generating large numbers of samples from the posterior predictive
+distribution, we can generate credible intervals and other summary
+statistics on the distribution.</p>
 </div>
   </div>
 
@@ -141,11 +201,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Eric J. Ward, Jason Jannot.</p>
+  <p></p>
+<p>Developed by Eric J. Ward, Jason Jannot.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -153,6 +215,8 @@
 
   
 
+
+  
 
   </body>
 </html>

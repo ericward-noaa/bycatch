@@ -20,6 +20,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -32,23 +34,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bycatch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.6</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -63,12 +59,15 @@
     <li>
       <a href="../articles/a03_expanding_estimates.html">Expanding bycatch estimates</a>
     </li>
+    <li>
+      <a href="../articles/a04_diagnosing_problems.html">Diagnosing errors</a>
+    </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/ericward-noaa/bycatch/">
+  <a href="https://github.com/ericward-noaa/bycatch/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -83,15 +82,16 @@
 
       
 
-      </header><script src="a03_expanding_estimates_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Expanding bycatch estimates</h1>
-                        <h4 class="author">Eric J. Ward, Jason E. Jannot</h4>
+                        <h4 data-toc-skip class="author">Eric J. Ward,
+Jason E. Jannot</h4>
             
-            <h4 class="date">2021-10-14</h4>
+            <h4 data-toc-skip class="date">2023-02-15</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/ericward-noaa/bycatch/blob/master/vignettes/a03_expanding_estimates.Rmd"><code>vignettes/a03_expanding_estimates.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ericward-noaa/bycatch/blob/HEAD/vignettes/a03_expanding_estimates.Rmd" class="external-link"><code>vignettes/a03_expanding_estimates.Rmd</code></a></small>
       <div class="hidden name"><code>a03_expanding_estimates.Rmd</code></div>
 
     </div>
@@ -99,84 +99,98 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#library(devtools)</span>
-<span class="co">#devtools::install_github("ericward-noaa/bycatch")</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ericward-noaa.github.io/bycatch/">bycatch</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></code></pre></div>
-<div id="load-data" class="section level3">
-<h3 class="hasAnchor">
-<a href="#load-data" class="anchor"></a>Load data</h3>
-<p>For our dummy dataaset, the expansionRate column contains the expansion rate. In other words, the number of total sets is the sets divided by expansion rate.</p>
+<code class="sourceCode R"><span><span class="co">#library(devtools)</span></span>
+<span><span class="co">#devtools::install_github("ericward-noaa/bycatch")</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ericward-noaa.github.io/bycatch/" class="external-link">bycatch</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="load-data">Load data<a class="anchor" aria-label="anchor" href="#load-data"></a>
+</h3>
+<p>For our dummy dataaset, the expansionRate column contains the
+expansion rate. In other words, the number of total sets is the sets
+divided by expansion rate.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># replace this with your own data frame</span>
-<span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="st">"Year"</span><span class="op">=</span> <span class="fl">2002</span><span class="op">:</span><span class="fl">2014</span>, 
-  <span class="st">"Takes"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,
-  <span class="st">"expansionRate"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">22</span>, <span class="fl">14</span>, <span class="fl">32</span>, <span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">30</span>,  <span class="fl">7</span>, <span class="fl">26</span>, <span class="fl">21</span>, <span class="fl">22</span>, <span class="fl">23</span>, <span class="fl">27</span><span class="op">)</span>,
-  <span class="st">"Sets"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">391</span>, <span class="fl">340</span>, <span class="fl">330</span>, <span class="fl">660</span>, <span class="fl">470</span>, <span class="fl">500</span>, <span class="fl">330</span>, <span class="fl">287</span>, <span class="fl">756</span>, <span class="fl">673</span>, <span class="fl">532</span>, <span class="fl">351</span>, <span class="fl">486</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># replace this with your own data frame</span></span>
+<span><span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="st">"Year"</span><span class="op">=</span> <span class="fl">2002</span><span class="op">:</span><span class="fl">2014</span>, </span>
+<span>  <span class="st">"Takes"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>  <span class="st">"expansionRate"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">22</span>, <span class="fl">14</span>, <span class="fl">32</span>, <span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">30</span>,  <span class="fl">7</span>, <span class="fl">26</span>, <span class="fl">21</span>, <span class="fl">22</span>, <span class="fl">23</span>, <span class="fl">27</span><span class="op">)</span>,</span>
+<span>  <span class="st">"Sets"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">391</span>, <span class="fl">340</span>, <span class="fl">330</span>, <span class="fl">660</span>, <span class="fl">470</span>, <span class="fl">500</span>, <span class="fl">330</span>, <span class="fl">287</span>, <span class="fl">756</span>, <span class="fl">673</span>, <span class="fl">532</span>, <span class="fl">351</span>, <span class="fl">486</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="simple-model-with-constant-bycatch-no-covariates" class="section level2">
-<h2 class="hasAnchor">
-<a href="#simple-model-with-constant-bycatch-no-covariates" class="anchor"></a>Simple model with constant bycatch, no covariates</h2>
+<div class="section level2">
+<h2 id="simple-model-with-constant-bycatch-no-covariates">Simple model with constant bycatch, no covariates<a class="anchor" aria-label="anchor" href="#simple-model-with-constant-bycatch-no-covariates"></a>
+</h2>
 <p>We’ll start by fitting a model with constant bycatch rate,</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fit</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>, data<span class="op">=</span><span class="va">d</span>, time<span class="op">=</span><span class="st">"Year"</span>, effort<span class="op">=</span><span class="st">"Sets"</span>, family<span class="op">=</span><span class="st">"poisson"</span>,
-  time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>, data<span class="op">=</span><span class="va">d</span>, time<span class="op">=</span><span class="st">"Year"</span>, effort<span class="op">=</span><span class="st">"Sets"</span>, family<span class="op">=</span><span class="st">"poisson"</span>,</span>
+<span>  time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="expanding-bycatch-estimates" class="section level2">
-<h2 class="hasAnchor">
-<a href="#expanding-bycatch-estimates" class="anchor"></a>Expanding bycatch estimates</h2>
-<p>By default the model assumes coverage is 100%, and no expansion is done. But to do the expansion, we can include the <code>expansion_rate</code> argument,</p>
+<div class="section level2">
+<h2 id="expanding-bycatch-estimates">Expanding bycatch estimates<a class="anchor" aria-label="anchor" href="#expanding-bycatch-estimates"></a>
+</h2>
+<p>By default the model assumes coverage is 100%, and no expansion is
+done. But to do the expansion, we can include the
+<code>expansion_rate</code> argument,</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fit</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>, data<span class="op">=</span><span class="va">d</span>, time<span class="op">=</span><span class="st">"Year"</span>, effort<span class="op">=</span><span class="st">"Sets"</span>, family<span class="op">=</span><span class="st">"poisson"</span>,
-  time_varying <span class="op">=</span> <span class="cn">FALSE</span>, expansion_rate <span class="op">=</span> <span class="st">"expansionRate"</span><span class="op">)</span></code></pre></div>
-<p>And we can then plot these estimates. Like the previous function we can specify whether to include the raw points or not. First, we’ll show estimates of total bycatch (observed + unobserved)</p>
+<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>, data<span class="op">=</span><span class="va">d</span>, time<span class="op">=</span><span class="st">"Year"</span>, effort<span class="op">=</span><span class="st">"Sets"</span>, family<span class="op">=</span><span class="st">"poisson"</span>,</span>
+<span>  time_varying <span class="op">=</span> <span class="cn">FALSE</span>, expansion_rate <span class="op">=</span> <span class="st">"expansionRate"</span><span class="op">)</span></span></code></pre></div>
+<p>And we can then plot these estimates. Like the previous function we
+can specify whether to include the raw points or not. First, we’ll show
+estimates of total bycatch (observed + unobserved)</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_expanded.html">plot_expanded</a></span><span class="op">(</span>fitted_model<span class="op">=</span><span class="va">fit</span>, xlab<span class="op">=</span><span class="st">"Year"</span>, ylab <span class="op">=</span> <span class="st">"Fleet-level bycatch"</span>, include_points <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p>Alternatively, we may be interested in just summarizing the unobserved estimates. In this case, we can set the parameter <code>show_total</code> = FALSE.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_expanded.html">plot_expanded</a></span><span class="op">(</span>fitted_model<span class="op">=</span><span class="va">fit</span>, xlab<span class="op">=</span><span class="st">"Year"</span>, ylab <span class="op">=</span> <span class="st">"Fleet-level bycatch"</span>, include_points <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>Alternatively, we may be interested in just summarizing the
+unobserved estimates. In this case, we can set the parameter
+<code>show_total</code> = FALSE.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_expanded.html">plot_expanded</a></span><span class="op">(</span>fitted_model<span class="op">=</span><span class="va">fit</span>, xlab<span class="op">=</span><span class="st">"Year"</span>, ylab <span class="op">=</span> <span class="st">"Unobserved bycatch"</span>, include_points <span class="op">=</span> <span class="cn">TRUE</span>,show_total <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div id="make-table-of-expanded-bycatch-estimates" class="section level3">
-<h3 class="hasAnchor">
-<a href="#make-table-of-expanded-bycatch-estimates" class="anchor"></a>Make table of expanded bycatch estimates</h3>
-<p>We can also do things like summarize the expanded estimates in table form. This takes use of the <code>get_expanded</code> helper function,</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_expanded.html">plot_expanded</a></span><span class="op">(</span>fitted_model<span class="op">=</span><span class="va">fit</span>, xlab<span class="op">=</span><span class="st">"Year"</span>, ylab <span class="op">=</span> <span class="st">"Unobserved bycatch"</span>, include_points <span class="op">=</span> <span class="cn">TRUE</span>,show_total <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="make-table-of-expanded-bycatch-estimates">Make table of expanded bycatch estimates<a class="anchor" aria-label="anchor" href="#make-table-of-expanded-bycatch-estimates"></a>
+</h3>
+<p>We can also do things like summarize the expanded estimates in table
+form. This takes use of the <code>get_expanded</code> helper
+function,</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">expanded</span> <span class="op">=</span> <span class="fu"><a href="../reference/get_expanded.html">get_expanded</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span>
-
-<span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="st">"time"</span> <span class="op">=</span> <span class="va">d</span><span class="op">[</span>,<span class="st">"Year"</span><span class="op">]</span>, 
-  <span class="st">"mean"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">expanded</span>, <span class="fl">2</span>, <span class="va">mean</span><span class="op">)</span>,
-  <span class="st">"median"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">expanded</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.5</span><span class="op">)</span>,
-  <span class="st">"lower95"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">expanded</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.025</span><span class="op">)</span>,
-  <span class="st">"upper95"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">expanded</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>We could do all kinds of things with this kind of table, like output it to a .csv,</p>
+<code class="sourceCode R"><span><span class="va">expanded</span> <span class="op">=</span> <span class="fu"><a href="../reference/get_expanded.html">get_expanded</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="st">"time"</span> <span class="op">=</span> <span class="va">d</span><span class="op">[</span>,<span class="st">"Year"</span><span class="op">]</span>, </span>
+<span>  <span class="st">"mean"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">expanded</span>, <span class="fl">2</span>, <span class="va">mean</span><span class="op">)</span>,</span>
+<span>  <span class="st">"median"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">expanded</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>  <span class="st">"lower95"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">expanded</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.025</span><span class="op">)</span>,</span>
+<span>  <span class="st">"upper95"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">expanded</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>We could do all kinds of things with this kind of table, like output
+it to a .csv,</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.table</a></span><span class="op">(</span><span class="va">df</span>, <span class="st">"estimated_bycatch.csv"</span>, row.names<span class="op">=</span><span class="cn">F</span>, col.names<span class="op">=</span><span class="cn">T</span>, sep<span class="op">=</span><span class="st">","</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">df</span>, <span class="st">"estimated_bycatch.csv"</span>, row.names<span class="op">=</span><span class="cn">F</span>, col.names<span class="op">=</span><span class="cn">T</span>, sep<span class="op">=</span><span class="st">","</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="derived-quantities" class="section level3">
-<h3 class="hasAnchor">
-<a href="#derived-quantities" class="anchor"></a>Derived quantities</h3>
+<div class="section level3">
+<h3 id="derived-quantities">Derived quantities<a class="anchor" aria-label="anchor" href="#derived-quantities"></a>
+</h3>
 <p>Or calculate the probability of getting values &gt; 0, by year</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pr_zero</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">x</span><span class="op">==</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">pr_pos</span> <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">expanded</span>,<span class="fl">2</span>, <span class="va">pr_zero</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">pr_pos</span><span class="op">)</span></code></pre></div>
-<pre><code>##  [1] 0.5940000 0.5586667 0.7186667 0.6126667 0.5606667 0.6386667 0.4220000
-##  [8] 0.8866667 0.7300000 0.7880000 0.6893333 0.5380000 0.5800000</code></pre>
+<code class="sourceCode R"><span><span class="va">pr_zero</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">x</span><span class="op">==</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">pr_pos</span> <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">expanded</span>,<span class="fl">2</span>, <span class="va">pr_zero</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">pr_pos</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##  [1] 0.5940000 0.5586667 0.7186667 0.6126667 0.5606667 0.6386667 0.4220000</span></span>
+<span><span class="co">##  [8] 0.8866667 0.7300000 0.7880000 0.6893333 0.5380000 0.5800000</span></span></code></pre>
 </div>
-<div id="make-table-of-total-bycatch-estimates" class="section level3">
-<h3 class="hasAnchor">
-<a href="#make-table-of-total-bycatch-estimates" class="anchor"></a>Make table of total bycatch estimates</h3>
-<p>Like the <code>get_expanded</code> helper function, we have a <code>get_total</code> helper function to summarize the total observed + expanded unobserved bycatch. This function also takes a fitted model object,</p>
+<div class="section level3">
+<h3 id="make-table-of-total-bycatch-estimates">Make table of total bycatch estimates<a class="anchor" aria-label="anchor" href="#make-table-of-total-bycatch-estimates"></a>
+</h3>
+<p>Like the <code>get_expanded</code> helper function, we have a
+<code>get_total</code> helper function to summarize the total observed +
+expanded unobserved bycatch. This function also takes a fitted model
+object,</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">total</span> <span class="op">=</span> <span class="fu"><a href="../reference/get_total.html">get_total</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span>
-
-<span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="st">"time"</span> <span class="op">=</span> <span class="va">d</span><span class="op">[</span>,<span class="st">"Year"</span><span class="op">]</span>, 
-  <span class="st">"mean"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">total</span>, <span class="fl">2</span>, <span class="va">mean</span><span class="op">)</span>,
-  <span class="st">"median"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">total</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.5</span><span class="op">)</span>,
-  <span class="st">"lower95"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">total</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.025</span><span class="op">)</span>,
-  <span class="st">"upper95"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">total</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">total</span> <span class="op">=</span> <span class="fu"><a href="../reference/get_total.html">get_total</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="st">"time"</span> <span class="op">=</span> <span class="va">d</span><span class="op">[</span>,<span class="st">"Year"</span><span class="op">]</span>, </span>
+<span>  <span class="st">"mean"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">total</span>, <span class="fl">2</span>, <span class="va">mean</span><span class="op">)</span>,</span>
+<span>  <span class="st">"median"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">total</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>  <span class="st">"lower95"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">total</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.025</span><span class="op">)</span>,</span>
+<span>  <span class="st">"upper95"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">total</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </div>
@@ -192,11 +206,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Eric J. Ward, Jason Jannot.</p>
+  <p></p>
+<p>Developed by Eric J. Ward, Jason Jannot.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -204,6 +220,8 @@
 
   
 
+
+  
 
   </body>
 </html>

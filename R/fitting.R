@@ -18,7 +18,7 @@
 #' @param control List to pass to [rstan::sampling()]. For example,
 #'   increase \code{adapt_delta} if there are warnings about divergent
 #'   transitions: \code{control = list(adapt_delta = 0.99)}. By default,
-#'   \pkg{glmmfields} sets \code{adapt_delta = 0.9}.
+#'   \pkg{bycatch} sets \code{adapt_delta = 0.9}.
 #' @param ... Any other arguments to pass to [rstan::sampling()].
 #'
 #' @return list of the data used to fit the model, the matrix of covariates, the expanded bycatch generated via the fit and simulations, and the fitted stan model
@@ -116,16 +116,19 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansi
     stop("The family must be specified as a distribution in the recognized list")
   }
 
-  pars <- c("beta", "lambda", "log_lambda", "log_lik", "y_new")
-  if (family %in% c("nbinom2", "nbinom2-hurdle")) pars <- c(pars, "nb2_phi")
-  if (family %in% c("poisson-hurdle", "nbinom2-hurdle")) pars <- c(pars, "theta")
-  if (family %in% c("lognormal", "lognormal-hurdle", "normal", "normal-hurdle")) pars <- c(pars, "sigma_logn")
-  if (family %in% c("gamma", "gamma-hurdle")) pars <- c(pars, "cv_gamma")
+  # pars <- c("beta", "lambda", "log_lambda", "log_lik", "y_new")
+  # if (family %in% c("nbinom2", "nbinom2-hurdle")) pars <- c(pars, "nb2_phi")
+  # if (family %in% c("poisson-hurdle", "nbinom2-hurdle")) pars <- c(pars, "theta")
+  # if (family %in% c("lognormal", "lognormal-hurdle", "normal", "normal-hurdle")) pars <- c(pars, "sigma_logn")
+  # if (family %in% c("gamma", "gamma-hurdle")) pars <- c(pars, "cv_gamma")
+  #
+  # if (time_varying == TRUE) {
+  #   pars <- c(pars, "est_time_dev", "sigma_rw")
+  # }
 
-  if (time_varying == TRUE) {
-    pars <- c(pars, "est_time_dev", "sigma_rw")
-  }
-
+  pars <- c("beta", "lambda", "log_lambda", "log_lik", "y_new",
+                                   "est_time_dev", "sigma_rw", "sigma_logn", "cv_gamma",
+                                   "nb2_phi", "theta")
   family_id <- match(family, c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle", "lognormal", "gamma", "lognormal-hurdle", "gamma-hurdle", "normal", "normal-hurdle")) # 1, 2, 3, 4, 5, 6, 7, 8
   if (family %in% c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle") == FALSE) {
     yint <- ifelse(y > 0, 1, 0)

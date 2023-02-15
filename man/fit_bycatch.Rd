@@ -48,7 +48,7 @@ link function.}
 \item{control}{List to pass to \code{\link[rstan:stanmodel-method-sampling]{rstan::sampling()}}. For example,
 increase \code{adapt_delta} if there are warnings about divergent
 transitions: \code{control = list(adapt_delta = 0.99)}. By default,
-\pkg{glmmfields} sets \code{adapt_delta = 0.9}.}
+\pkg{bycatch} sets \code{adapt_delta = 0.9}.}
 
 \item{...}{Any other arguments to pass to \code{\link[rstan:stanmodel-method-sampling]{rstan::sampling()}}.}
 }

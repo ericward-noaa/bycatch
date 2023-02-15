@@ -20,6 +20,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -32,23 +34,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">bycatch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.6</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -63,12 +59,15 @@
     <li>
       <a href="articles/a03_expanding_estimates.html">Expanding bycatch estimates</a>
     </li>
+    <li>
+      <a href="articles/a04_diagnosing_problems.html">Diagnosing errors</a>
+    </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/ericward-noaa/bycatch/">
+  <a href="https://github.com/ericward-noaa/bycatch/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -86,36 +85,36 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
-<p><!-- badges: start --> <a href="https://github.com/ericward-noaa/bycatch/actions"><img src="https://github.com/ericward-noaa/bycatch/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a> <!-- badges: end --></p>
-<div id="bycatch" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#bycatch" class="anchor"></a>bycatch</h1></div>
-<p>This is a repository for applications of Bayesian bycatch models, using Stan for estimation. These models fit Bayesian GLMs (with or without time varying parameters, and with or without covariates) to estimate bycatch rates. The package includes functions to estimate fleet-level estimates. The primary applications of these models (linked to below) are protected species bycatch (e.g. ESA listed birds, marine mammals) in the west coast groundfish fisheries off the west coast of the USA. Data compilation and analysis is done at the Northwest Fisheries Science Center (NWFSC) in Seattle. The pkgdown version of this site can be found here: <a href="https://ericward-noaa.github.io/bycatch/">https://ericward-noaa.github.io/bycatch/</a></p>
-<div id="citation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#citation" class="anchor"></a>Citation:</h2>
+<p><!-- badges: start --> <a href="https://github.com/ericward-noaa/bycatch/actions" class="external-link"><img src="https://github.com/ericward-noaa/bycatch/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a> <!-- badges: end --></p>
+<div class="section level1">
+<div class="page-header"><h1 id="bycatch">bycatch<a class="anchor" aria-label="anchor" href="#bycatch"></a>
+</h1></div>
+<p>This is a repository for applications of Bayesian bycatch models, using Stan for estimation. These models fit Bayesian GLMs (with or without time varying parameters, and with or without covariates) to estimate bycatch rates. The package includes functions to estimate fleet-level estimates. The primary applications of these models (linked to below) are protected species bycatch (e.g. ESA listed birds, marine mammals) in the west coast groundfish fisheries off the west coast of the USA. Data compilation and analysis is done at the Northwest Fisheries Science Center (NWFSC) in Seattle. The pkgdown version of this site can be found here: <a href="https://ericward-noaa.github.io/bycatch/" class="external-link">https://ericward-noaa.github.io/bycatch/</a></p>
+<div class="section level2">
+<h2 id="citation">Citation:<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h2>
 <p>Paper: Jannot, J.E., Ward, E.J., Somers, K.A., Feist, B.E., Good, T.P., Lawson, D., and J.V. Carretta. 2021. Using Bayesian time-series models to estimate humpback whale entanglements in the U.S. west coast sablefish pot fishery. Frontiers in Marine Science.</p>
-<p>Package: Ward, E.J. and J. Jannot. bycatch: Using Bayesian generalized linear models for estimating bycatch rates and generating fleet-level expansions. <a href="https://zenodo.org/badge/latestdoi/85732013"><img src="https://zenodo.org/badge/85732013.svg" alt="DOI"></a></p>
+<p>Package: Ward, E.J. and J. Jannot. bycatch: Using Bayesian generalized linear models for estimating bycatch rates and generating fleet-level expansions. <a href="https://zenodo.org/badge/latestdoi/85732013" class="external-link"><img src="https://zenodo.org/badge/85732013.svg" alt="DOI"></a></p>
 <p><strong>See also</strong>:</p>
 <p>Stohs, S.M. 2008. Predicting effort and protected species bycatch under an effort limit or take caps. American Agricultural Economics Association Annual Meeting, Orlando, FL.</p>
 <p>Gardner, B., Sullivan, P.J., Epperly, S., and Morreale, S.J. 2008. Hierarchical modeling of bycatch rates of sea turtles in the western North Atlantic. Endangered Species Res. 5(December): 279–289. <a href="doi:10.3354/esr00105" class="uri">doi:10.3354/esr00105</a></p>
-<p>Martin, S.L., S.M. Stohs, and J.E. Moore. 2015. Bayesian inference and assessment for rare‐event bycatch in marine fisheries: a drift gillnet fishery case study. Ecological Applications, 25(2):416-429. <a href="https://doi.org/10.1890/14-0059.1" class="uri">https://doi.org/10.1890/14-0059.1</a></p>
+<p>Martin, S.L., S.M. Stohs, and J.E. Moore. 2015. Bayesian inference and assessment for rare‐event bycatch in marine fisheries: a drift gillnet fishery case study. Ecological Applications, 25(2):416-429. <a href="https://doi.org/10.1890/14-0059.1" class="external-link uri">https://doi.org/10.1890/14-0059.1</a></p>
 </div>
-<div id="reports" class="section level2">
-<h2 class="hasAnchor">
-<a href="#reports" class="anchor"></a>Reports:</h2>
-<p>Jannot, J. E., A. Wuest, T. P. Good, K. A. Somers, V. J. Tuttle, K. E. Richerson, R. S. Shama, and J. T. McVeigh. 2021. Seabird Bycatch in U.S. West Coast Fisheries, 2002–18. U.S. Department of Commerce, NOAA Technical Memorandum NMFS-NWFSC-165. <a href="https://doi.org/10.25923/78vk-v149">doi: https://doi.org/10.25923/78vk-v149</a></p>
-<p>Jannot, J. E., K. A. Somers, V. Tuttle, J. McVeigh, J. V. Carretta, and V. Helker. 2018. Observed and Estimated Marine Mammal Bycatch in U.S. West Coast Groundfish Fisheries, 2002-16. U.S. Department of Commerce, NWFSC Processed Report 2018-03. <a href="https://doi.org/10.25923/fkf8-0x49">doi: https://doi.org/10.25923/fkf8-0x49</a></p>
-<p>Good, T. P., E. Ward, J. Jannot, R. Shama, N. Riley, and J. McVeigh. 2019. Observed and Estimated Bycatch of Short-tailed Albatross in U.S. West Coast Groundfish Fisheries 2002-2017. National Marine Fisheries Service, NWFSC, 2725 Montlake Blvd E., Seattle, WA 98112 <a href="https://www.pcouncil.org/documents/2019/06/agenda-item-i-4-a-nmfs-report-6-observed-and-estimated-bycatch-of-short-tailed-albatross-in-u-s-west-coast-groundfish-fisheries-2016-2017-electronic-only.pdf/">link</a></p>
+<div class="section level2">
+<h2 id="reports">Reports:<a class="anchor" aria-label="anchor" href="#reports"></a>
+</h2>
+<p>Jannot, J. E., A. Wuest, T. P. Good, K. A. Somers, V. J. Tuttle, K. E. Richerson, R. S. Shama, and J. T. McVeigh. 2021. Seabird Bycatch in U.S. West Coast Fisheries, 2002–18. U.S. Department of Commerce, NOAA Technical Memorandum NMFS-NWFSC-165. <a href="https://doi.org/10.25923/78vk-v149" class="external-link">doi: https://doi.org/10.25923/78vk-v149</a></p>
+<p>Jannot, J. E., K. A. Somers, V. Tuttle, J. McVeigh, J. V. Carretta, and V. Helker. 2018. Observed and Estimated Marine Mammal Bycatch in U.S. West Coast Groundfish Fisheries, 2002-16. U.S. Department of Commerce, NWFSC Processed Report 2018-03. <a href="https://doi.org/10.25923/fkf8-0x49" class="external-link">doi: https://doi.org/10.25923/fkf8-0x49</a></p>
+<p>Good, T. P., E. Ward, J. Jannot, R. Shama, N. Riley, and J. McVeigh. 2019. Observed and Estimated Bycatch of Short-tailed Albatross in U.S. West Coast Groundfish Fisheries 2002-2017. National Marine Fisheries Service, NWFSC, 2725 Montlake Blvd E., Seattle, WA 98112 <a href="https://www.pcouncil.org/documents/2019/06/agenda-item-i-4-a-nmfs-report-6-observed-and-estimated-bycatch-of-short-tailed-albatross-in-u-s-west-coast-groundfish-fisheries-2016-2017-electronic-only.pdf/" class="external-link">link</a></p>
 <p>Hanson, M.B., T.P. Good, J.E. Jannot, and J. McVeigh. 2019. Estimated humpback whale bycatch in the U.S. West Coast Groundfish Fisheries 2002-2017. National Marine Fisheries Service, NWFSC, 2725 Montlake Blvd E., Seattle, WA 98112</p>
-<p>Good, T. P., E. Ward, J. Jannot, R. Shama, N. Riley, and J. McVeigh. 2017. Observed and Estimated Bycatch of Short-tailed Albatross in U.S. West Coast Groundfish Fisheries 2014-2015. National Marine Fisheries Service, NWFSC, 2725 Montlake Blvd E., Seattle, WA 98112 <a href="https://www.pcouncil.org/documents/2017/04/agenda-item-f-5-a-nmfs-report-6.pdf/">link</a></p>
+<p>Good, T. P., E. Ward, J. Jannot, R. Shama, N. Riley, and J. McVeigh. 2017. Observed and Estimated Bycatch of Short-tailed Albatross in U.S. West Coast Groundfish Fisheries 2014-2015. National Marine Fisheries Service, NWFSC, 2725 Montlake Blvd E., Seattle, WA 98112 <a href="https://www.pcouncil.org/documents/2017/04/agenda-item-f-5-a-nmfs-report-6.pdf/" class="external-link">link</a></p>
 </div>
-<div id="noaa-disclaimer" class="section level2">
-<h2 class="hasAnchor">
-<a href="#noaa-disclaimer" class="anchor"></a>NOAA Disclaimer</h2>
+<div class="section level2">
+<h2 id="noaa-disclaimer">NOAA Disclaimer<a class="anchor" aria-label="anchor" href="#noaa-disclaimer"></a>
+</h2>
 <p>This repository is a scientific product and is not official communication of the National Oceanic and Atmospheric Administration, or the United States Department of Commerce. All NOAA GitHub project code is provided on an ‘as is’ basis and the user assumes responsibility for its use. Any claims against the Department of Commerce or Department of Commerce bureaus stemming from the use of this GitHub project will be governed by all applicable Federal law. Any reference to specific commercial products, processes, or services by service mark, trademark, manufacturer, or otherwise, does not constitute or imply their endorsement, recommendation or favoring by the Department of Commerce. The Department of Commerce seal and logo, or the seal and logo of a DOC bureau, shall not be used in any manner to imply endorsement of any commercial product or activity by DOC or the United States Government.</p>
 <p><img src="https://raw.githubusercontent.com/nmfs-general-modeling-tools/nmfspalette/main/man/figures/noaa-fisheries-rgb-2line-horizontal-small.png" height="75" alt="NOAA Fisheries"></p>
-<p><a href="https://www.commerce.gov/">U.S. Department of Commerce</a> | <a href="https://www.noaa.gov">National Oceanographic and Atmospheric Administration</a> | <a href="https://www.fisheries.noaa.gov/">NOAA Fisheries</a></p>
+<p><a href="https://www.commerce.gov/" class="external-link">U.S. Department of Commerce</a> | <a href="https://www.noaa.gov" class="external-link">National Oceanographic and Atmospheric Administration</a> | <a href="https://www.fisheries.noaa.gov/" class="external-link">NOAA Fisheries</a></p>
 </div>
 </div>
 
@@ -123,45 +122,51 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/ericward-noaa/bycatch/">https://​github.com/​ericward-noaa/​bycatch/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/ericward-noaa/bycatch/issues">https://​github.com/​ericward-noaa/​bycatch/​issues</a>
-</li>
+<li><a href="https://github.com/ericward-noaa/bycatch/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/ericward-noaa/bycatch/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></li>
+<li><a href="https://www.r-project.org/Licenses/GPL-3" class="external-link">GPL-3</a></li>
 </ul>
 </div>
+
+
 <div class="citation">
-<h2>Citation</h2>
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html">Citing bycatch</a></li>
+<li><a href="authors.html#citation">Citing bycatch</a></li>
 </ul>
 </div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Eric J. Ward <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Jason Jannot <br><small class="roles"> Author </small>  </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
+
+
 
   </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Eric J. Ward, Jason Jannot.</p>
+  <p></p>
+<p>Developed by Eric J. Ward, Jason Jannot.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -169,6 +174,8 @@
 
   
 
+
+  
 
   </body>
 </html>
