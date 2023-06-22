@@ -82,13 +82,14 @@
 
       
 
-      </header><script src="a03_expanding_estimates_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Expanding bycatch estimates</h1>
-                        <h4 data-toc-skip class="author">Eric J. Ward, Jason E. Jannot</h4>
+                        <h4 data-toc-skip class="author">Eric J. Ward,
+Jason E. Jannot</h4>
             
-            <h4 data-toc-skip class="date">2023-02-15</h4>
+            <h4 data-toc-skip class="date">2023-06-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ericward-noaa/bycatch/blob/HEAD/vignettes/a03_expanding_estimates.Rmd" class="external-link"><code>vignettes/a03_expanding_estimates.Rmd</code></a></small>
       <div class="hidden name"><code>a03_expanding_estimates.Rmd</code></div>
@@ -105,7 +106,9 @@
 <div class="section level3">
 <h3 id="load-data">Load data<a class="anchor" aria-label="anchor" href="#load-data"></a>
 </h3>
-<p>For our dummy dataaset, the expansionRate column contains the expansion rate. In other words, the number of total sets is the sets divided by expansion rate.</p>
+<p>For our dummy dataaset, the expansionRate column contains the
+expansion rate. In other words, the number of total sets is the sets
+divided by expansion rate.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># replace this with your own data frame</span></span>
 <span><span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="st">"Year"</span><span class="op">=</span> <span class="fl">2002</span><span class="op">:</span><span class="fl">2014</span>, </span>
@@ -124,20 +127,28 @@
 <div class="section level2">
 <h2 id="expanding-bycatch-estimates">Expanding bycatch estimates<a class="anchor" aria-label="anchor" href="#expanding-bycatch-estimates"></a>
 </h2>
-<p>By default the model assumes coverage is 100%, and no expansion is done. But to do the expansion, we can include the <code>expansion_rate</code> argument,</p>
+<p>By default the model assumes coverage is 100%, and no expansion is
+done. But to do the expansion, we can include the
+<code>expansion_rate</code> argument,</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>, data<span class="op">=</span><span class="va">d</span>, time<span class="op">=</span><span class="st">"Year"</span>, effort<span class="op">=</span><span class="st">"Sets"</span>, family<span class="op">=</span><span class="st">"poisson"</span>,</span>
 <span>  time_varying <span class="op">=</span> <span class="cn">FALSE</span>, expansion_rate <span class="op">=</span> <span class="st">"expansionRate"</span><span class="op">)</span></span></code></pre></div>
-<p>And we can then plot these estimates. Like the previous function we can specify whether to include the raw points or not. First, we’ll show estimates of total bycatch (observed + unobserved)</p>
+<p>And we can then plot these estimates. Like the previous function we
+can specify whether to include the raw points or not. First, we’ll show
+estimates of total bycatch (observed + unobserved)</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_expanded.html">plot_expanded</a></span><span class="op">(</span>fitted_model<span class="op">=</span><span class="va">fit</span>, xlab<span class="op">=</span><span class="st">"Year"</span>, ylab <span class="op">=</span> <span class="st">"Fleet-level bycatch"</span>, include_points <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p>Alternatively, we may be interested in just summarizing the unobserved estimates. In this case, we can set the parameter <code>show_total</code> = FALSE.</p>
+<p>Alternatively, we may be interested in just summarizing the
+unobserved estimates. In this case, we can set the parameter
+<code>show_total</code> = FALSE.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_expanded.html">plot_expanded</a></span><span class="op">(</span>fitted_model<span class="op">=</span><span class="va">fit</span>, xlab<span class="op">=</span><span class="st">"Year"</span>, ylab <span class="op">=</span> <span class="st">"Unobserved bycatch"</span>, include_points <span class="op">=</span> <span class="cn">TRUE</span>,show_total <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="make-table-of-expanded-bycatch-estimates">Make table of expanded bycatch estimates<a class="anchor" aria-label="anchor" href="#make-table-of-expanded-bycatch-estimates"></a>
 </h3>
-<p>We can also do things like summarize the expanded estimates in table form. This takes use of the <code>get_expanded</code> helper function,</p>
+<p>We can also do things like summarize the expanded estimates in table
+form. This takes use of the <code>get_expanded</code> helper
+function,</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">expanded</span> <span class="op">=</span> <span class="fu"><a href="../reference/get_expanded.html">get_expanded</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
 <span></span>
@@ -146,7 +157,8 @@
 <span>  <span class="st">"median"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">expanded</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>  <span class="st">"lower95"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">expanded</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.025</span><span class="op">)</span>,</span>
 <span>  <span class="st">"upper95"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">expanded</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>We could do all kinds of things with this kind of table, like output it to a .csv,</p>
+<p>We could do all kinds of things with this kind of table, like output
+it to a .csv,</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">df</span>, <span class="st">"estimated_bycatch.csv"</span>, row.names<span class="op">=</span><span class="cn">F</span>, col.names<span class="op">=</span><span class="cn">T</span>, sep<span class="op">=</span><span class="st">","</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -167,7 +179,10 @@
 <div class="section level3">
 <h3 id="make-table-of-total-bycatch-estimates">Make table of total bycatch estimates<a class="anchor" aria-label="anchor" href="#make-table-of-total-bycatch-estimates"></a>
 </h3>
-<p>Like the <code>get_expanded</code> helper function, we have a <code>get_total</code> helper function to summarize the total observed + expanded unobserved bycatch. This function also takes a fitted model object,</p>
+<p>Like the <code>get_expanded</code> helper function, we have a
+<code>get_total</code> helper function to summarize the total observed +
+expanded unobserved bycatch. This function also takes a fitted model
+object,</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">total</span> <span class="op">=</span> <span class="fu"><a href="../reference/get_total.html">get_total</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
 <span></span>

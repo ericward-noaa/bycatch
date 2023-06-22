@@ -82,13 +82,14 @@
 
       
 
-      </header><script src="a04_diagnosing_problems_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Diagnosing errors</h1>
-                        <h4 data-toc-skip class="author">Eric J. Ward, Jason E. Jannot</h4>
+                        <h4 data-toc-skip class="author">Eric J. Ward,
+Jason E. Jannot</h4>
             
-            <h4 data-toc-skip class="date">2023-02-15</h4>
+            <h4 data-toc-skip class="date">2023-06-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ericward-noaa/bycatch/blob/HEAD/vignettes/a04_diagnosing_problems.Rmd" class="external-link"><code>vignettes/a04_diagnosing_problems.Rmd</code></a></small>
       <div class="hidden name"><code>a04_diagnosing_problems.Rmd</code></div>
@@ -101,7 +102,11 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ericward-noaa.github.io/bycatch/" class="external-link">bycatch</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/loo/" class="external-link">loo</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></code></pre></div>
-<p>In some cases, models might produce warnings about high Pareto K statistics (&gt; 0.7). These may reflect a model that is too flexible for the data being used, in which case the model might need to be changed. In some cases, ‘moment matching’ may be used to improve diagnostics; an example of this is below.</p>
+<p>In some cases, models might produce warnings about high Pareto K
+statistics (&gt; 0.7). These may reflect a model that is too flexible
+for the data being used, in which case the model might need to be
+changed. In some cases, ‘moment matching’ may be used to improve
+diagnostics; an example of this is below.</p>
 <div class="section level3">
 <h3 id="load-data">Load data<a class="anchor" aria-label="anchor" href="#load-data"></a>
 </h3>
@@ -119,7 +124,9 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>, data<span class="op">=</span><span class="va">d</span>, time<span class="op">=</span><span class="st">"Year"</span>, effort<span class="op">=</span><span class="st">"Sets"</span>, family<span class="op">=</span><span class="st">"poisson"</span>,</span>
 <span>  time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p>If the ‘fit’ object produced errors about the Pareto K statistics being high, we could use moment matching in the <code>loo</code> package,</p>
+<p>If the ‘fit’ object produced errors about the Pareto K statistics
+being high, we could use moment matching in the <code>loo</code>
+package,</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">loo_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/loo/reference/loo.html" class="external-link">loo</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">fitted_model</span>, moment_match <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning: Some Pareto k diagnostic values are slightly high. See help('pareto-k-diagnostic') for details.</span></span></code></pre>
