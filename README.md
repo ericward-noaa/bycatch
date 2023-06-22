@@ -17,7 +17,7 @@ Ward, E.J. and J. Jannot. bycatch: Using Bayesian generalized linear models for 
 
 Stohs, S.M. 2008. Predicting effort and protected species bycatch under an effort limit or take caps. American Agricultural Economics Association Annual Meeting, Orlando, FL.
 
-Gardner, B., Sullivan, P.J., Epperly, S., and Morreale, S.J. 2008. Hierarchical modeling of bycatch rates of sea turtles in the western North Atlantic. Endangered Species Res. 5(December): 279–289. doi:10.3354/esr00105
+Gardner, B., Sullivan, P.J., Epperly, S., and Morreale, S.J. 2008. Hierarchical modeling of bycatch rates of sea turtles in the western North Atlantic. Endangered Species Res. 5(December): 279–289. https://doi:10.3354/esr00105
 
 Martin, S.L., S.M. Stohs, and J.E. Moore. 2015. Bayesian inference and assessment for rare‐event bycatch in marine fisheries: a drift gillnet fishery case study. Ecological Applications, 25(2):416-429. https://doi.org/10.1890/14-0059.1 
 
