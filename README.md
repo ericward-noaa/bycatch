@@ -21,6 +21,9 @@ Gardner, B., Sullivan, P.J., Epperly, S., and Morreale, S.J. 2008. Hierarchical 
 
 Martin, S.L., S.M. Stohs, and J.E. Moore. 2015. Bayesian inference and assessment for rare‐event bycatch in marine fisheries: a drift gillnet fishery case study. Ecological Applications, 25(2):416-429. https://doi.org/10.1890/14-0059.1 
 
+Good, T.P., J.E. Jannot, K.A. Somers, and E.J. Ward. 2022. Using Bayesian time series models to estimate bycatch of an endangered albatross. Fisheries Research,
+256:106492. https://doi.org/10.1016/j.fishres.2022.106492
+
 ## Reports:
 
 Jannot, J. E., A. Wuest, T. P. Good, K. A. Somers, V. J. Tuttle, K. E. Richerson, R. S. Shama, and J. T. McVeigh. 2021. Seabird Bycatch in U.S. West Coast Fisheries, 2002–18. U.S. Department of Commerce, NOAA Technical Memorandum NMFS-NWFSC-165. [doi: https://doi.org/10.25923/78vk-v149](https://doi.org/10.25923/78vk-v149)
