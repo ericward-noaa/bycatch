@@ -2,7 +2,7 @@ data {
   int<lower=0> n_row;
   vector[n_row] effort; // covariates
   vector[n_row] new_effort; // covariate for unobserved sets
-  int yint[n_row]; // vector[n_pos] y; # data
+  int yint[n_row]; // vector[n_pos] y;
   vector[n_row] yreal;
   int time[n_row]; // time variable
   int<lower=0> n_year; // number of unique years

@@ -11,3 +11,25 @@ A DESCRIPTION OF THE PACKAGE
 \references{
 Stan Development Team (2023). RStan: the R interface to Stan. R package version 2.21.8. https://mc-stan.org
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://ericward-noaa.github.io/bycatch/}
+  \item Report bugs at \url{https://github.com/ericward-noaa/bycatch/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Eric J. Ward \email{eric.ward@noaa.gov}
+
+Authors:
+\itemize{
+  \item Jason Jannot
+}
+
+Other contributors:
+\itemize{
+  \item Trustees of Columbia University [copyright holder]
+}
+
+}
