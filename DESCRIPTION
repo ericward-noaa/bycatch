@@ -3,12 +3,12 @@ Type: Package
 Title: Fit Bayesian Models to Bycatch Data
 Version: 1.0.7
 Authors@R: c(
-    person(c("Eric", "J."), "Ward", email = "eric.ward@noaa.gov",
+    person(c("Eric"), "Ward", email = "eric.ward@noaa.gov",
       role = c("aut", "cre")),
     person(c("Jason"), "Jannot", role = "aut"),
     person("Trustees of", "Columbia University", role = "cph"))
 Maintainer: Eric Ward <eric.ward@noaa.gov>
-Description: This package fits models to bycatch data, and can expand to fleet-wide estimates, like in situations when fisheries are observed with less than 100% observer coverage.
+Description: Fits models to bycatch data, and can expand to fleet-wide estimates, like in situations when fisheries are observed with less than 100% observer coverage.
 License: GPL-3
 Encoding: UTF-8
 Depends:
