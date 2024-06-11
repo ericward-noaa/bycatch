@@ -206,3 +206,41 @@ test_that("fitting function works for gamma-hurdle model", {
   pars <- rstan::extract(fit$fitted_model, "lambda")
   expect_equal(apply(pars$lambda, 2, mean)[1], 5.02, tol = 0.1)
 })
+
+
+
+test_that("fitting function works for time varying poisson hurdle model", {
+  set.seed(123)
+
+  d <- data.frame(
+    "Year" = 2002:2014,
+    "Takes" = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0),
+    "expansionRate" = c(24, 22, 14, 32, 28, 25, 30, 7, 26, 21, 22, 23, 27),
+    "Sets" = c(391, 340, 330, 660, 470, 500, 330, 287, 756, 673, 532, 351, 486)
+  )
+  fit <- fit_bycatch(Takes ~ 1,
+    data = d, time = "Year",
+    effort = "Sets",
+    family = "poisson",
+    expansion_rate = "expansionRate",
+    time_varying = FALSE
+  )
+  expanded <- get_expanded(fit)
+  expect_equal(dim(expanded)[1], 1500)
+  expect_equal(dim(expanded)[2], 13)
+
+  fitted <- get_fitted(fit)
+  expect_equal(names(fitted), c("time","mean","low","high","obs"))
+
+  expanded <- get_total(fit)
+  expect_equal(dim(expanded)[1], 1500)
+  expect_equal(dim(expanded)[2], 13)
+
+  p <- plot_expanded(fit)
+  expect_equal(names(p)[1:5], c("data","layers","scales","guides","mapping"))
+
+  p <- plot_fitted(fit)
+  expect_equal(names(p)[1:5], c("data","layers","scales","guides","mapping"))
+})
+
+
