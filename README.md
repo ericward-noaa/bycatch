@@ -2,6 +2,10 @@
   [![R-CMD-check](https://github.com/ericward-noaa/bycatch/workflows/R-CMD-check/badge.svg)](https://github.com/ericward-noaa/bycatch/actions)
   <!-- badges: end -->
   
+  <!-- badges: start -->
+  [![Codecov test coverage](https://codecov.io/gh/ericward-noaa/bycatch/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ericward-noaa/bycatch?branch=master)
+  <!-- badges: end -->
+  
 # bycatch
 This is a repository for applications of Bayesian bycatch models, using Stan for estimation. These models fit Bayesian GLMs (with or without time varying parameters, and with or without covariates) to estimate bycatch rates. The package includes functions to estimate fleet-level estimates. The primary applications of these models (linked to below) are protected species bycatch (e.g. ESA listed birds, marine mammals) in the west coast groundfish fisheries off the west coast of the USA. Data compilation and analysis is done at the Northwest Fisheries Science Center (NWFSC) in Seattle. The pkgdown version of this site can be found here: [https://ericward-noaa.github.io/bycatch/](https://ericward-noaa.github.io/bycatch/)
 
