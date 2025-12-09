@@ -237,10 +237,12 @@ test_that("fitting function works for time varying poisson hurdle model", {
   expect_equal(dim(expanded)[2], 13)
 
   p <- plot_expanded(fit)
-  expect_equal(names(p)[1:5], c("data","layers","scales","guides","mapping"))
+  expect_s3_class(p, "ggplot")
+  expect_false(is.null(p))
 
   p <- plot_fitted(fit)
-  expect_equal(names(p)[1:5], c("data","layers","scales","guides","mapping"))
+  expect_s3_class(p, "ggplot")
+  expect_false(is.null(p))
 })
 
 

@@ -30,6 +30,8 @@ Good, T.P., J.E. Jannot, K.A. Somers, and E.J. Ward. 2022. Using Bayesian time s
 
 ## Reports:
 
+Jannot, J. E., K. A. Somers, V. J. Tuttle, J. Eibner, K. E. Richerson, J. T. McVeigh, J. V. Carretta, N. C. Young, J. Freed. 2022. Marine Mammal Bycatch in U.S. West Coast Groundfish Fisheries, 2002-19. U.S. Department of Commerce, NOAA Technical Memorandum NMFS-NWFSC-165. [doi: https://doi.org/10.25923/h6gg-c316](https://doi.org/10.25923/h6gg-c316)
+
 Jannot, J. E., A. Wuest, T. P. Good, K. A. Somers, V. J. Tuttle, K. E. Richerson, R. S. Shama, and J. T. McVeigh. 2021. Seabird Bycatch in U.S. West Coast Fisheries, 2002–18. U.S. Department of Commerce, NOAA Technical Memorandum NMFS-NWFSC-165. [doi: https://doi.org/10.25923/78vk-v149](https://doi.org/10.25923/78vk-v149)
 
 Jannot, J. E., K. A. Somers, V. Tuttle, J. McVeigh, J. V. Carretta, and V. Helker. 2018. Observed and Estimated Marine Mammal Bycatch in U.S. West Coast Groundfish Fisheries, 2002-16. U.S. Department of Commerce, NWFSC Processed Report 2018-03. [doi: https://doi.org/10.25923/fkf8-0x49](https://doi.org/10.25923/fkf8-0x49)

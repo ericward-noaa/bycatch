@@ -115,7 +115,32 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansi
   if (family %in% c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle", "lognormal", "gamma", "lognormal-hurdle", "gamma-hurdle", "normal", "normal-hurdle") == FALSE) {
     stop("The family must be specified as a distribution in the recognized list")
   }
+  if (!is.numeric(data[[effort]])) {
+    stop("Effort variable must be numeric")
+  }
 
+  if (!is.numeric(data[[time]])) {
+    stop("Time variable must be numeric")
+  }
+
+  if (any(data[[effort]] <= 0)) {
+    stop("Effort must be positive")
+  }
+
+  if (family %in% c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle")) {
+    if (!all(y == floor(y))) {
+      stop("Response must be integer counts for discrete families")
+    }
+    if (any(y < 0)) {
+      stop("Response must be non-negative for count models")
+    }
+  }
+
+  if (family %in% c("lognormal", "gamma", "lognormal-hurdle", "gamma-hurdle")) {
+    if (any(y < 0)) {
+      stop("Response must be non-negative for continuous positive families")
+    }
+  }
   # pars <- c("beta", "lambda", "log_lambda", "log_lik", "y_new")
   # if (family %in% c("nbinom2", "nbinom2-hurdle")) pars <- c(pars, "nb2_phi")
   # if (family %in% c("poisson-hurdle", "nbinom2-hurdle")) pars <- c(pars, "theta")

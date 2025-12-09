@@ -1,7 +1,7 @@
 Package: bycatch
 Type: Package
 Title: Fit Bayesian Models to Bycatch Data
-Version: 1.0.7
+Version: 1.0.8
 Authors@R: c(
     person(c("Eric"), "Ward", email = "eric.ward@noaa.gov",
       role = c("aut", "cre")),
@@ -38,7 +38,7 @@ Suggests:
     MASS
 URL: https://ericward-noaa.github.io/bycatch/
 BugReports: https://github.com/ericward-noaa/bycatch/issues
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 SystemRequirements: GNU make

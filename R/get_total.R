@@ -2,7 +2,7 @@
 #'
 #' @param fitted_model Data and fitted model returned from estimation
 #'
-#' @return matrix (MCMC draws x time steps) of posterior predictive values for unobserved bycatch
+#' @return matrix (MCMC draws x time steps) of posterior predictive values for total bycatch (observed + unobserved)
 #'
 #' @export
 #' @importFrom rstan extract
@@ -22,13 +22,23 @@
 #'   expansion_rate = "expansionRate",
 #'   time_varying = FALSE
 #' )
-#' expanded <- get_total(fit)
+#' total <- get_total(fit)
+#'
+#' # Calculate total bycatch summaries
+#' total_mean <- colMeans(total)
+#' total_quantiles <- apply(total, 2, quantile, probs = c(0.025, 0.975))
 #' }
 get_total <- function(fitted_model) {
+  # Get expanded estimates for unobserved effort
   expanded_estimates <- get_expanded(fitted_model)
-  total_estimates <- expanded_estimates
-  for(i in 1:ncol(total_estimates)) {
-    total_estimates[,i] = total_estimates[,i] + fitted_model$data[[fitted_model$events]][i]
-  }
+
+  # Get observed events
+  observed_events <- fitted_model$data[[fitted_model$events]]
+
+  # Vectorized addition: add observed events to each MCMC draw
+  # sweep() applies the operation across columns (MARGIN = 2)
+  # This is much faster than looping through columns
+  total_estimates <- sweep(expanded_estimates, 2, observed_events, "+")
+
   return(total_estimates)
 }

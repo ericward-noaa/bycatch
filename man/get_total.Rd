@@ -10,7 +10,7 @@ get_total(fitted_model)
 \item{fitted_model}{Data and fitted model returned from estimation}
 }
 \value{
-matrix (MCMC draws x time steps) of posterior predictive values for unobserved bycatch
+matrix (MCMC draws x time steps) of posterior predictive values for total bycatch (observed + unobserved)
 }
 \description{
 get_total is a helper function to return a matrix of total estimated bycatch
@@ -30,6 +30,10 @@ fit <- fit_bycatch(Takes ~ 1,
   expansion_rate = "expansionRate",
   time_varying = FALSE
 )
-expanded <- get_total(fit)
+total <- get_total(fit)
+
+# Calculate total bycatch summaries
+total_mean <- colMeans(total)
+total_quantiles <- apply(total, 2, quantile, probs = c(0.025, 0.975))
 }
 }
