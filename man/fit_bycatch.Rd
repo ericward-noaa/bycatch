@@ -10,6 +10,11 @@ fit_bycatch(
   time = "year",
   effort = "effort",
   expansion_rate = NULL,
+  takes_em = NULL,
+  effort_em = NULL,
+  takes_both = NULL,
+  effort_both = NULL,
+  effort_total = NULL,
   family = c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle", "lognormal",
     "gamma", "lognormal-hurdle", "gamma-hurdle", "normal", "normal-hurdle"),
   time_varying = FALSE,
@@ -29,7 +34,17 @@ fit_bycatch(
 \item{effort}{Named column of the 'effort' variable in the data frame with the label for the fishing effort to be used in estimation of mean bycatch rate. This
 represents total observed effort}
 
-\item{expansion_rate}{The expansion rate to be used in generating distributions for unobserved sets. If NULL, defaults to 100\% coverage (= 100)}
+\item{expansion_rate}{The expansion rate to be used in generating distributions for unobserved sets. If NULL, defaults to 100\% coverage (= 100). Deprecated if using effort_total.}
+
+\item{takes_em}{Optional: Column name for bycatch takes recorded by EM (electronic monitoring). Default NULL.}
+
+\item{effort_em}{Optional: Column name for effort monitored by EM. Required if takes_em is provided.}
+
+\item{takes_both}{Optional: Column name for bycatch takes when both Observer and EM are present. Default NULL.}
+
+\item{effort_both}{Optional: Column name for effort with both Observer and EM monitoring. Required if takes_both is provided.}
+
+\item{effort_total}{Optional: Column name for total fishery effort. If provided, replaces expansion_rate for calculating unobserved effort.}
 
 \item{family}{Family for response distribution can be discrete ("poisson",
 "nbinom2", "poisson-hurdle","nbinom2-hurdle"), or continuous ("normal",
@@ -58,8 +73,15 @@ list of the data used to fit the model, the matrix of covariates, the expanded b
 \description{
 fit_bycatch is the primary function for fitting bycatch models to time series of takes and effort
 }
+\details{
+\strong{Multi-stream monitoring:} When using multiple monitoring streams (Observer, EM, Both),
+the data are kept separate in the statistical model but all share the same underlying bycatch rate.
+This approach assumes all monitoring types have perfect/equal detection (detection = 100\\%) but
+avoids distributional issues that arise from pooling.
+}
 \examples{
 \donttest{
+# Single stream example (backwards compatible)
 d <- data.frame(
   "Year" = 2002:2014,
   "Takes" = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0),
@@ -70,59 +92,25 @@ fit <- fit_bycatch(Takes ~ 1,
   data = d, time = "Year",
   effort = "Sets", family = "poisson", time_varying = FALSE
 )
-loo::loo(fit$fitted_model)$estimates
 
-fit <- fit_bycatch(Takes ~ 1,
-  data = d, time = "Year", effort = "Sets",
-  family = "poisson", time_varying = FALSE
-)
-plot_fitted(fit,
-  xlab = "Year", ylab = "Fleet-level bycatch",
-  include_points = TRUE
-)
-
-# fit a negative binomial model, with more chains and control arguments
-fit_nb <- fit_bycatch(Takes ~ 1,
-  data = d, time = "Year",
-  effort = "Sets", family = "nbinom2",
-  time_varying = FALSE, iter = 2000, chains = 4,
-  control = list(adapt_delta = 0.99, max_treedepth = 20)
+# Multi-stream example (Observer + EM)
+d_multi <- data.frame(
+  Year = 2002:2014,
+  Takes_obs = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0),
+  Sets_obs = c(200, 180, 150, 350, 250, 270, 180, 150, 400, 350, 280, 180, 250),
+  Takes_em = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0),
+  Sets_em = c(150, 120, 140, 250, 180, 190, 120, 100, 300, 270, 200, 130, 190),
+  Sets_total = c(1000, 950, 900, 1800, 1200, 1300, 900, 750, 2000, 1800, 1400, 950, 1300)
 )
 
-# fit a time varying model
-fit <- fit_bycatch(Takes ~ 1,
-  data = d, time = "Year",
-  effort = "Sets", family = "poisson", time_varying = TRUE
-)
-
-# include data for expansion to unobserved sets
-fit_nb <- fit_bycatch(Takes ~ 1,
-  data = d, time = "Year",
-  effort = "Sets", family = "nbinom2",
-  expansion_rate = "expansionRate",
-  time_varying = FALSE, iter = 2000, chains = 4,
-  control = list(adapt_delta = 0.99, max_treedepth = 20)
-)
-
-# fit a model with a lognormal distribution
-d$Takes <- rnorm(nrow(d), 5, 0.1)
-fit_ln <- fit_bycatch(Takes ~ 1,
-  data = d, time = "Year",
-  effort = "Sets", family = "lognormal",
-  expansion_rate = "expansionRate",
-  time_varying = FALSE, iter = 2000, chains = 4,
-  control = list(adapt_delta = 0.99, max_treedepth = 20)
-)
-
-# add zeros and fit a delta-gamma distribution
-d$Takes <- rnorm(nrow(d), 5, 0.1)
-d$Takes[c(1, 5, 10)] <- 0
-fit_ln <- fit_bycatch(Takes ~ 1,
-  data = d, time = "Year",
-  effort = "Sets", family = "gamma-hurdle",
-  expansion_rate = "expansionRate",
-  time_varying = FALSE, iter = 2000, chains = 4,
-  control = list(adapt_delta = 0.99, max_treedepth = 20)
+fit_multi <- fit_bycatch(Takes_obs ~ 1,
+  data = d_multi,
+  time = "Year",
+  effort = "Sets_obs",
+  takes_em = "Takes_em",
+  effort_em = "Sets_em",
+  effort_total = "Sets_total",
+  family = "poisson"
 )
 }
 }

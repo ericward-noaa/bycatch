@@ -1,15 +1,40 @@
 data {
   int<lower=0> n_row;
-  vector[n_row] effort; // covariates
+  vector[n_row] effort; // For backwards compatibility (single stream)
   vector[n_row] new_effort; // covariate for unobserved sets
-  int yint[n_row]; // vector[n_pos] y;
-  vector[n_row] yreal;
+  int yint[n_row]; // For backwards compatibility (single stream)
+  vector[n_row] yreal; // For backwards compatibility (single stream)
   int time[n_row]; // time variable
   int<lower=0> n_year; // number of unique years
   int<lower=0> K;
-  matrix[n_row, K] x; // covariates
+  matrix[n_year, K] x; // covariates (year-level)
   int family; // 1 = poisson, 2 = negbin, 3 = hurdle-poisson, 4 = hurdle-negbin, 5 = lognormal, 6 = gamma, 7 = hurdle-lognormal, 8 = hurdle-gamma, 9 = normal, 10 = hurdle-normal
   int time_varying; // whether to treat model as dlm
+
+  // Multi-stream data
+  int<lower=0,upper=1> multi_stream;  // multi-stream mode?
+  int<lower=0> n_obs;     // Number of obs-only observations
+  int<lower=0> n_em;      // Number of EM-only observations
+  int<lower=0> n_both;    // Number of both observations
+
+  // Separate data streams (only used if multi_stream == 1)
+  array[n_obs] int yint_obs;
+  array[n_em] int yint_em;
+  array[n_both] int yint_both;
+  vector[n_obs] effort_obs;
+  vector[n_em] effort_em;
+  vector[n_both] effort_both;
+  vector[n_obs] yreal_obs;
+  vector[n_em] yreal_em;
+  vector[n_both] yreal_both;
+
+  // Indices mapping stream observations to time periods
+  array[n_obs] int time_idx_obs;
+  array[n_em] int time_idx_em;
+  array[n_both] int time_idx_both;
+
+  // Effort for unobserved expansion (by time period)
+  vector[n_year] new_effort_by_year;
 }
 transformed data {
   int est_phi;
@@ -17,11 +42,6 @@ transformed data {
   int est_sigma;
   int est_cv;
   int is_discrete;
-  // Count zeros and non-zeros for hurdle models
-  int n_zero = 0;
-  int n_nonzero = 0;
-  int zero_idx[n_row];
-  int nonzero_idx[n_row];
 
   // initialize
   est_phi = 0;
@@ -58,19 +78,6 @@ transformed data {
     est_sigma = 1;
     est_theta = 1;
   }
-
-  // Pre-compute indices for hurdle models (vectorization)
-  if(est_theta == 1) {
-    for(i in 1:n_row) {
-      if(yint[i] == 0) {
-        n_zero += 1;
-        zero_idx[n_zero] = i;
-      } else {
-        n_nonzero += 1;
-        nonzero_idx[n_nonzero] = i;
-      }
-    }
-  }
 }
 parameters {
   vector[K] beta;
@@ -82,11 +89,17 @@ parameters {
   real<lower=0,upper=1> theta[est_theta];
 }
 transformed parameters {
-  vector[n_row] log_lambda;
-  vector[n_row] lambda;
-  vector[n_row] pred;
+  vector[n_year] log_lambda_base;  // Base lambda for each year
+  vector[n_year] lambda_base;
+  vector[n_year] pred;
   real<lower=0> gammaA[est_cv];
   vector[time_varying*n_year] time_dev;
+
+  // Single stream transformed parameters (backwards compatibility)
+  vector[n_row] log_lambda;
+  vector[n_row] lambda;
+
+  // Compute base prediction for each year
   pred = x * beta;
 
   if(time_varying == 1) {
@@ -94,15 +107,25 @@ transformed parameters {
     for(i in 2:n_year) {
       time_dev[i] = est_time_dev[i-1];
     }
+    for(t in 1:n_year) {
+      pred[t] = pred[t] + time_dev[t];
+    }
   }
 
-  for(i in 1:n_row) {
-    if(time_varying == 1) {
-      pred[i] = pred[i] + time_varying*time_dev[time[i]];
-    }
-    log_lambda[i] = pred[i] + log(effort[i]); // exp(pred) = theta
-    lambda[i] = exp(log_lambda[i]);
+  // Base lambda for each year (without effort multiplier)
+  for(t in 1:n_year) {
+    log_lambda_base[t] = pred[t];
+    lambda_base[t] = exp(log_lambda_base[t]);
   }
+
+  // Single stream lambda (backwards compatibility)
+  if(multi_stream == 0) {
+    for(i in 1:n_row) {
+      log_lambda[i] = pred[time[i]] + log(effort[i]);
+      lambda[i] = exp(log_lambda[i]);
+    }
+  }
+
   // gamma model
   if(est_cv == 1) gammaA[1] = inv(pow(cv_gamma[1], 2.0));
 }
@@ -113,7 +136,6 @@ model {
     sigma_rw ~ student_t(3, 0, 1);
     est_time_dev[1] ~ student_t(3, 0, 2);
     for(i in 2:(n_year-1)) {
-      // model evolution of temporal deviations as random walk
       est_time_dev[i] ~ normal(est_time_dev[i-1], sigma_rw[1]);
     }
   }
@@ -122,254 +144,436 @@ model {
     theta ~ beta(1, 1);
   }
 
-  // Family 1: Poisson
-  if(family == 1) {
-    yint ~ poisson_log(log_lambda);
-  }
-  // Family 2: Negative Binomial
-  else if(family == 2) {
-    nb2_phi ~ student_t(3, 0, 2);
-    yint ~ neg_binomial_2_log(log_lambda, nb2_phi[1]);
-  }
-  // Family 3: Poisson-Hurdle (vectorized)
-  else if(family == 3) {
-    // Use sufficient statistics for efficiency
-    target += n_zero * log(theta[1]);
-    target += n_nonzero * log1m(theta[1]);
+  // Single stream
+  if(multi_stream == 0) {
 
-    // Handle positive counts - vectorize where possible
-    for(i in 1:n_nonzero) {
-      int idx = nonzero_idx[i];
-      target += poisson_log_lpmf(yint[idx] | log_lambda[idx]) -
-                poisson_lccdf(0 | lambda[idx]);
+    if(family == 1) {
+      yint ~ poisson_log(log_lambda);
+    }
+    else if(family == 2) {
+      nb2_phi ~ student_t(3, 0, 2);
+      yint ~ neg_binomial_2_log(log_lambda, nb2_phi[1]);
+    }
+    else if(family == 3) {
+      for(i in 1:n_row) {
+        if (yint[i] == 0)
+          1 ~ bernoulli(theta);
+        else {
+          0 ~ bernoulli(theta);
+          yint[i] ~ poisson(lambda[i]) T[1, ];
+        }
+      }
+    }
+    else if(family == 4) {
+      nb2_phi ~ student_t(3, 0, 2);
+      for(i in 1:n_row) {
+        if (yint[i] == 0)
+          1 ~ bernoulli(theta);
+        else {
+          0 ~ bernoulli(theta);
+          yint[i] ~ neg_binomial_2(lambda[i], nb2_phi[1]) T[1, ];
+        }
+      }
+    }
+    else if(family == 5) {
+      sigma_logn ~ student_t(3, 0, 2);
+      yreal ~ lognormal(log_lambda, sigma_logn[1]);
+    }
+    else if(family == 6) {
+      cv_gamma[1] ~ student_t(3, 0, 2);
+      yreal ~ gamma(gammaA[1], gammaA[1] ./ lambda);
+    }
+    else if(family == 7) {
+      sigma_logn ~ student_t(3, 0, 2);
+      for(i in 1:n_row) {
+        if (yint[i] == 0)
+          1 ~ bernoulli(theta);
+        else {
+          0 ~ bernoulli(theta);
+          yreal[i] ~ lognormal(log_lambda[i], sigma_logn[1]);
+        }
+      }
+    }
+    else if(family == 8) {
+      cv_gamma[1] ~ student_t(3, 0, 2);
+      for(i in 1:n_row) {
+        if (yint[i] == 0)
+          1 ~ bernoulli(theta);
+        else {
+          0 ~ bernoulli(theta);
+          yreal[i] ~ gamma(gammaA[1], gammaA[1] / lambda[i]);
+        }
+      }
+    }
+    else if(family == 9) {
+      sigma_logn ~ student_t(3, 0, 2);
+      yreal ~ normal(lambda, sigma_logn[1]);
+    }
+    else if(family == 10) {
+      sigma_logn ~ student_t(3, 0, 2);
+      for(i in 1:n_row) {
+        if (yint[i] == 0)
+          1 ~ bernoulli(theta);
+        else {
+          0 ~ bernoulli(theta);
+          yreal[i] ~ normal(lambda[i], sigma_logn[1]);
+        }
+      }
     }
   }
-  // Family 4: Negative Binomial-Hurdle (vectorized)
-  else if(family == 4) {
-    nb2_phi ~ student_t(3, 0, 2);
 
-    // Use sufficient statistics for efficiency
-    target += n_zero * log(theta[1]);
-    target += n_nonzero * log1m(theta[1]);
+  // Multi-stream (separate likelihoods, detection = 1)
+  else {
 
-    // Handle positive counts
-    for(i in 1:n_nonzero) {
-      int idx = nonzero_idx[i];
-      target += neg_binomial_2_log_lpmf(yint[idx] | log_lambda[idx], nb2_phi[1]) -
-                neg_binomial_2_lccdf(0 | lambda[idx], nb2_phi[1]);
+    // Family 1: Poisson
+    if(family == 1) {
+      if(n_obs > 0) {
+        for(i in 1:n_obs) {
+          real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
+          yint_obs[i] ~ poisson(lambda_obs_i);
+        }
+      }
+      if(n_em > 0) {
+        for(i in 1:n_em) {
+          real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
+          yint_em[i] ~ poisson(lambda_em_i);
+        }
+      }
+      if(n_both > 0) {
+        for(i in 1:n_both) {
+          real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
+          yint_both[i] ~ poisson(lambda_both_i);
+        }
+      }
     }
-  }
-  // Family 5: Lognormal
-  else if(family == 5) {
-    sigma_logn ~ student_t(3, 0, 2);
-    yreal ~ lognormal(log_lambda, sigma_logn[1]);
-  }
-  // Family 6: Gamma
-  else if(family == 6) {
-    cv_gamma[1] ~ student_t(3, 0, 2);
-    yreal ~ gamma(gammaA[1], gammaA[1] ./ lambda);
-  }
-  // Family 7: Lognormal-Hurdle (vectorized)
-  else if(family == 7) {
-    sigma_logn ~ student_t(3, 0, 2);
 
-    // Use sufficient statistics for efficiency
-    target += n_zero * log(theta[1]);
-    target += n_nonzero * log1m(theta[1]);
-
-    // Handle positive values
-    for(i in 1:n_nonzero) {
-      int idx = nonzero_idx[i];
-      target += lognormal_lpdf(yreal[idx] | log_lambda[idx], sigma_logn[1]);
+    // Family 2: Negative Binomial
+    else if(family == 2) {
+      nb2_phi ~ student_t(3, 0, 2);
+      if(n_obs > 0) {
+        for(i in 1:n_obs) {
+          real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
+          yint_obs[i] ~ neg_binomial_2(lambda_obs_i, nb2_phi[1]);
+        }
+      }
+      if(n_em > 0) {
+        for(i in 1:n_em) {
+          real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
+          yint_em[i] ~ neg_binomial_2(lambda_em_i, nb2_phi[1]);
+        }
+      }
+      if(n_both > 0) {
+        for(i in 1:n_both) {
+          real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
+          yint_both[i] ~ neg_binomial_2(lambda_both_i, nb2_phi[1]);
+        }
+      }
     }
-  }
-  // Family 8: Gamma-Hurdle (vectorized)
-  else if(family == 8) {
-    cv_gamma[1] ~ student_t(3, 0, 2);
 
-    // Use sufficient statistics for efficiency
-    target += n_zero * log(theta[1]);
-    target += n_nonzero * log1m(theta[1]);
-
-    // Handle positive values
-    for(i in 1:n_nonzero) {
-      int idx = nonzero_idx[i];
-      target += gamma_lpdf(yreal[idx] | gammaA[1], gammaA[1] / lambda[idx]);
+    // Family 3: Poisson-Hurdle
+    else if(family == 3) {
+      if(n_obs > 0) {
+        for(i in 1:n_obs) {
+          real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
+          if (yint_obs[i] == 0)
+            1 ~ bernoulli(theta);
+          else {
+            0 ~ bernoulli(theta);
+            yint_obs[i] ~ poisson(lambda_obs_i) T[1, ];
+          }
+        }
+      }
+      if(n_em > 0) {
+        for(i in 1:n_em) {
+          real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
+          if (yint_em[i] == 0)
+            1 ~ bernoulli(theta);
+          else {
+            0 ~ bernoulli(theta);
+            yint_em[i] ~ poisson(lambda_em_i) T[1, ];
+          }
+        }
+      }
+      if(n_both > 0) {
+        for(i in 1:n_both) {
+          real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
+          if (yint_both[i] == 0)
+            1 ~ bernoulli(theta);
+          else {
+            0 ~ bernoulli(theta);
+            yint_both[i] ~ poisson(lambda_both_i) T[1, ];
+          }
+        }
+      }
     }
-  }
-  // Family 9: Normal
-  else if(family == 9) {
-    sigma_logn ~ student_t(3, 0, 2);
-    yreal ~ normal(lambda, sigma_logn[1]);
-  }
-  // Family 10: Normal-Hurdle (vectorized)
-  else if(family == 10) {
-    sigma_logn ~ student_t(3, 0, 2);
 
-    // Use sufficient statistics for efficiency
-    target += n_zero * log(theta[1]);
-    target += n_nonzero * log1m(theta[1]);
+    // Family 4: Negative Binomial-Hurdle
+    else if(family == 4) {
+      nb2_phi ~ student_t(3, 0, 2);
+      if(n_obs > 0) {
+        for(i in 1:n_obs) {
+          real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
+          if (yint_obs[i] == 0)
+            1 ~ bernoulli(theta);
+          else {
+            0 ~ bernoulli(theta);
+            yint_obs[i] ~ neg_binomial_2(lambda_obs_i, nb2_phi[1]) T[1, ];
+          }
+        }
+      }
+      if(n_em > 0) {
+        for(i in 1:n_em) {
+          real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
+          if (yint_em[i] == 0)
+            1 ~ bernoulli(theta);
+          else {
+            0 ~ bernoulli(theta);
+            yint_em[i] ~ neg_binomial_2(lambda_em_i, nb2_phi[1]) T[1, ];
+          }
+        }
+      }
+      if(n_both > 0) {
+        for(i in 1:n_both) {
+          real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
+          if (yint_both[i] == 0)
+            1 ~ bernoulli(theta);
+          else {
+            0 ~ bernoulli(theta);
+            yint_both[i] ~ neg_binomial_2(lambda_both_i, nb2_phi[1]) T[1, ];
+          }
+        }
+      }
+    }
 
-    // Handle positive values
-    for(i in 1:n_nonzero) {
-      int idx = nonzero_idx[i];
-      target += normal_lpdf(yreal[idx] | lambda[idx], sigma_logn[1]);
+    // Family 5: Lognormal
+    else if(family == 5) {
+      sigma_logn ~ student_t(3, 0, 2);
+      if(n_obs > 0) {
+        for(i in 1:n_obs) {
+          real log_lambda_obs_i = log_lambda_base[time_idx_obs[i]] + log(effort_obs[i]);
+          yreal_obs[i] ~ lognormal(log_lambda_obs_i, sigma_logn[1]);
+        }
+      }
+      if(n_em > 0) {
+        for(i in 1:n_em) {
+          real log_lambda_em_i = log_lambda_base[time_idx_em[i]] + log(effort_em[i]);
+          yreal_em[i] ~ lognormal(log_lambda_em_i, sigma_logn[1]);
+        }
+      }
+      if(n_both > 0) {
+        for(i in 1:n_both) {
+          real log_lambda_both_i = log_lambda_base[time_idx_both[i]] + log(effort_both[i]);
+          yreal_both[i] ~ lognormal(log_lambda_both_i, sigma_logn[1]);
+        }
+      }
+    }
+
+    // Family 6: Gamma
+    else if(family == 6) {
+      cv_gamma[1] ~ student_t(3, 0, 2);
+      if(n_obs > 0) {
+        for(i in 1:n_obs) {
+          real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
+          yreal_obs[i] ~ gamma(gammaA[1], gammaA[1] / lambda_obs_i);
+        }
+      }
+      if(n_em > 0) {
+        for(i in 1:n_em) {
+          real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
+          yreal_em[i] ~ gamma(gammaA[1], gammaA[1] / lambda_em_i);
+        }
+      }
+      if(n_both > 0) {
+        for(i in 1:n_both) {
+          real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
+          yreal_both[i] ~ gamma(gammaA[1], gammaA[1] / lambda_both_i);
+        }
+      }
+    }
+
+    // Family 7: Lognormal-Hurdle
+    else if(family == 7) {
+      sigma_logn ~ student_t(3, 0, 2);
+      if(n_obs > 0) {
+        for(i in 1:n_obs) {
+          real log_lambda_obs_i = log_lambda_base[time_idx_obs[i]] + log(effort_obs[i]);
+          if (yint_obs[i] == 0)
+            1 ~ bernoulli(theta);
+          else {
+            0 ~ bernoulli(theta);
+            yreal_obs[i] ~ lognormal(log_lambda_obs_i, sigma_logn[1]);
+          }
+        }
+      }
+      if(n_em > 0) {
+        for(i in 1:n_em) {
+          real log_lambda_em_i = log_lambda_base[time_idx_em[i]] + log(effort_em[i]);
+          if (yint_em[i] == 0)
+            1 ~ bernoulli(theta);
+          else {
+            0 ~ bernoulli(theta);
+            yreal_em[i] ~ lognormal(log_lambda_em_i, sigma_logn[1]);
+          }
+        }
+      }
+      if(n_both > 0) {
+        for(i in 1:n_both) {
+          real log_lambda_both_i = log_lambda_base[time_idx_both[i]] + log(effort_both[i]);
+          if (yint_both[i] == 0)
+            1 ~ bernoulli(theta);
+          else {
+            0 ~ bernoulli(theta);
+            yreal_both[i] ~ lognormal(log_lambda_both_i, sigma_logn[1]);
+          }
+        }
+      }
+    }
+
+    // Family 8: Gamma-Hurdle
+    else if(family == 8) {
+      cv_gamma[1] ~ student_t(3, 0, 2);
+      if(n_obs > 0) {
+        for(i in 1:n_obs) {
+          real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
+          if (yint_obs[i] == 0)
+            1 ~ bernoulli(theta);
+          else {
+            0 ~ bernoulli(theta);
+            yreal_obs[i] ~ gamma(gammaA[1], gammaA[1] / lambda_obs_i);
+          }
+        }
+      }
+      if(n_em > 0) {
+        for(i in 1:n_em) {
+          real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
+          if (yint_em[i] == 0)
+            1 ~ bernoulli(theta);
+          else {
+            0 ~ bernoulli(theta);
+            yreal_em[i] ~ gamma(gammaA[1], gammaA[1] / lambda_em_i);
+          }
+        }
+      }
+      if(n_both > 0) {
+        for(i in 1:n_both) {
+          real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
+          if (yint_both[i] == 0)
+            1 ~ bernoulli(theta);
+          else {
+            0 ~ bernoulli(theta);
+            yreal_both[i] ~ gamma(gammaA[1], gammaA[1] / lambda_both_i);
+          }
+        }
+      }
+    }
+
+    // Family 9: Normal
+    else if(family == 9) {
+      sigma_logn ~ student_t(3, 0, 2);
+      if(n_obs > 0) {
+        for(i in 1:n_obs) {
+          real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
+          yreal_obs[i] ~ normal(lambda_obs_i, sigma_logn[1]);
+        }
+      }
+      if(n_em > 0) {
+        for(i in 1:n_em) {
+          real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
+          yreal_em[i] ~ normal(lambda_em_i, sigma_logn[1]);
+        }
+      }
+      if(n_both > 0) {
+        for(i in 1:n_both) {
+          real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
+          yreal_both[i] ~ normal(lambda_both_i, sigma_logn[1]);
+        }
+      }
+    }
+
+    // Family 10: Normal-Hurdle
+    else if(family == 10) {
+      sigma_logn ~ student_t(3, 0, 2);
+      if(n_obs > 0) {
+        for(i in 1:n_obs) {
+          real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
+          if (yint_obs[i] == 0)
+            1 ~ bernoulli(theta);
+          else {
+            0 ~ bernoulli(theta);
+            yreal_obs[i] ~ normal(lambda_obs_i, sigma_logn[1]);
+          }
+        }
+      }
+      if(n_em > 0) {
+        for(i in 1:n_em) {
+          real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
+          if (yint_em[i] == 0)
+            1 ~ bernoulli(theta);
+          else {
+            0 ~ bernoulli(theta);
+            yreal_em[i] ~ normal(lambda_em_i, sigma_logn[1]);
+          }
+        }
+      }
+      if(n_both > 0) {
+        for(i in 1:n_both) {
+          real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
+          if (yint_both[i] == 0)
+            1 ~ bernoulli(theta);
+          else {
+            0 ~ bernoulli(theta);
+            yreal_both[i] ~ normal(lambda_both_i, sigma_logn[1]);
+          }
+        }
+      }
     }
   }
 }
 generated quantities {
-  vector[n_row] log_lik;
-  int<lower = 0> y_new[n_row*is_discrete];
-  vector[n_row*(1-is_discrete)] y_new_real;
+  vector[n_year] log_lik;
+  int<lower = 0> y_new[n_year*is_discrete];
+  vector[n_year*(1-is_discrete)] y_new_real;
 
-  // Pre-compute log_new_lambda
-  vector[n_row] log_new_lambda;
-  for(n in 1:n_row) {
-    log_new_lambda[n] = pred[n] + log(new_effort[n]);
-  }
+  // Generate predictions for unobserved effort (by year)
+  for(t in 1:n_year) {
+    // Compute log-likelihood (placeholder for now, would need stream-specific implementation)
+    log_lik[t] = 0;
 
-  // Family 1: Poisson
-  if(family == 1) {
-    for(n in 1:n_row) {
-      log_lik[n] = poisson_log_lpmf(yint[n] | log_lambda[n]);
+    // Generate posterior predictive for unobserved effort
+    if(is_discrete == 1) {
+      y_new[t] = 0;
+      if(new_effort_by_year[t] > 0) {
+        real lambda_new_t = lambda_base[t] * new_effort_by_year[t];
 
-      // sample posterior predictive distribution
-      y_new[n] = 0;
-      if(new_effort[n] > 0) {
-        y_new[n] = poisson_log_rng(log_new_lambda[n]);
+        if(family == 1) {
+          y_new[t] = poisson_rng(lambda_new_t);
+        } else if(family == 2) {
+          y_new[t] = neg_binomial_2_rng(lambda_new_t, nb2_phi[1]);
+        } else if(family == 3) {
+          y_new[t] = (1 - bernoulli_rng(theta[1])) * poisson_rng(lambda_new_t);
+        } else if(family == 4) {
+          y_new[t] = (1 - bernoulli_rng(theta[1])) * neg_binomial_2_rng(lambda_new_t, nb2_phi[1]);
+        }
       }
-    }
-  }
-  // Family 2: Negative Binomial
-  else if(family == 2) {
-    for(n in 1:n_row) {
-      log_lik[n] = neg_binomial_2_log_lpmf(yint[n] | log_lambda[n], nb2_phi[1]);
+    } else {
+      y_new_real[t] = 0;
+      if(new_effort_by_year[t] > 0) {
+        real log_lambda_new_t = log_lambda_base[t] + log(new_effort_by_year[t]);
+        real lambda_new_t = lambda_base[t] * new_effort_by_year[t];
 
-      // sample posterior predictive distribution
-      y_new[n] = 0;
-      if(new_effort[n] > 0) {
-        y_new[n] = neg_binomial_2_log_rng(log_new_lambda[n], nb2_phi[1]);
-      }
-    }
-  }
-  // Family 3: Poisson-Hurdle
-  else if(family == 3) {
-    for(n in 1:n_row) {
-      if(yint[n] == 0) {
-        log_lik[n] = log(theta[1]);
-      } else {
-        // (1 - theta) * Pr(Pois(y|lambda)) / (1 - PoissonCDF(0|lambda))
-        log_lik[n] = log1m(theta[1]) + poisson_log_lpmf(yint[n] | log_lambda[n]) -
-                     poisson_lccdf(0 | lambda[n]);
-      }
-
-      // sample posterior predictive distribution
-      y_new[n] = 0;
-      if(new_effort[n] > 0) {
-        y_new[n] = (1 - bernoulli_rng(theta[1])) * poisson_log_rng(log_new_lambda[n]);
-      }
-    }
-  }
-  // Family 4: Negative Binomial-Hurdle
-  else if(family == 4) {
-    for(n in 1:n_row) {
-      if(yint[n] == 0) {
-        log_lik[n] = log(theta[1]);
-      } else {
-        // (1 - theta) * Pr(NB2(y|lambda)) / (1 - NB2CDF(0|lambda))
-        log_lik[n] = log1m(theta[1]) + neg_binomial_2_log_lpmf(yint[n] | log_lambda[n], nb2_phi[1]) -
-                     neg_binomial_2_lccdf(0 | lambda[n], nb2_phi[1]);
-      }
-
-      // sample posterior predictive distribution
-      y_new[n] = 0;
-      if(new_effort[n] > 0) {
-        y_new[n] = (1 - bernoulli_rng(theta[1])) * neg_binomial_2_log_rng(log_new_lambda[n], nb2_phi[1]);
-      }
-    }
-  }
-  // Family 5: Lognormal
-  else if(family == 5) {
-    for(n in 1:n_row) {
-      log_lik[n] = lognormal_lpdf(yreal[n] | log_lambda[n], sigma_logn[1]);
-
-      // sample posterior predictive distribution
-      y_new_real[n] = 0;
-      if(new_effort[n] > 0) {
-        y_new_real[n] = lognormal_rng(log_new_lambda[n], sigma_logn[1]);
-      }
-    }
-  }
-  // Family 6: Gamma
-  else if(family == 6) {
-    for(n in 1:n_row) {
-      log_lik[n] = gamma_lpdf(yreal[n] | gammaA[1], gammaA[1] / lambda[n]);
-
-      // sample posterior predictive distribution
-      y_new_real[n] = 0;
-      if(new_effort[n] > 0) {
-        y_new_real[n] = gamma_rng(gammaA[1], gammaA[1] / exp(log_new_lambda[n]));
-      }
-    }
-  }
-  // Family 7: Lognormal-Hurdle
-  else if(family == 7) {
-    for(n in 1:n_row) {
-      if(yint[n] == 0) {
-        log_lik[n] = log(theta[1]);
-      } else {
-        log_lik[n] = log1m(theta[1]) + lognormal_lpdf(yreal[n] | log_lambda[n], sigma_logn[1]);
-      }
-
-      // sample posterior predictive distribution
-      y_new_real[n] = 0;
-      if(new_effort[n] > 0) {
-        y_new_real[n] = (1 - bernoulli_rng(theta[1])) * lognormal_rng(log_new_lambda[n], sigma_logn[1]);
-      }
-    }
-  }
-  // Family 8: Gamma-Hurdle
-  else if(family == 8) {
-    for(n in 1:n_row) {
-      if(yint[n] == 0) {
-        log_lik[n] = log(theta[1]);
-      } else {
-        log_lik[n] = log1m(theta[1]) + gamma_lpdf(yreal[n] | gammaA[1], gammaA[1] / lambda[n]);
-      }
-
-      // sample posterior predictive distribution
-      y_new_real[n] = 0;
-      if(new_effort[n] > 0) {
-        // Fixed: removed double semicolon (improvement 1.2)
-        y_new_real[n] = (1 - bernoulli_rng(theta[1])) * gamma_rng(gammaA[1], gammaA[1] / exp(log_new_lambda[n]));
-      }
-    }
-  }
-  // Family 9: Normal
-  else if(family == 9) {
-    for(n in 1:n_row) {
-      log_lik[n] = normal_lpdf(yreal[n] | lambda[n], sigma_logn[1]);
-
-      // sample posterior predictive distribution
-      y_new_real[n] = 0;
-      if(new_effort[n] > 0) {
-        y_new_real[n] = normal_rng(exp(log_new_lambda[n]), sigma_logn[1]);
-      }
-    }
-  }
-  // Family 10: Normal-Hurdle
-  else if(family == 10) {
-    for(n in 1:n_row) {
-      if(yint[n] == 0) {
-        log_lik[n] = log(theta[1]);
-      } else {
-        log_lik[n] = log1m(theta[1]) + normal_lpdf(yreal[n] | lambda[n], sigma_logn[1]);
-      }
-
-      // sample posterior predictive distribution
-      y_new_real[n] = 0;
-      if(new_effort[n] > 0) {
-        y_new_real[n] = (1 - bernoulli_rng(theta[1])) * normal_rng(exp(log_new_lambda[n]), sigma_logn[1]);
+        if(family == 5) {
+          y_new_real[t] = lognormal_rng(log_lambda_new_t, sigma_logn[1]);
+        } else if(family == 6) {
+          y_new_real[t] = gamma_rng(gammaA[1], gammaA[1] / lambda_new_t);
+        } else if(family == 7) {
+          y_new_real[t] = (1 - bernoulli_rng(theta[1])) * lognormal_rng(log_lambda_new_t, sigma_logn[1]);
+        } else if(family == 8) {
+          y_new_real[t] = (1 - bernoulli_rng(theta[1])) * gamma_rng(gammaA[1], gammaA[1] / lambda_new_t);
+        } else if(family == 9) {
+          y_new_real[t] = normal_rng(lambda_new_t, sigma_logn[1]);
+        } else if(family == 10) {
+          y_new_real[t] = (1 - bernoulli_rng(theta[1])) * normal_rng(lambda_new_t, sigma_logn[1]);
+        }
       }
     }
   }

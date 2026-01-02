@@ -2,7 +2,7 @@ context("model fitting tests")
 
 # this controls how large to make the data below
 sample_size <- 20
-
+n_iter <- 1000
 set.seed(123)
 # simulate data
 d_nb <- data.frame(
@@ -81,12 +81,11 @@ test_that("fitting function works for time varying poisson model", {
 
   fit <- fit_bycatch(Takes ~ 1,
     data = d_pois, time = "Year",
-    effort = "Sets", family = "poisson", time_varying = TRUE,
-    iter = 100, chains = 1
+    effort = "Sets", family = "poisson", time_varying = TRUE
   )
 
-  # pars <- rstan::extract(fit$fitted_model, "lambda")
-  # expect_equal(apply(pars$lambda, 2, mean)[1:5], c(2.591904, 1.691243, 1.730186, 1.729729, 1.580735), tol = 0.001)
+  pars <- rstan::extract(fit$fitted_model, "lambda")
+  expect_equal(apply(pars$lambda, 2, mean)[1:5], c(2.157505, 1.902765, 1.938563, 1.901084, 2.165256), tol = 0.001)
   expect_type(fit, "list")
 })
 
@@ -109,8 +108,7 @@ test_that("fitting function works for time varying poisson hurdle model", {
 
   fit <- fit_bycatch(Takes ~ 1,
     data = d_pois, time = "Year",
-    effort = "Sets", family = "poisson-hurdle", time_varying = TRUE,
-    iter = 100, chains = 1
+    effort = "Sets", family = "poisson-hurdle", time_varying = TRUE
   )
   expect_type(fit, "list")
   # pars <- rstan::extract(fit$fitted_model, "lambda")
@@ -140,31 +138,29 @@ test_that("fitting function works for gamma model", {
   )
 
   pars <- rstan::extract(fit$fitted_model, "lambda")
-  expect_equal(apply(pars$lambda, 2, mean)[1], 5.012824, tol = 0.1)
+  expect_equal(apply(pars$lambda, 2, mean)[1], 5.012824, tolerance = 0.1)
 })
 
 test_that("fitting function works for normal model", {
   set.seed(123)
   fit <- fit_bycatch(Takes ~ 1,
     data = d_pos, time = "Year",
-    effort = "Sets", family = "normal", time_varying = FALSE,
-    chains = 1, iter = 1000
+    effort = "Sets", family = "normal", time_varying = FALSE
   )
 
   pars <- rstan::extract(fit$fitted_model, "lambda")
-  expect_equal(apply(pars$lambda, 2, mean)[1], 5.015625, tol = 0.1)
+  expect_equal(apply(pars$lambda, 2, mean)[1], 5.015625, tolerance = 0.1)
 })
 
 test_that("fitting function works for lognormal model", {
   set.seed(123)
   fit <- fit_bycatch(Takes ~ 1,
     data = d_pos, time = "Year",
-    effort = "Sets", family = "lognormal", time_varying = FALSE,
-    chains = 1, iter = 1000
+    effort = "Sets", family = "lognormal", time_varying = FALSE
   )
 
   pars <- rstan::extract(fit$fitted_model, "lambda")
-  expect_equal(apply(pars$lambda, 2, mean)[1], 5.014376, tol = 0.1)
+  expect_equal(apply(pars$lambda, 2, mean)[1], 5.014376, tolerance = 0.1)
 })
 
 
@@ -173,12 +169,11 @@ test_that("fitting function works for normal-hurdle model", {
   d_pos$Takes[c(1, 8, 13)] <- 0
   fit <- fit_bycatch(Takes ~ 1,
     data = d_pos, time = "Year",
-    effort = "Sets", family = "normal-hurdle", time_varying = FALSE,
-    chains = 1, iter = 1000
+    effort = "Sets", family = "normal-hurdle", time_varying = FALSE
   )
 
   pars <- rstan::extract(fit$fitted_model, "lambda")
-  expect_equal(apply(pars$lambda, 2, mean)[1], 5.02, tol = 0.1)
+  expect_equal(apply(pars$lambda, 2, mean)[1], 5.02, tolerance = 0.1)
 })
 
 test_that("fitting function works for lognormal-hurdle model", {
@@ -186,12 +181,11 @@ test_that("fitting function works for lognormal-hurdle model", {
   d_pos$Takes[c(1, 8, 13)] <- 0
   fit <- fit_bycatch(Takes ~ 1,
     data = d_pos, time = "Year",
-    effort = "Sets", family = "lognormal-hurdle", time_varying = FALSE,
-    chains = 1, iter = 1000
+    effort = "Sets", family = "lognormal-hurdle", time_varying = FALSE
   )
 
   pars <- rstan::extract(fit$fitted_model, "lambda")
-  expect_equal(apply(pars$lambda, 2, mean)[1], 5.02, tol = 0.1)
+  expect_equal(apply(pars$lambda, 2, mean)[1], 5.02, tolerance = 0.1)
 })
 
 test_that("fitting function works for gamma-hurdle model", {
@@ -199,12 +193,11 @@ test_that("fitting function works for gamma-hurdle model", {
   d_pos$Takes[c(1, 8, 13)] <- 0
   fit <- fit_bycatch(Takes ~ 1,
     data = d_pos, time = "Year",
-    effort = "Sets", family = "gamma-hurdle", time_varying = FALSE,
-    chains = 1, iter = 1000
+    effort = "Sets", family = "gamma-hurdle", time_varying = FALSE
   )
 
   pars <- rstan::extract(fit$fitted_model, "lambda")
-  expect_equal(apply(pars$lambda, 2, mean)[1], 5.02, tol = 0.1)
+  expect_equal(apply(pars$lambda, 2, mean)[1], 5.02, tolerance = 0.1)
 })
 
 

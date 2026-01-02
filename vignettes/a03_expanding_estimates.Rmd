@@ -1,6 +1,6 @@
 ---
 title: "Expanding bycatch estimates"
-author: "Eric J. Ward, Jason E. Jannot"
+author: ""
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
