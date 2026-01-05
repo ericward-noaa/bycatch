@@ -23,4 +23,4 @@ jobs:
 
       - name: Build and deploy pkgdown site
         run: |
-          Rscript -e 'pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)'
+          Rscript -e 'pkgdown::build_site_github_pages(new_process = FALSE, install = TRUE)'
