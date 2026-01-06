@@ -2,7 +2,6 @@ context("model fitting tests")
 
 # this controls how large to make the data below
 sample_size <- 20
-n_iter <- 1000
 set.seed(123)
 # simulate data
 d_nb <- data.frame(
