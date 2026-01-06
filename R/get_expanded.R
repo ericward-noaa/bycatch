@@ -26,10 +26,18 @@
 #' }
 get_expanded <- function(fitted_model) {
   if (fitted_model$family %in% c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle")) {
+    # Discrete family - extract y_new
     expanded_estimates <- rstan::extract(fitted_model$fitted_model, "y_new")$y_new
   }
   else {
+    # Continuous family - extract y_new_real
     expanded_estimates <- rstan::extract(fitted_model$fitted_model, "y_new_real")$y_new_real
   }
+
+
+  # Note: in new model, y_new is by year (n_year) instead of by row (n_row)
+  # dimensions will just be (n_draws x n_year) instead of (n_draws x n_row)
+  # for most use cases, n_year == n_row anyway
+
   return(expanded_estimates)
 }

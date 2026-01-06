@@ -1,7 +1,8 @@
 #' get_fitted returns df of observed bycatch estimates (lambda of Poisson), accounting for effort but not accounting for observer coverage
 #'
-#' @param fitted_model Data and fitted model returned from fit_bycatch(). If a hurdle model, then only
-#' then the plot returns the total bycatch rate (including zero and non-zero components).
+#' @param fitted_model Data and fitted model returned from fit_bycatch(). If a hurdle model, then the plot returns the total bycatch
+#' rate (including zero and non-zero components).
+#' @param by_stream For multi-stream models, return fitted values by stream? Default FALSE (returns by year)
 #' @param alpha The alpha level for the credible interval, defaults to 0.05
 #' @return plot called from ggplot
 #'
@@ -22,21 +23,79 @@
 #' )
 #' get_fitted(fit)
 #' }
-get_fitted <- function(fitted_model, alpha = 0.05) {
-  lambda <- rstan::extract(fitted_model$fitted_model, c("lambda"))$lambda
+get_fitted <- function(fitted_model, alpha = 0.05, by_stream = FALSE) {
 
-  if (fitted_model$family %in% c("poisson-hurdle", "nbinom2-hurdle", "gamma-hurdle", "lognormal-hurdle", "normal-hurdle")) {
-    # adjust lambda estimates by including theta. theta = pr(0), (1-theta) = pr(>0)
-    theta <- rstan::extract(fitted_model$fitted_model, c("theta"))$theta
-    for (i in 1:nrow(lambda)) lambda[i, ] <- lambda[i, ] * (1 - theta[i, 1])
+  # Check if multi-stream mode
+  if(fitted_model$multi_stream) {
+    # Multi-stream: Extract lambda_base (per year)
+    lambda_base <- rstan::extract(fitted_model$fitted_model, "lambda_base")$lambda_base
+
+    # Adjust for hurdle models
+    if (fitted_model$family %in% c("poisson-hurdle", "nbinom2-hurdle", "gamma-hurdle",
+                                   "lognormal-hurdle", "normal-hurdle")) {
+      theta <- rstan::extract(fitted_model$fitted_model, "theta")$theta
+      # lambda_base already represents the rate, multiply by (1-theta) for hurdle
+      for (i in 1:nrow(lambda_base)) {
+        lambda_base[i, ] <- lambda_base[i, ] * (1 - theta[i, 1])
+      }
+    }
+
+    # Get unique time values
+    time_values <- unique(fitted_model$data[[fitted_model$time]])
+    time_values <- sort(time_values)
+
+    # Create data frame by year
+    df <- data.frame(
+      "time" = time_values,
+      "mean" = apply(lambda_base, 2, mean),
+      "low" = apply(lambda_base, 2, quantile, alpha/2),
+      "high" = apply(lambda_base, 2, quantile, 1-alpha/2)
+    )
+
+    # Add observed takes (sum across streams for each year)
+    obs_by_year <- rep(0, length(time_values))
+    for(i in 1:nrow(fitted_model$data)) {
+      t_idx <- which(time_values == fitted_model$data[[fitted_model$time]][i])
+      obs_by_year[t_idx] <- obs_by_year[t_idx] + fitted_model$data[[fitted_model$events]][i]
+    }
+
+    # Add EM if present
+    if(!is.null(fitted_model$stream_info$takes_em)) {
+      for(i in 1:nrow(fitted_model$data)) {
+        t_idx <- which(time_values == fitted_model$data[[fitted_model$time]][i])
+        obs_by_year[t_idx] <- obs_by_year[t_idx] + fitted_model$data[[fitted_model$stream_info$takes_em]][i]
+      }
+    }
+
+    # Add Both if present
+    if(!is.null(fitted_model$stream_info$takes_both)) {
+      for(i in 1:nrow(fitted_model$data)) {
+        t_idx <- which(time_values == fitted_model$data[[fitted_model$time]][i])
+        obs_by_year[t_idx] <- obs_by_year[t_idx] + fitted_model$data[[fitted_model$stream_info$takes_both]][i]
+      }
+    }
+
+    df$obs <- obs_by_year
+
+  } else {
+    # Single-stream mode (original code)
+    lambda <- rstan::extract(fitted_model$fitted_model, "lambda")$lambda
+
+    if (fitted_model$family %in% c("poisson-hurdle", "nbinom2-hurdle", "gamma-hurdle",
+                                   "lognormal-hurdle", "normal-hurdle")) {
+      # Adjust lambda estimates by including theta
+      theta <- rstan::extract(fitted_model$fitted_model, "theta")$theta
+      lambda <- lambda * (1 - theta[, 1])
+    }
+
+    df <- data.frame(
+      "time" = fitted_model$data[[fitted_model$time]],
+      "mean" = apply(lambda, 2, mean),
+      "low" = apply(lambda, 2, quantile, alpha/2),
+      "high" = apply(lambda, 2, quantile, 1-alpha/2),
+      "obs" = fitted_model$data[[fitted_model$events]]
+    )
   }
-  df <- data.frame(
-    "time" = fitted_model$data[, fitted_model$time],
-    "mean" = apply(lambda, 2, mean),
-    "low" = apply(lambda, 2, quantile, alpha/2),
-    "high" = apply(lambda, 2, quantile, 1-alpha/2),
-    "obs" = fitted_model$data[, fitted_model$events]
-  )
 
   return(df)
 }

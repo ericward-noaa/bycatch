@@ -32,13 +32,49 @@ get_total <- function(fitted_model) {
   # Get expanded estimates for unobserved effort
   expanded_estimates <- get_expanded(fitted_model)
 
-  # Get observed events
-  observed_events <- fitted_model$data[[fitted_model$events]]
+  # Check if multi-stream mode
+  if(fitted_model$multi_stream) {
+    # Multi-stream: expanded_estimates is by year
+    # Calculate observed takes by year
+    time_values <- unique(fitted_model$data[[fitted_model$time]])
+    time_values <- sort(time_values)
+    n_year <- length(time_values)
 
-  # Vectorized addition: add observed events to each MCMC draw
-  # sweep() applies the operation across columns (MARGIN = 2)
-  # This is much faster than looping through columns
-  total_estimates <- sweep(expanded_estimates, 2, observed_events, "+")
+    obs_by_year <- rep(0, n_year)
+
+    # Add Observer takes
+    for(i in 1:nrow(fitted_model$data)) {
+      t_idx <- which(time_values == fitted_model$data[[fitted_model$time]][i])
+      obs_by_year[t_idx] <- obs_by_year[t_idx] + fitted_model$data[[fitted_model$events]][i]
+    }
+
+    # Add EM takes if present
+    if(!is.null(fitted_model$stream_info$takes_em)) {
+      for(i in 1:nrow(fitted_model$data)) {
+        t_idx <- which(time_values == fitted_model$data[[fitted_model$time]][i])
+        obs_by_year[t_idx] <- obs_by_year[t_idx] + fitted_model$data[[fitted_model$stream_info$takes_em]][i]
+      }
+    }
+
+    # Add Both takes if present
+    if(!is.null(fitted_model$stream_info$takes_both)) {
+      for(i in 1:nrow(fitted_model$data)) {
+        t_idx <- which(time_values == fitted_model$data[[fitted_model$time]][i])
+        obs_by_year[t_idx] <- obs_by_year[t_idx] + fitted_model$data[[fitted_model$stream_info$takes_both]][i]
+      }
+    }
+
+    # Add observed to expanded (vectorized)
+    total_estimates <- sweep(expanded_estimates, 2, obs_by_year, "+")
+
+  } else {
+    # Single-stream: expanded_estimates is by observation
+    # Get observed events
+    observed_events <- fitted_model$data[[fitted_model$events]]
+
+    # Vectorized addition using sweep()
+    total_estimates <- sweep(expanded_estimates, 2, observed_events, "+")
+  }
 
   return(total_estimates)
 }

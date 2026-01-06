@@ -4,13 +4,15 @@
 \alias{get_fitted}
 \title{get_fitted returns df of observed bycatch estimates (lambda of Poisson), accounting for effort but not accounting for observer coverage}
 \usage{
-get_fitted(fitted_model, alpha = 0.05)
+get_fitted(fitted_model, alpha = 0.05, by_stream = FALSE)
 }
 \arguments{
-\item{fitted_model}{Data and fitted model returned from fit_bycatch(). If a hurdle model, then only
-then the plot returns the total bycatch rate (including zero and non-zero components).}
+\item{fitted_model}{Data and fitted model returned from fit_bycatch(). If a hurdle model, then the plot returns the total bycatch
+rate (including zero and non-zero components).}
 
 \item{alpha}{The alpha level for the credible interval, defaults to 0.05}
+
+\item{by_stream}{For multi-stream models, return fitted values by stream? Default FALSE (returns by year)}
 }
 \value{
 plot called from ggplot
