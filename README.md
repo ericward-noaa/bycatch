@@ -15,7 +15,7 @@ Paper:
 Jannot, J.E., Ward, E.J., Somers, K.A., Feist, B.E., Good, T.P., Lawson, D., and J.V. Carretta. 2021. Using Bayesian time-series models to estimate humpback whale entanglements in the U.S. west coast sablefish pot fishery. Frontiers in Marine Science. 
 
 Package: 
-Ward, E.J. and J. Jannot. bycatch: Using Bayesian generalized linear models for estimating bycatch rates and generating fleet-level expansions.  [![DOI](https://zenodo.org/badge/85732013.svg)](https://zenodo.org/badge/latestdoi/85732013)
+Ward, E.J. J. Jannot, K.E. Richerson, and K. Somers. bycatch: Using Bayesian generalized linear models for estimating bycatch rates and generating fleet-level expansions.  [![DOI](https://zenodo.org/badge/85732013.svg)](https://zenodo.org/badge/latestdoi/85732013)
 
 **See also**:  
 

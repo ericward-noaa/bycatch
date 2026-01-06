@@ -19,7 +19,7 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">bycatch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.9</span>
       </span>
     </div>
 
@@ -45,7 +45,7 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -61,6 +61,9 @@
     <li>
       <a href="articles/a04_diagnosing_problems.html">Diagnosing errors</a>
     </li>
+    <li>
+      <a href="articles/a05_multistream.html">Multi-stream monitoring</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -68,7 +71,7 @@
 <li>
   <a href="https://github.com/ericward-noaa/bycatch/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul>
@@ -79,7 +82,7 @@
 </div>
 <!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="contents col-md-9">
@@ -94,7 +97,7 @@
 <h2 id="citation">Citation:<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
 <p>Paper: Jannot, J.E., Ward, E.J., Somers, K.A., Feist, B.E., Good, T.P., Lawson, D., and J.V. Carretta. 2021. Using Bayesian time-series models to estimate humpback whale entanglements in the U.S. west coast sablefish pot fishery. Frontiers in Marine Science.</p>
-<p>Package: Ward, E.J. and J. Jannot. bycatch: Using Bayesian generalized linear models for estimating bycatch rates and generating fleet-level expansions. <a href="https://zenodo.org/badge/latestdoi/85732013" class="external-link"><img src="https://zenodo.org/badge/85732013.svg" alt="DOI"></a></p>
+<p>Package: Ward, E.J. J. Jannot, K.E. Richerson, and K. Somers. bycatch: Using Bayesian generalized linear models for estimating bycatch rates and generating fleet-level expansions. <a href="https://zenodo.org/badge/latestdoi/85732013" class="external-link"><img src="https://zenodo.org/badge/85732013.svg" alt="DOI"></a></p>
 <p><strong>See also</strong>:</p>
 <p>Stohs, S.M. 2008. Predicting effort and protected species bycatch under an effort limit or take caps. American Agricultural Economics Association Annual Meeting, Orlando, FL.</p>
 <p>Gardner, B., Sullivan, P.J., Epperly, S., and Morreale, S.J. 2008. Hierarchical modeling of bycatch rates of sea turtles in the western North Atlantic. Endangered Species Res. 5(December): 279–289. <a href="https://doi:10.3354/esr00105" class="external-link uri">https://doi:10.3354/esr00105</a></p>
@@ -104,6 +107,7 @@
 <div class="section level2">
 <h2 id="reports">Reports:<a class="anchor" aria-label="anchor" href="#reports"></a>
 </h2>
+<p>Jannot, J. E., K. A. Somers, V. J. Tuttle, J. Eibner, K. E. Richerson, J. T. McVeigh, J. V. Carretta, N. C. Young, J. Freed. 2022. Marine Mammal Bycatch in U.S. West Coast Groundfish Fisheries, 2002-19. U.S. Department of Commerce, NOAA Technical Memorandum NMFS-NWFSC-165. <a href="https://doi.org/10.25923/h6gg-c316" class="external-link">doi: https://doi.org/10.25923/h6gg-c316</a></p>
 <p>Jannot, J. E., A. Wuest, T. P. Good, K. A. Somers, V. J. Tuttle, K. E. Richerson, R. S. Shama, and J. T. McVeigh. 2021. Seabird Bycatch in U.S. West Coast Fisheries, 2002–18. U.S. Department of Commerce, NOAA Technical Memorandum NMFS-NWFSC-165. <a href="https://doi.org/10.25923/78vk-v149" class="external-link">doi: https://doi.org/10.25923/78vk-v149</a></p>
 <p>Jannot, J. E., K. A. Somers, V. Tuttle, J. McVeigh, J. V. Carretta, and V. Helker. 2018. Observed and Estimated Marine Mammal Bycatch in U.S. West Coast Groundfish Fisheries, 2002-16. U.S. Department of Commerce, NWFSC Processed Report 2018-03. <a href="https://doi.org/10.25923/fkf8-0x49" class="external-link">doi: https://doi.org/10.25923/fkf8-0x49</a></p>
 <p>Good, T. P., E. Ward, J. Jannot, R. Shama, N. Riley, and J. McVeigh. 2019. Observed and Estimated Bycatch of Short-tailed Albatross in U.S. West Coast Groundfish Fisheries 2002-2017. National Marine Fisheries Service, NWFSC, 2725 Montlake Blvd E., Seattle, WA 98112 <a href="https://www.pcouncil.org/documents/2019/06/agenda-item-i-4-a-nmfs-report-6-observed-and-estimated-bycatch-of-short-tailed-albatross-in-u-s-west-coast-groundfish-fisheries-2016-2017-electronic-only.pdf/" class="external-link">link</a></p>
@@ -148,8 +152,10 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Eric Ward <br><small class="roles"> Author, maintainer </small>  </li>
-<li>Jason Jannot <br><small class="roles"> Author </small>  </li>
+<li>Eric Ward <br><small class="roles"> Author, maintainer </small>   </li>
+<li>Jason Jannot <br><small class="roles"> Author </small>   </li>
+<li>Kate Richerson <br><small class="roles"> Author </small>   </li>
+<li>Kayleigh Somers <br><small class="roles"> Author </small>   </li>
 <li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
@@ -162,21 +168,21 @@
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Eric Ward, Jason Jannot.</p>
+<p>Developed by Eric Ward, Jason Jannot, Kate Richerson, Kayleigh Somers.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>
 </div>
 
-  
 
 
-  
+
+
 
   </body>
 </html>
