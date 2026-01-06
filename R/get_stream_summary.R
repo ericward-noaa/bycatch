@@ -135,13 +135,19 @@ get_stream_summary <- function(fitted_model, alpha = 0.05) {
   takes <- c(takes, NA)
 
   # Build summary data frame
+  # Determine indices for observed streams and pooled observed
+  n_streams <- length(streams)
+  n_obs_streams <- n_streams - 3  # Observer (+ optional EM, Both), plus Pooled, Unobserved, Total
+  obs_idx <- seq_len(n_obs_streams)
+  pooled_idx <- n_obs_streams + 1
+
   summary_df <- data.frame(
     stream = streams,
     effort = efforts,
-    observed_takes = c(takes[1:(length(streams)-2)], NA, NA),
-    estimated_mean = c(takes[1:(length(streams)-3)], takes_pooled, expanded_mean, total_mean),
-    estimated_low = c(rep(NA, length(streams)-2), expanded_low, total_low),
-    estimated_high = c(rep(NA, length(streams)-2), expanded_high, total_high),
+    observed_takes = c(takes[obs_idx], takes[pooled_idx], NA, NA),
+    estimated_mean = c(takes[obs_idx], takes_pooled, expanded_mean, total_mean),
+    estimated_low = c(rep(NA, n_streams - 2), expanded_low, total_low),
+    estimated_high = c(rep(NA, n_streams - 2), expanded_high, total_high),
     stringsAsFactors = FALSE
   )
 
