@@ -16,7 +16,7 @@ jobs:
         run: Rscript -e 'install.packages("pak", repos="https://cran.rstudio.com")'
 
       - name: Regenerate lockfile
-        run: Rscript -e 'pak::lockfile_create(".github/pkg.lock", overwrite = TRUE)'
+        run: Rscript -e 'pak::lockfile_create(".github/pkg.lock")'
 
       - name: Commit changes
         run: |
