@@ -12,7 +12,7 @@ data {
   int time_varying; // whether to treat model as dlm
 
   // Multi-stream data
-  int<lower=0,upper=1> multi_stream;  // multi-stream mode?
+  int<lower=0,upper=1> multi_stream;  // multi-stream mode 0/1
   int<lower=0> n_obs;     // Number of obs-only observations
   int<lower=0> n_em;      // Number of EM-only observations
   int<lower=0> n_both;    // Number of both observations
@@ -43,7 +43,7 @@ transformed data {
   int est_cv;
   int is_discrete;
 
-  // initialize
+  // initial
   est_phi = 0;
   est_theta = 0;
   est_sigma = 0;
@@ -99,7 +99,7 @@ transformed parameters {
   vector[n_row] log_lambda;
   vector[n_row] lambda;
 
-  // Compute base prediction for each year
+  // base prediction for each year
   pred = x * beta;
 
   if(time_varying == 1) {
@@ -112,7 +112,7 @@ transformed parameters {
     }
   }
 
-  // Base lambda for each year (without effort multiplier)
+  // lambda for each year (without effort multiplier)
   for(t in 1:n_year) {
     log_lambda_base[t] = pred[t];
     lambda_base[t] = exp(log_lambda_base[t]);
@@ -229,20 +229,26 @@ model {
     if(family == 1) {
       if(n_obs > 0) {
         for(i in 1:n_obs) {
-          real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
-          yint_obs[i] ~ poisson(lambda_obs_i);
+          if(effort_obs[i] > 0) {
+            real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
+            yint_obs[i] ~ poisson(lambda_obs_i);
+          }
         }
       }
       if(n_em > 0) {
         for(i in 1:n_em) {
-          real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
-          yint_em[i] ~ poisson(lambda_em_i);
+          if(effort_em[i] > 0) {
+            real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
+            yint_em[i] ~ poisson(lambda_em_i);
+          }
         }
       }
       if(n_both > 0) {
         for(i in 1:n_both) {
-          real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
-          yint_both[i] ~ poisson(lambda_both_i);
+          if(effort_both[i] > 0) {
+            real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
+            yint_both[i] ~ poisson(lambda_both_i);
+          }
         }
       }
     }
@@ -252,20 +258,26 @@ model {
       nb2_phi ~ student_t(3, 0, 2);
       if(n_obs > 0) {
         for(i in 1:n_obs) {
-          real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
-          yint_obs[i] ~ neg_binomial_2(lambda_obs_i, nb2_phi[1]);
+          if(effort_obs[i] > 0) {
+            real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
+            yint_obs[i] ~ neg_binomial_2(lambda_obs_i, nb2_phi[1]);
+          }
         }
       }
       if(n_em > 0) {
         for(i in 1:n_em) {
-          real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
-          yint_em[i] ~ neg_binomial_2(lambda_em_i, nb2_phi[1]);
+          if(effort_em[i] > 0) {
+            real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
+            yint_em[i] ~ neg_binomial_2(lambda_em_i, nb2_phi[1]);
+          }
         }
       }
       if(n_both > 0) {
         for(i in 1:n_both) {
-          real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
-          yint_both[i] ~ neg_binomial_2(lambda_both_i, nb2_phi[1]);
+          if(effort_both[i] > 0) {
+            real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
+            yint_both[i] ~ neg_binomial_2(lambda_both_i, nb2_phi[1]);
+          }
         }
       }
     }
@@ -274,34 +286,40 @@ model {
     else if(family == 3) {
       if(n_obs > 0) {
         for(i in 1:n_obs) {
-          real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
-          if (yint_obs[i] == 0)
-            1 ~ bernoulli(theta);
-          else {
-            0 ~ bernoulli(theta);
-            yint_obs[i] ~ poisson(lambda_obs_i) T[1, ];
+          if(effort_obs[i] > 0) {
+            real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
+            if (yint_obs[i] == 0)
+              1 ~ bernoulli(theta);
+            else {
+              0 ~ bernoulli(theta);
+              yint_obs[i] ~ poisson(lambda_obs_i) T[1, ];
+            }
           }
         }
       }
       if(n_em > 0) {
         for(i in 1:n_em) {
-          real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
-          if (yint_em[i] == 0)
-            1 ~ bernoulli(theta);
-          else {
-            0 ~ bernoulli(theta);
-            yint_em[i] ~ poisson(lambda_em_i) T[1, ];
+          if(effort_em[i] > 0) {
+            real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
+            if (yint_em[i] == 0)
+              1 ~ bernoulli(theta);
+            else {
+              0 ~ bernoulli(theta);
+              yint_em[i] ~ poisson(lambda_em_i) T[1, ];
+            }
           }
         }
       }
       if(n_both > 0) {
         for(i in 1:n_both) {
-          real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
-          if (yint_both[i] == 0)
-            1 ~ bernoulli(theta);
-          else {
-            0 ~ bernoulli(theta);
-            yint_both[i] ~ poisson(lambda_both_i) T[1, ];
+          if(effort_both[i] > 0) {
+            real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
+            if (yint_both[i] == 0)
+              1 ~ bernoulli(theta);
+            else {
+              0 ~ bernoulli(theta);
+              yint_both[i] ~ poisson(lambda_both_i) T[1, ];
+            }
           }
         }
       }
@@ -312,34 +330,40 @@ model {
       nb2_phi ~ student_t(3, 0, 2);
       if(n_obs > 0) {
         for(i in 1:n_obs) {
-          real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
-          if (yint_obs[i] == 0)
-            1 ~ bernoulli(theta);
-          else {
-            0 ~ bernoulli(theta);
-            yint_obs[i] ~ neg_binomial_2(lambda_obs_i, nb2_phi[1]) T[1, ];
+          if(effort_obs[i] > 0) {
+            real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
+            if (yint_obs[i] == 0)
+              1 ~ bernoulli(theta);
+            else {
+              0 ~ bernoulli(theta);
+              yint_obs[i] ~ neg_binomial_2(lambda_obs_i, nb2_phi[1]) T[1, ];
+            }
           }
         }
       }
       if(n_em > 0) {
         for(i in 1:n_em) {
-          real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
-          if (yint_em[i] == 0)
-            1 ~ bernoulli(theta);
-          else {
-            0 ~ bernoulli(theta);
-            yint_em[i] ~ neg_binomial_2(lambda_em_i, nb2_phi[1]) T[1, ];
+          if(effort_em[i] > 0) {
+            real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
+            if (yint_em[i] == 0)
+              1 ~ bernoulli(theta);
+            else {
+              0 ~ bernoulli(theta);
+              yint_em[i] ~ neg_binomial_2(lambda_em_i, nb2_phi[1]) T[1, ];
+            }
           }
         }
       }
       if(n_both > 0) {
         for(i in 1:n_both) {
-          real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
-          if (yint_both[i] == 0)
-            1 ~ bernoulli(theta);
-          else {
-            0 ~ bernoulli(theta);
-            yint_both[i] ~ neg_binomial_2(lambda_both_i, nb2_phi[1]) T[1, ];
+          if(effort_both[i] > 0) {
+            real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
+            if (yint_both[i] == 0)
+              1 ~ bernoulli(theta);
+            else {
+              0 ~ bernoulli(theta);
+              yint_both[i] ~ neg_binomial_2(lambda_both_i, nb2_phi[1]) T[1, ];
+            }
           }
         }
       }
@@ -350,20 +374,26 @@ model {
       sigma_logn ~ student_t(3, 0, 2);
       if(n_obs > 0) {
         for(i in 1:n_obs) {
-          real log_lambda_obs_i = log_lambda_base[time_idx_obs[i]] + log(effort_obs[i]);
-          yreal_obs[i] ~ lognormal(log_lambda_obs_i, sigma_logn[1]);
+          if(effort_obs[i] > 0 && yreal_obs[i] > 0) {
+            real log_lambda_obs_i = log_lambda_base[time_idx_obs[i]] + log(effort_obs[i]);
+            yreal_obs[i] ~ lognormal(log_lambda_obs_i, sigma_logn[1]);
+          }
         }
       }
       if(n_em > 0) {
         for(i in 1:n_em) {
-          real log_lambda_em_i = log_lambda_base[time_idx_em[i]] + log(effort_em[i]);
-          yreal_em[i] ~ lognormal(log_lambda_em_i, sigma_logn[1]);
+          if(effort_em[i] > 0 && yreal_em[i] > 0) {
+            real log_lambda_em_i = log_lambda_base[time_idx_em[i]] + log(effort_em[i]);
+            yreal_em[i] ~ lognormal(log_lambda_em_i, sigma_logn[1]);
+          }
         }
       }
       if(n_both > 0) {
         for(i in 1:n_both) {
-          real log_lambda_both_i = log_lambda_base[time_idx_both[i]] + log(effort_both[i]);
-          yreal_both[i] ~ lognormal(log_lambda_both_i, sigma_logn[1]);
+          if(effort_both[i] > 0 && yreal_both[i] > 0) {
+            real log_lambda_both_i = log_lambda_base[time_idx_both[i]] + log(effort_both[i]);
+            yreal_both[i] ~ lognormal(log_lambda_both_i, sigma_logn[1]);
+          }
         }
       }
     }
@@ -373,20 +403,26 @@ model {
       cv_gamma[1] ~ student_t(3, 0, 2);
       if(n_obs > 0) {
         for(i in 1:n_obs) {
-          real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
-          yreal_obs[i] ~ gamma(gammaA[1], gammaA[1] / lambda_obs_i);
+          if(effort_obs[i] > 0 && yreal_obs[i] > 0) {
+            real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
+            yreal_obs[i] ~ gamma(gammaA[1], gammaA[1] / lambda_obs_i);
+          }
         }
       }
       if(n_em > 0) {
         for(i in 1:n_em) {
-          real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
-          yreal_em[i] ~ gamma(gammaA[1], gammaA[1] / lambda_em_i);
+          if(effort_em[i] > 0 && yreal_em[i] > 0) {
+            real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
+            yreal_em[i] ~ gamma(gammaA[1], gammaA[1] / lambda_em_i);
+          }
         }
       }
       if(n_both > 0) {
         for(i in 1:n_both) {
-          real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
-          yreal_both[i] ~ gamma(gammaA[1], gammaA[1] / lambda_both_i);
+          if(effort_both[i] > 0 && yreal_both[i] > 0) {
+            real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
+            yreal_both[i] ~ gamma(gammaA[1], gammaA[1] / lambda_both_i);
+          }
         }
       }
     }
@@ -396,34 +432,46 @@ model {
       sigma_logn ~ student_t(3, 0, 2);
       if(n_obs > 0) {
         for(i in 1:n_obs) {
-          real log_lambda_obs_i = log_lambda_base[time_idx_obs[i]] + log(effort_obs[i]);
-          if (yint_obs[i] == 0)
-            1 ~ bernoulli(theta);
-          else {
-            0 ~ bernoulli(theta);
-            yreal_obs[i] ~ lognormal(log_lambda_obs_i, sigma_logn[1]);
+          if(effort_obs[i] > 0) {
+            real log_lambda_obs_i = log_lambda_base[time_idx_obs[i]] + log(effort_obs[i]);
+            if (yint_obs[i] == 0)
+              1 ~ bernoulli(theta);
+            else {
+              0 ~ bernoulli(theta);
+              if(yreal_obs[i] > 0) {
+                yreal_obs[i] ~ lognormal(log_lambda_obs_i, sigma_logn[1]);
+              }
+            }
           }
         }
       }
       if(n_em > 0) {
         for(i in 1:n_em) {
-          real log_lambda_em_i = log_lambda_base[time_idx_em[i]] + log(effort_em[i]);
-          if (yint_em[i] == 0)
-            1 ~ bernoulli(theta);
-          else {
-            0 ~ bernoulli(theta);
-            yreal_em[i] ~ lognormal(log_lambda_em_i, sigma_logn[1]);
+          if(effort_em[i] > 0) {
+            real log_lambda_em_i = log_lambda_base[time_idx_em[i]] + log(effort_em[i]);
+            if (yint_em[i] == 0)
+              1 ~ bernoulli(theta);
+            else {
+              0 ~ bernoulli(theta);
+              if(yreal_em[i] > 0) {
+                yreal_em[i] ~ lognormal(log_lambda_em_i, sigma_logn[1]);
+              }
+            }
           }
         }
       }
       if(n_both > 0) {
         for(i in 1:n_both) {
-          real log_lambda_both_i = log_lambda_base[time_idx_both[i]] + log(effort_both[i]);
-          if (yint_both[i] == 0)
-            1 ~ bernoulli(theta);
-          else {
-            0 ~ bernoulli(theta);
-            yreal_both[i] ~ lognormal(log_lambda_both_i, sigma_logn[1]);
+          if(effort_both[i] > 0) {
+            real log_lambda_both_i = log_lambda_base[time_idx_both[i]] + log(effort_both[i]);
+            if (yint_both[i] == 0)
+              1 ~ bernoulli(theta);
+            else {
+              0 ~ bernoulli(theta);
+              if(yreal_both[i] > 0) {
+                yreal_both[i] ~ lognormal(log_lambda_both_i, sigma_logn[1]);
+              }
+            }
           }
         }
       }
@@ -434,34 +482,46 @@ model {
       cv_gamma[1] ~ student_t(3, 0, 2);
       if(n_obs > 0) {
         for(i in 1:n_obs) {
-          real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
-          if (yint_obs[i] == 0)
-            1 ~ bernoulli(theta);
-          else {
-            0 ~ bernoulli(theta);
-            yreal_obs[i] ~ gamma(gammaA[1], gammaA[1] / lambda_obs_i);
+          if(effort_obs[i] > 0) {
+            real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
+            if (yint_obs[i] == 0)
+              1 ~ bernoulli(theta);
+            else {
+              0 ~ bernoulli(theta);
+              if(yreal_obs[i] > 0) {
+                yreal_obs[i] ~ gamma(gammaA[1], gammaA[1] / lambda_obs_i);
+              }
+            }
           }
         }
       }
       if(n_em > 0) {
         for(i in 1:n_em) {
-          real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
-          if (yint_em[i] == 0)
-            1 ~ bernoulli(theta);
-          else {
-            0 ~ bernoulli(theta);
-            yreal_em[i] ~ gamma(gammaA[1], gammaA[1] / lambda_em_i);
+          if(effort_em[i] > 0) {
+            real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
+            if (yint_em[i] == 0)
+              1 ~ bernoulli(theta);
+            else {
+              0 ~ bernoulli(theta);
+              if(yreal_em[i] > 0) {
+                yreal_em[i] ~ gamma(gammaA[1], gammaA[1] / lambda_em_i);
+              }
+            }
           }
         }
       }
       if(n_both > 0) {
         for(i in 1:n_both) {
-          real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
-          if (yint_both[i] == 0)
-            1 ~ bernoulli(theta);
-          else {
-            0 ~ bernoulli(theta);
-            yreal_both[i] ~ gamma(gammaA[1], gammaA[1] / lambda_both_i);
+          if(effort_both[i] > 0) {
+            real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
+            if (yint_both[i] == 0)
+              1 ~ bernoulli(theta);
+            else {
+              0 ~ bernoulli(theta);
+              if(yreal_both[i] > 0) {
+                yreal_both[i] ~ gamma(gammaA[1], gammaA[1] / lambda_both_i);
+              }
+            }
           }
         }
       }
@@ -472,20 +532,26 @@ model {
       sigma_logn ~ student_t(3, 0, 2);
       if(n_obs > 0) {
         for(i in 1:n_obs) {
-          real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
-          yreal_obs[i] ~ normal(lambda_obs_i, sigma_logn[1]);
+          if(effort_obs[i] > 0) {
+            real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
+            yreal_obs[i] ~ normal(lambda_obs_i, sigma_logn[1]);
+          }
         }
       }
       if(n_em > 0) {
         for(i in 1:n_em) {
-          real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
-          yreal_em[i] ~ normal(lambda_em_i, sigma_logn[1]);
+          if(effort_em[i] > 0) {
+            real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
+            yreal_em[i] ~ normal(lambda_em_i, sigma_logn[1]);
+          }
         }
       }
       if(n_both > 0) {
         for(i in 1:n_both) {
-          real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
-          yreal_both[i] ~ normal(lambda_both_i, sigma_logn[1]);
+          if(effort_both[i] > 0) {
+            real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
+            yreal_both[i] ~ normal(lambda_both_i, sigma_logn[1]);
+          }
         }
       }
     }
@@ -495,34 +561,40 @@ model {
       sigma_logn ~ student_t(3, 0, 2);
       if(n_obs > 0) {
         for(i in 1:n_obs) {
-          real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
-          if (yint_obs[i] == 0)
-            1 ~ bernoulli(theta);
-          else {
-            0 ~ bernoulli(theta);
-            yreal_obs[i] ~ normal(lambda_obs_i, sigma_logn[1]);
+          if(effort_obs[i] > 0) {
+            real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
+            if (yint_obs[i] == 0)
+              1 ~ bernoulli(theta);
+            else {
+              0 ~ bernoulli(theta);
+              yreal_obs[i] ~ normal(lambda_obs_i, sigma_logn[1]);
+            }
           }
         }
       }
       if(n_em > 0) {
         for(i in 1:n_em) {
-          real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
-          if (yint_em[i] == 0)
-            1 ~ bernoulli(theta);
-          else {
-            0 ~ bernoulli(theta);
-            yreal_em[i] ~ normal(lambda_em_i, sigma_logn[1]);
+          if(effort_em[i] > 0) {
+            real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
+            if (yint_em[i] == 0)
+              1 ~ bernoulli(theta);
+            else {
+              0 ~ bernoulli(theta);
+              yreal_em[i] ~ normal(lambda_em_i, sigma_logn[1]);
+            }
           }
         }
       }
       if(n_both > 0) {
         for(i in 1:n_both) {
-          real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
-          if (yint_both[i] == 0)
-            1 ~ bernoulli(theta);
-          else {
-            0 ~ bernoulli(theta);
-            yreal_both[i] ~ normal(lambda_both_i, sigma_logn[1]);
+          if(effort_both[i] > 0) {
+            real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
+            if (yint_both[i] == 0)
+              1 ~ bernoulli(theta);
+            else {
+              0 ~ bernoulli(theta);
+              yreal_both[i] ~ normal(lambda_both_i, sigma_logn[1]);
+            }
           }
         }
       }
