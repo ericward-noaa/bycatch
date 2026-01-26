@@ -34,7 +34,7 @@ fit_bycatch(
 \item{effort}{Named column of the 'effort' variable in the data frame with the label for the fishing effort to be used in estimation of mean bycatch rate. This
 represents total observed effort}
 
-\item{expansion_rate}{The expansion rate to be used in generating distributions for unobserved sets. If NULL, defaults to 100\% coverage (= 100). Deprecated if using effort_total.}
+\item{expansion_rate}{The expansion rate to be used in generating distributions for unobserved sets. If NULL, defaults to 100\% coverage (= 100). Should be the same as the coverage rate. Deprecated if using effort_total.}
 
 \item{takes_em}{Optional: Column name for bycatch takes recorded by EM (electronic monitoring). Default NULL.}
 

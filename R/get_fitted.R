@@ -2,7 +2,6 @@
 #'
 #' @param fitted_model Data and fitted model returned from fit_bycatch(). If a hurdle model, then the plot returns the total bycatch
 #' rate (including zero and non-zero components).
-#' @param by_stream For multi-stream models, return fitted values by stream? Default FALSE (returns by year)
 #' @param alpha The alpha level for the credible interval, defaults to 0.05
 #' @return plot called from ggplot
 #'
@@ -23,7 +22,7 @@
 #' )
 #' get_fitted(fit)
 #' }
-get_fitted <- function(fitted_model, alpha = 0.05, by_stream = FALSE) {
+get_fitted <- function(fitted_model, alpha = 0.05) {
 
   # Check if multi-stream mode
   if(fitted_model$multi_stream) {

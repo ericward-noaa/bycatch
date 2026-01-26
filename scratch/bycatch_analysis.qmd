@@ -1,0 +1,166 @@
+---
+title: "Multi-Stream Bycatch Estimation"
+format: pdf
+---
+
+```{r setup, results='hide'}
+library(bycatch)
+library(dplyr)
+library(ggplot2)
+library(knitr)
+library(kableExtra)
+# Set theme for plots
+theme_set(theme_minimal(base_size = 12))
+
+knitr::opts_chunk$set(
+  echo = TRUE,       # Show code by default
+  message = FALSE,   # Suppress messages from packages
+  warning = FALSE    # Suppress warnings
+)
+```
+
+# Overview
+
+This document presents an overview of modelled bycatch estimates for the following species:
+
+```{r echo = FALSE}
+
+if(file.exists("csem_mmsb_forbayes_wide.csv")) {
+  d <- read.csv("csem_mmsb_forbayes_wide.csv")
+  spec_names <- unique(d$Species)
+  print(spec_names)
+}
+
+```
+
+# Methods
+
+We're going to use 2 versions of these models for bycatch estimation
+
+1.  **Multi-stream model**: Combines Observer, EM, and Both monitoring streams
+2.  **Observer-only model**: This model is identical to previous reports (Jannot et al.) and based only on Observer data (where available)
+
+## Data Sources
+
+There are up to three data streams for each species
+
+-   **Observer monitoring**: At-sea observer coverage
+-   **Electronic monitoring (EM)**: Electronic monitoring (camera-based)
+-   **Both**: Trips with both Observer and EM present
+
+## Statistical Models
+
+All models use a Bayesian Poisson GLM framework:
+
+$$
+\text{Takes}_i \sim \text{Poisson}(\lambda \times \text{Effort}_i)
+$$
+
+where $\lambda$ is the bycatch rate (takes per unit effort).
+
+### Backwards compatibility: 1-stream models
+
+To illustrate the backwards compatibility, we will use any data with an observer present as 'observer' and expand to the unobserved portions of the fleet. Note: the argument `expansion_rate` is used here, and means the same thing as the coverage rate.
+
+```{r fit-models, cache=TRUE, results='hide'}
+fit_obs <- list()
+
+for(i in 1:length(spec_names)) {
+  # filter by species
+  sub <- dplyr::filter(d, Species == spec_names[i])
+
+  # replace all NAs in the data with 0s
+  sub <- sub |>
+  dplyr::mutate(across(where(is.numeric), ~ tidyr::replace_na(.x, 0)))
+
+  # combined Ret_OBS and Ret_OBS_EM
+  sub$Ret_OBS <- sub$Ret_OBS + sub$Ret_OBS_EM
+  sub$Takes_OBS <- sub$Takes_OBS + sub$Takes_OBS_EM
+  sub$expansion_rate <- 100 * sub$Ret_OBS / (sub$Ret_OBS + sub$Ret_EM)
+  
+  fit_obs[[i]] <- fit_bycatch(
+    Takes_OBS ~ 1,
+    data = sub,
+    time = "Year",
+    effort = "Ret_OBS",
+    expansion_rate = "expansion_rate",
+    family = "poisson",
+    time_varying = FALSE
+  )
+}
+```
+
+Then for each of these models, we can use the package functions to extract any quantities of interest.
+
+```{r eval = FALSE}
+get_fitted(fit_obs[[1]])
+get_expanded(fit_obs[[1]])
+get_total(fit_obs[[1]])
+```
+
+or plots can be made with
+
+```{r eval = TRUE}
+plot_fitted(fit_obs[[1]]) + 
+  ggtitle(spec_names[1])
+```
+
+```{r eval = TRUE}
+plot_expanded(fit_obs[[1]], show_total = FALSE) + 
+  ggtitle(spec_names[1])
+```
+
+The expanded estimates here represent the expanded estimates to the unobserved portion of the fleet.  
+
+
+```{r fit-joined-models, cache=TRUE, eval=TRUE, results='hide'}
+fit_joined <- list()
+for(i in 1:length(spec_names)) {
+  sub <- dplyr::filter(d, Species == spec_names[i])
+  
+  # replace all NAs in the data with 0s
+  sub <- sub |>
+  dplyr::mutate(across(where(is.numeric), ~ tidyr::replace_na(.x, 0)))
+  orig_retained <- dplyr::select(sub, Year, Retained) |>
+    dplyr::rename(raw_retained = Retained)
+
+  # Prior to 2024, 100% coverage means retained = EM + OBS_EM
+  sub$Retained_sum <- sub$Ret_EM + sub$Ret_OBS_EM
+  
+  # 2024 and beyond: use Retained data in original file
+  sub <- dplyr::left_join(sub, orig_retained) |>
+    dplyr::mutate(Retained = ifelse(Year < 2024, Retained_sum, raw_retained)) |>
+    dplyr::select(-Retained_sum, -raw_retained)
+  
+  fit_joined[[i]] <- fit_bycatch(
+  Takes_OBS ~ 1,  # Formula for the observer stream
+  data = sub,
+  time = "Year",
+  # Observer stream (base)
+  effort = "Ret_OBS",
+  # EM-only stream
+  takes_em = "Takes_EM",
+  effort_em = "Ret_EM",
+  # Both streams present
+  takes_both = "Takes_OBS_EM",
+  effort_both = "Ret_OBS_EM",
+  # Total fishery effort (for expansion)
+  effort_total = "Retained",
+  # Model settings
+  family = "poisson",
+  time_varying = FALSE)
+}
+
+```
+
+# Results
+
+We can then compare estimates from just using the observer data to the combined approach using any of the above metrics, e.g. 
+
+```{r eval = FALSE, echo=TRUE}
+get_total(fit_joined[[1]])
+get_expanded(fit_joined[[1]])
+get_fitted(fit_joined[[1]])
+
+```
+

@@ -5,7 +5,7 @@
 #' @param time Named column of the 'data' data frame with the label for the time (e.g. year) variable
 #' @param effort Named column of the 'effort' variable in the data frame with the label for the fishing effort to be used in estimation of mean bycatch rate. This
 #' represents total observed effort
-#' @param expansion_rate The expansion rate to be used in generating distributions for unobserved sets. If NULL, defaults to 100% coverage (= 100). Deprecated if using effort_total.
+#' @param expansion_rate The expansion rate to be used in generating distributions for unobserved sets. If NULL, defaults to 100% coverage (= 100). Should be the same as the coverage rate. Deprecated if using effort_total.
 #' @param takes_em Optional: Column name for bycatch takes recorded by EM (electronic monitoring). Default NULL.
 #' @param effort_em Optional: Column name for effort monitored by EM. Required if takes_em is provided.
 #' @param takes_both Optional: Column name for bycatch takes when both Observer and EM are present. Default NULL.
@@ -239,9 +239,13 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansi
       new_effort_by_year <- total_effort_by_year - effort_by_year
 
       # Check for negative unobserved effort
-      if (any(new_effort_by_year < 0)) {
+      if (any(new_effort_by_year < 0, na.rm=T)) {
         cli_warn("Some years have observed effort exceeding total effort. Setting unobserved effort to 0 for these years.")
         new_effort_by_year[new_effort_by_year < 0] <- 0
+      }
+
+      if (any(is.na(new_effort_by_year))) {
+        new_effort_by_year[which(is.na(new_effort_by_year))] <- 0
       }
 
       cli_inform("Total fishery effort: {sum(total_effort_by_year)}")
