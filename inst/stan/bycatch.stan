@@ -602,21 +602,75 @@ model {
   }
 }
 generated quantities {
-  vector[n_year] log_lik;
+  vector[n_row] log_lik;
   int<lower = 0> y_new[n_year*is_discrete];
   vector[n_year*(1-is_discrete)] y_new_real;
-
-  // Generate predictions for unobserved effort (by year)
+  
+  // Calculate pointwise log-likelihood for each observation
+  // This is needed for LOO-CV and WAIC
+  for(n in 1:n_row) {
+    real lambda_n = lambda_base[time[n]] * effort[n];
+    real log_lambda_n = log_lambda_base[time[n]] + log(effort[n]);
+    
+    if(family == 1) {  // Poisson
+      log_lik[n] = poisson_log_lpmf(yint[n] | log_lambda_n);
+    } 
+    else if(family == 2) {  // Negative Binomial
+      log_lik[n] = neg_binomial_2_log_lpmf(yint[n] | log_lambda_n, nb2_phi[1]);
+    } 
+    else if(family == 3) {  // Poisson-Hurdle
+      if(yint[n] == 0) {
+        log_lik[n] = log(theta[1]);
+      } else {
+        log_lik[n] = log1m(theta[1]) + poisson_log_lpmf(yint[n] | log_lambda_n);
+      }
+    } 
+    else if(family == 4) {  // NB-Hurdle
+      if(yint[n] == 0) {
+        log_lik[n] = log(theta[1]);
+      } else {
+        log_lik[n] = log1m(theta[1]) + neg_binomial_2_log_lpmf(yint[n] | log_lambda_n, nb2_phi[1]);
+      }
+    }
+    else if(family == 5) {  // Lognormal
+      log_lik[n] = lognormal_lpdf(yreal[n] | log_lambda_n, sigma_logn[1]);
+    }
+    else if(family == 6) {  // Gamma
+      log_lik[n] = gamma_lpdf(yreal[n] | gammaA[1], gammaA[1] / lambda_n);
+    }
+    else if(family == 7) {  // Lognormal-Hurdle
+      if(yreal[n] == 0) {
+        log_lik[n] = log(theta[1]);
+      } else {
+        log_lik[n] = log1m(theta[1]) + lognormal_lpdf(yreal[n] | log_lambda_n, sigma_logn[1]);
+      }
+    }
+    else if(family == 8) {  // Gamma-Hurdle
+      if(yreal[n] == 0) {
+        log_lik[n] = log(theta[1]);
+      } else {
+        log_lik[n] = log1m(theta[1]) + gamma_lpdf(yreal[n] | gammaA[1], gammaA[1] / lambda_n);
+      }
+    }
+    else if(family == 9) {  // Normal
+      log_lik[n] = normal_lpdf(yreal[n] | lambda_n, sigma_logn[1]);
+    }
+    else if(family == 10) {  // Normal-Hurdle
+      if(yreal[n] == 0) {
+        log_lik[n] = log(theta[1]);
+      } else {
+        log_lik[n] = log1m(theta[1]) + normal_lpdf(yreal[n] | lambda_n, sigma_logn[1]);
+      }
+    }
+  }
+  
+  // Generate posterior predictive samples for unobserved effort (by year)
   for(t in 1:n_year) {
-    // Compute log-likelihood (placeholder for now, would need stream-specific implementation)
-    log_lik[t] = 0;
-
-    // Generate posterior predictive for unobserved effort
     if(is_discrete == 1) {
       y_new[t] = 0;
       if(new_effort_by_year[t] > 0) {
         real lambda_new_t = lambda_base[t] * new_effort_by_year[t];
-
+        
         if(family == 1) {
           y_new[t] = poisson_rng(lambda_new_t);
         } else if(family == 2) {
@@ -632,7 +686,7 @@ generated quantities {
       if(new_effort_by_year[t] > 0) {
         real log_lambda_new_t = log_lambda_base[t] + log(new_effort_by_year[t]);
         real lambda_new_t = lambda_base[t] * new_effort_by_year[t];
-
+        
         if(family == 5) {
           y_new_real[t] = lognormal_rng(log_lambda_new_t, sigma_logn[1]);
         } else if(family == 6) {
