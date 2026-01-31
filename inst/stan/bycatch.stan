@@ -602,65 +602,138 @@ model {
   }
 }
 generated quantities {
-  vector[n_row] log_lik;
+  // Log-likelihood needs different sizes for pooled vs detection-adjusted models
+  vector[estimate_detection == 0 ? n_row : (n_obs + n_em + n_both)] log_lik;
   int<lower = 0> y_new[n_year*is_discrete];
   vector[n_year*(1-is_discrete)] y_new_real;
   
-  // Calculate pointwise log-likelihood for each observation
-  // This is needed for LOO-CV and WAIC
-  for(n in 1:n_row) {
-    real lambda_n = lambda_base[time[n]] * effort[n];
-    real log_lambda_n = log_lambda_base[time[n]] + log(effort[n]);
+  // POOLED MODEL (Phase 1)
+  if(estimate_detection == 0) {
+    // Calculate pointwise log-likelihood for each observation
+    for(n in 1:n_row) {
+      real lambda_n = lambda_base[time[n]] * effort[n];
+      real log_lambda_n = log_lambda_base[time[n]] + log(effort[n]);
+      
+      if(family == 1) {  // Poisson
+        log_lik[n] = poisson_log_lpmf(yint[n] | log_lambda_n);
+      } 
+      else if(family == 2) {  // Negative Binomial
+        log_lik[n] = neg_binomial_2_log_lpmf(yint[n] | log_lambda_n, nb2_phi[1]);
+      } 
+      else if(family == 3) {  // Poisson-Hurdle
+        if(yint[n] == 0) {
+          log_lik[n] = log(theta[1]);
+        } else {
+          log_lik[n] = log1m(theta[1]) + poisson_log_lpmf(yint[n] | log_lambda_n);
+        }
+      } 
+      else if(family == 4) {  // NB-Hurdle
+        if(yint[n] == 0) {
+          log_lik[n] = log(theta[1]);
+        } else {
+          log_lik[n] = log1m(theta[1]) + neg_binomial_2_log_lpmf(yint[n] | log_lambda_n, nb2_phi[1]);
+        }
+      }
+      else if(family == 5) {  // Lognormal
+        log_lik[n] = lognormal_lpdf(yreal[n] | log_lambda_n, sigma_logn[1]);
+      }
+      else if(family == 6) {  // Gamma
+        log_lik[n] = gamma_lpdf(yreal[n] | gammaA[1], gammaA[1] / lambda_n);
+      }
+      else if(family == 7) {  // Lognormal-Hurdle
+        if(yreal[n] == 0) {
+          log_lik[n] = log(theta[1]);
+        } else {
+          log_lik[n] = log1m(theta[1]) + lognormal_lpdf(yreal[n] | log_lambda_n, sigma_logn[1]);
+        }
+      }
+      else if(family == 8) {  // Gamma-Hurdle
+        if(yreal[n] == 0) {
+          log_lik[n] = log(theta[1]);
+        } else {
+          log_lik[n] = log1m(theta[1]) + gamma_lpdf(yreal[n] | gammaA[1], gammaA[1] / lambda_n);
+        }
+      }
+      else if(family == 9) {  // Normal
+        log_lik[n] = normal_lpdf(yreal[n] | lambda_n, sigma_logn[1]);
+      }
+      else if(family == 10) {  // Normal-Hurdle
+        if(yreal[n] == 0) {
+          log_lik[n] = log(theta[1]);
+        } else {
+          log_lik[n] = log1m(theta[1]) + normal_lpdf(yreal[n] | lambda_n, sigma_logn[1]);
+        }
+      }
+    }
+  } 
+  // DETECTION-ADJUSTED MODEL (Phase 2)
+  else {
+    int idx = 1;  // Index for filling log_lik
     
-    if(family == 1) {  // Poisson
-      log_lik[n] = poisson_log_lpmf(yint[n] | log_lambda_n);
-    } 
-    else if(family == 2) {  // Negative Binomial
-      log_lik[n] = neg_binomial_2_log_lpmf(yint[n] | log_lambda_n, nb2_phi[1]);
-    } 
-    else if(family == 3) {  // Poisson-Hurdle
-      if(yint[n] == 0) {
-        log_lik[n] = log(theta[1]);
-      } else {
-        log_lik[n] = log1m(theta[1]) + poisson_log_lpmf(yint[n] | log_lambda_n);
+    // OBS sector observations
+    for(i in 1:n_obs) {
+      if(family == 1) {  // Poisson
+        log_lik[idx] = poisson_lpmf(yint_obs[i] | lambda_obs[i]);
+      } else if(family == 2) {  // NB
+        log_lik[idx] = neg_binomial_2_lpmf(yint_obs[i] | lambda_obs[i], nb2_phi[1]);
+      } else if(family == 3) {  // Poisson-Hurdle
+        if(yint_obs[i] == 0) {
+          log_lik[idx] = log(theta[1]);
+        } else {
+          log_lik[idx] = log1m(theta[1]) + poisson_lpmf(yint_obs[i] | lambda_obs[i]);
+        }
+      } else if(family == 4) {  // NB-Hurdle
+        if(yint_obs[i] == 0) {
+          log_lik[idx] = log(theta[1]);
+        } else {
+          log_lik[idx] = log1m(theta[1]) + neg_binomial_2_lpmf(yint_obs[i] | lambda_obs[i], nb2_phi[1]);
+        }
       }
-    } 
-    else if(family == 4) {  // NB-Hurdle
-      if(yint[n] == 0) {
-        log_lik[n] = log(theta[1]);
-      } else {
-        log_lik[n] = log1m(theta[1]) + neg_binomial_2_log_lpmf(yint[n] | log_lambda_n, nb2_phi[1]);
+      idx += 1;
+    }
+    
+    // EM sector observations
+    for(i in 1:n_em) {
+      if(family == 1) {  // Poisson
+        log_lik[idx] = poisson_lpmf(yint_em[i] | lambda_em[i]);
+      } else if(family == 2) {  // NB
+        log_lik[idx] = neg_binomial_2_lpmf(yint_em[i] | lambda_em[i], nb2_phi[1]);
+      } else if(family == 3) {  // Poisson-Hurdle
+        if(yint_em[i] == 0) {
+          log_lik[idx] = log(theta[1]);
+        } else {
+          log_lik[idx] = log1m(theta[1]) + poisson_lpmf(yint_em[i] | lambda_em[i]);
+        }
+      } else if(family == 4) {  // NB-Hurdle
+        if(yint_em[i] == 0) {
+          log_lik[idx] = log(theta[1]);
+        } else {
+          log_lik[idx] = log1m(theta[1]) + neg_binomial_2_lpmf(yint_em[i] | lambda_em[i], nb2_phi[1]);
+        }
       }
+      idx += 1;
     }
-    else if(family == 5) {  // Lognormal
-      log_lik[n] = lognormal_lpdf(yreal[n] | log_lambda_n, sigma_logn[1]);
-    }
-    else if(family == 6) {  // Gamma
-      log_lik[n] = gamma_lpdf(yreal[n] | gammaA[1], gammaA[1] / lambda_n);
-    }
-    else if(family == 7) {  // Lognormal-Hurdle
-      if(yreal[n] == 0) {
-        log_lik[n] = log(theta[1]);
-      } else {
-        log_lik[n] = log1m(theta[1]) + lognormal_lpdf(yreal[n] | log_lambda_n, sigma_logn[1]);
+    
+    // BOTH sector observations
+    for(i in 1:n_both) {
+      if(family == 1) {  // Poisson
+        log_lik[idx] = poisson_lpmf(yint_both[i] | lambda_both[i]);
+      } else if(family == 2) {  // NB
+        log_lik[idx] = neg_binomial_2_lpmf(yint_both[i] | lambda_both[i], nb2_phi[1]);
+      } else if(family == 3) {  // Poisson-Hurdle
+        if(yint_both[i] == 0) {
+          log_lik[idx] = log(theta[1]);
+        } else {
+          log_lik[idx] = log1m(theta[1]) + poisson_lpmf(yint_both[i] | lambda_both[i]);
+        }
+      } else if(family == 4) {  // NB-Hurdle
+        if(yint_both[i] == 0) {
+          log_lik[idx] = log(theta[1]);
+        } else {
+          log_lik[idx] = log1m(theta[1]) + neg_binomial_2_lpmf(yint_both[i] | lambda_both[i], nb2_phi[1]);
+        }
       }
-    }
-    else if(family == 8) {  // Gamma-Hurdle
-      if(yreal[n] == 0) {
-        log_lik[n] = log(theta[1]);
-      } else {
-        log_lik[n] = log1m(theta[1]) + gamma_lpdf(yreal[n] | gammaA[1], gammaA[1] / lambda_n);
-      }
-    }
-    else if(family == 9) {  // Normal
-      log_lik[n] = normal_lpdf(yreal[n] | lambda_n, sigma_logn[1]);
-    }
-    else if(family == 10) {  // Normal-Hurdle
-      if(yreal[n] == 0) {
-        log_lik[n] = log(theta[1]);
-      } else {
-        log_lik[n] = log1m(theta[1]) + normal_lpdf(yreal[n] | lambda_n, sigma_logn[1]);
-      }
+      idx += 1;
     }
   }
   
