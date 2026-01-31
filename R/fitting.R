@@ -479,3 +479,27 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansi
 
   return(result)
 }
+
+
+
+
+
+
+#' Extract log-likelihood matrix for loo, removing NA observations
+#' @param fit A bycatch model fit object
+#' @return A matrix suitable for loo::loo()
+#' @export
+extract_log_lik_for_loo <- function(fit) {
+  log_lik_array <- rstan::extract(fit$fitted_model, pars = "log_lik")$log_lik
+  
+  # Check for NAs in any iteration
+  na_cols <- apply(log_lik_array, 2, function(x) any(is.na(x)))
+  
+  if (any(na_cols)) {
+    warning(paste("Removing", sum(na_cols), "observations with NA log-likelihood values"))
+    log_lik_array <- log_lik_array[, !na_cols, drop = FALSE]
+  }
+  
+  return(log_lik_array)
+}
+
