@@ -602,13 +602,13 @@ model {
   }
 }
 generated quantities {
-  // Log-likelihood needs different sizes for pooled vs detection-adjusted models
-  vector[estimate_detection == 0 ? n_row : (n_obs + n_em + n_both)] log_lik;
+  // Log-likelihood needs different sizes for pooled vs multi-stream models
+  vector[multi_stream == 0 ? n_row : (n_obs + n_em + n_both)] log_lik;
   int<lower = 0> y_new[n_year*is_discrete];
   vector[n_year*(1-is_discrete)] y_new_real;
   
-  // POOLED MODEL (Phase 1)
-  if(estimate_detection == 0) {
+  // POOLED MODEL (single stream)
+  if(multi_stream == 0) {
     // Calculate pointwise log-likelihood for each observation
     for(n in 1:n_row) {
       real lambda_n = lambda_base[time[n]] * effort[n];
@@ -666,27 +666,30 @@ generated quantities {
       }
     }
   } 
-  // DETECTION-ADJUSTED MODEL (Phase 2)
+  // MULTI-STREAM MODEL
   else {
     int idx = 1;  // Index for filling log_lik
     
     // OBS sector observations
     for(i in 1:n_obs) {
+      real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
+      real log_lambda_obs_i = log_lambda_base[time_idx_obs[i]] + log(effort_obs[i]);
+      
       if(family == 1) {  // Poisson
-        log_lik[idx] = poisson_lpmf(yint_obs[i] | lambda_obs[i]);
+        log_lik[idx] = poisson_log_lpmf(yint_obs[i] | log_lambda_obs_i);
       } else if(family == 2) {  // NB
-        log_lik[idx] = neg_binomial_2_lpmf(yint_obs[i] | lambda_obs[i], nb2_phi[1]);
+        log_lik[idx] = neg_binomial_2_log_lpmf(yint_obs[i] | log_lambda_obs_i, nb2_phi[1]);
       } else if(family == 3) {  // Poisson-Hurdle
         if(yint_obs[i] == 0) {
           log_lik[idx] = log(theta[1]);
         } else {
-          log_lik[idx] = log1m(theta[1]) + poisson_lpmf(yint_obs[i] | lambda_obs[i]);
+          log_lik[idx] = log1m(theta[1]) + poisson_log_lpmf(yint_obs[i] | log_lambda_obs_i);
         }
       } else if(family == 4) {  // NB-Hurdle
         if(yint_obs[i] == 0) {
           log_lik[idx] = log(theta[1]);
         } else {
-          log_lik[idx] = log1m(theta[1]) + neg_binomial_2_lpmf(yint_obs[i] | lambda_obs[i], nb2_phi[1]);
+          log_lik[idx] = log1m(theta[1]) + neg_binomial_2_log_lpmf(yint_obs[i] | log_lambda_obs_i, nb2_phi[1]);
         }
       }
       idx += 1;
@@ -694,21 +697,24 @@ generated quantities {
     
     // EM sector observations
     for(i in 1:n_em) {
+      real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
+      real log_lambda_em_i = log_lambda_base[time_idx_em[i]] + log(effort_em[i]);
+      
       if(family == 1) {  // Poisson
-        log_lik[idx] = poisson_lpmf(yint_em[i] | lambda_em[i]);
+        log_lik[idx] = poisson_log_lpmf(yint_em[i] | log_lambda_em_i);
       } else if(family == 2) {  // NB
-        log_lik[idx] = neg_binomial_2_lpmf(yint_em[i] | lambda_em[i], nb2_phi[1]);
+        log_lik[idx] = neg_binomial_2_log_lpmf(yint_em[i] | log_lambda_em_i, nb2_phi[1]);
       } else if(family == 3) {  // Poisson-Hurdle
         if(yint_em[i] == 0) {
           log_lik[idx] = log(theta[1]);
         } else {
-          log_lik[idx] = log1m(theta[1]) + poisson_lpmf(yint_em[i] | lambda_em[i]);
+          log_lik[idx] = log1m(theta[1]) + poisson_log_lpmf(yint_em[i] | log_lambda_em_i);
         }
       } else if(family == 4) {  // NB-Hurdle
         if(yint_em[i] == 0) {
           log_lik[idx] = log(theta[1]);
         } else {
-          log_lik[idx] = log1m(theta[1]) + neg_binomial_2_lpmf(yint_em[i] | lambda_em[i], nb2_phi[1]);
+          log_lik[idx] = log1m(theta[1]) + neg_binomial_2_log_lpmf(yint_em[i] | log_lambda_em_i, nb2_phi[1]);
         }
       }
       idx += 1;
@@ -716,21 +722,24 @@ generated quantities {
     
     // BOTH sector observations
     for(i in 1:n_both) {
+      real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
+      real log_lambda_both_i = log_lambda_base[time_idx_both[i]] + log(effort_both[i]);
+      
       if(family == 1) {  // Poisson
-        log_lik[idx] = poisson_lpmf(yint_both[i] | lambda_both[i]);
+        log_lik[idx] = poisson_log_lpmf(yint_both[i] | log_lambda_both_i);
       } else if(family == 2) {  // NB
-        log_lik[idx] = neg_binomial_2_lpmf(yint_both[i] | lambda_both[i], nb2_phi[1]);
+        log_lik[idx] = neg_binomial_2_log_lpmf(yint_both[i] | log_lambda_both_i, nb2_phi[1]);
       } else if(family == 3) {  // Poisson-Hurdle
         if(yint_both[i] == 0) {
           log_lik[idx] = log(theta[1]);
         } else {
-          log_lik[idx] = log1m(theta[1]) + poisson_lpmf(yint_both[i] | lambda_both[i]);
+          log_lik[idx] = log1m(theta[1]) + poisson_log_lpmf(yint_both[i] | log_lambda_both_i);
         }
       } else if(family == 4) {  // NB-Hurdle
         if(yint_both[i] == 0) {
           log_lik[idx] = log(theta[1]);
         } else {
-          log_lik[idx] = log1m(theta[1]) + neg_binomial_2_lpmf(yint_both[i] | lambda_both[i], nb2_phi[1]);
+          log_lik[idx] = log1m(theta[1]) + neg_binomial_2_log_lpmf(yint_both[i] | log_lambda_both_i, nb2_phi[1]);
         }
       }
       idx += 1;
