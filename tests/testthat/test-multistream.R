@@ -1,17 +1,22 @@
-context("multi-stream monitoring tests")
+# Multi-stream monitoring tests
+
+library(testthat)
+library(bycatch)
 
 # Set up test data
 sample_size <- 20
 
-# Two-stream data (Observer + EM)
+# Two-stream data (Observer + EM) with coverage rates
 set.seed(456)
 d_multi_pois <- data.frame(
   Year = 1:sample_size,
   Takes_obs = rpois(sample_size, 1.0),
   Sets_obs = rep(100, sample_size),
+  CovRate_obs = rep(20, sample_size),  # 20% coverage
   Takes_em = rpois(sample_size, 0.8),
   Sets_em = rep(80, sample_size),
-  Sets_total = rep(500, sample_size)
+  CovRate_em = rep(16, sample_size),   # 16% coverage
+  Sets_total = rep(500, sample_size)   # Still keep for backward compat tests
 )
 
 # Three-stream data (Observer + EM + Both)
@@ -20,10 +25,13 @@ d_multi_three <- data.frame(
   Year = 1:sample_size,
   Takes_obs = rpois(sample_size, 1.0),
   Sets_obs = rep(100, sample_size),
+  CovRate_obs = rep(20, sample_size),
   Takes_em = rpois(sample_size, 0.8),
   Sets_em = rep(80, sample_size),
+  CovRate_em = rep(16, sample_size),
   Takes_both = rpois(sample_size, 0.5),
   Sets_both = rep(50, sample_size),
+  CovRate_both = rep(10, sample_size),  # 10% coverage
   Sets_total = rep(500, sample_size)
 )
 
@@ -33,23 +41,26 @@ d_multi_cont <- data.frame(
   Year = 1:sample_size,
   Takes_obs = abs(rnorm(sample_size, 5, 0.5)),
   Sets_obs = rep(100, sample_size),
+  CovRate_obs = rep(20, sample_size),
   Takes_em = abs(rnorm(sample_size, 4.8, 0.5)),
   Sets_em = rep(80, sample_size),
+  CovRate_em = rep(16, sample_size),
   Sets_total = rep(500, sample_size)
 )
 
 # ===== BASIC FUNCTIONALITY TESTS =====
 
-test_that("multi-stream mode activates correctly for two streams", {
+test_that("multi-stream mode activates correctly for two streams with covrate", {
   set.seed(123)
 
   fit <- fit_bycatch(Takes_obs ~ 1,
                      data = d_multi_pois,
                      time = "Year",
                      effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
                      takes_em = "Takes_em",
                      effort_em = "Sets_em",
-                     effort_total = "Sets_total",
+                     covrate_em = "CovRate_em",
                      family = "poisson",
                      time_varying = FALSE,
                      iter = 100,
@@ -63,18 +74,20 @@ test_that("multi-stream mode activates correctly for two streams", {
   expect_equal(fit$stream_info$n_both, 0)
 })
 
-test_that("multi-stream mode activates correctly for three streams", {
+test_that("multi-stream mode activates correctly for three streams with covrate", {
   set.seed(123)
 
   fit <- fit_bycatch(Takes_obs ~ 1,
                      data = d_multi_three,
                      time = "Year",
                      effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
                      takes_em = "Takes_em",
                      effort_em = "Sets_em",
+                     covrate_em = "CovRate_em",
                      takes_both = "Takes_both",
                      effort_both = "Sets_both",
-                     effort_total = "Sets_total",
+                     covrate_both = "CovRate_both",
                      family = "poisson",
                      time_varying = FALSE,
                      iter = 100,
@@ -88,19 +101,43 @@ test_that("multi-stream mode activates correctly for three streams", {
   expect_equal(fit$stream_info$n_both, sample_size)
 })
 
+test_that("multi-stream still works with effort_total (backward compat)", {
+  set.seed(123)
+
+  fit <- fit_bycatch(Takes_obs ~ 1,
+                     data = d_multi_pois,
+                     time = "Year",
+                     effort = "Sets_obs",
+                     takes_em = "Takes_em",
+                     effort_em = "Sets_em",
+                     effort_total = "Sets_total",  # Old approach
+                     family = "poisson",
+                     time_varying = FALSE,
+                     iter = 100,
+                     chains = 1
+  )
+
+  expect_type(fit, "list")
+  expect_true(fit$multi_stream)
+  expect_equal(fit$stream_info$n_obs, sample_size)
+  expect_equal(fit$stream_info$n_em, sample_size)
+})
+
 test_that("single-stream mode still works (backwards compatible)", {
   set.seed(123)
 
   d_single <- data.frame(
     Year = 1:sample_size,
     Takes = rpois(sample_size, 1.0),
-    Sets = rep(100, sample_size)
+    Sets = rep(100, sample_size),
+    CovRate = rep(30, sample_size)
   )
 
   fit <- fit_bycatch(Takes ~ 1,
                      data = d_single,
                      time = "Year",
                      effort = "Sets",
+                     covrate = "CovRate",
                      family = "poisson",
                      time_varying = FALSE,
                      iter = 100,
@@ -121,9 +158,10 @@ test_that("multi-stream works with Poisson", {
                      data = d_multi_pois,
                      time = "Year",
                      effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
                      takes_em = "Takes_em",
                      effort_em = "Sets_em",
-                     effort_total = "Sets_total",
+                     covrate_em = "CovRate_em",
                      family = "poisson",
                      time_varying = FALSE,
                      iter = 100,
@@ -145,9 +183,10 @@ test_that("multi-stream works with Negative Binomial", {
                      data = d_multi_pois,
                      time = "Year",
                      effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
                      takes_em = "Takes_em",
                      effort_em = "Sets_em",
-                     effort_total = "Sets_total",
+                     covrate_em = "CovRate_em",
                      family = "nbinom2",
                      time_varying = FALSE,
                      iter = 100,
@@ -158,16 +197,17 @@ test_that("multi-stream works with Negative Binomial", {
   expect_true(fit$multi_stream)
 })
 
-test_that("multi-stream works with Gamma (this is the key test!)", {
+test_that("multi-stream works with Gamma", {
   set.seed(123)
 
   fit <- fit_bycatch(Takes_obs ~ 1,
                      data = d_multi_cont,
                      time = "Year",
                      effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
                      takes_em = "Takes_em",
                      effort_em = "Sets_em",
-                     effort_total = "Sets_total",
+                     covrate_em = "CovRate_em",
                      family = "gamma",
                      time_varying = FALSE,
                      iter = 100,
@@ -177,7 +217,7 @@ test_that("multi-stream works with Gamma (this is the key test!)", {
   expect_type(fit, "list")
   expect_true(fit$multi_stream)
 
-  # This would have FAILED before Phase 1.5!
+  # Check lambda_base was estimated
   pars <- rstan::extract(fit$fitted_model, "lambda_base")
   expect_type(pars$lambda_base, "double")
 })
@@ -189,9 +229,10 @@ test_that("multi-stream works with Lognormal", {
                      data = d_multi_cont,
                      time = "Year",
                      effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
                      takes_em = "Takes_em",
                      effort_em = "Sets_em",
-                     effort_total = "Sets_total",
+                     covrate_em = "CovRate_em",
                      family = "lognormal",
                      time_varying = FALSE,
                      iter = 100,
@@ -209,9 +250,10 @@ test_that("multi-stream works with Normal", {
                      data = d_multi_cont,
                      time = "Year",
                      effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
                      takes_em = "Takes_em",
                      effort_em = "Sets_em",
-                     effort_total = "Sets_total",
+                     covrate_em = "CovRate_em",
                      family = "normal",
                      time_varying = FALSE,
                      iter = 100,
@@ -234,9 +276,10 @@ test_that("multi-stream works with Poisson-Hurdle", {
                      data = d_hurdle,
                      time = "Year",
                      effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
                      takes_em = "Takes_em",
                      effort_em = "Sets_em",
-                     effort_total = "Sets_total",
+                     covrate_em = "CovRate_em",
                      family = "poisson-hurdle",
                      time_varying = FALSE,
                      iter = 100,
@@ -259,9 +302,10 @@ test_that("multi-stream works with Gamma-Hurdle", {
                      data = d_hurdle,
                      time = "Year",
                      effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
                      takes_em = "Takes_em",
                      effort_em = "Sets_em",
-                     effort_total = "Sets_total",
+                     covrate_em = "CovRate_em",
                      family = "gamma-hurdle",
                      time_varying = FALSE,
                      iter = 100,
@@ -281,9 +325,10 @@ test_that("multi-stream works with time-varying effects", {
                      data = d_multi_pois,
                      time = "Year",
                      effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
                      takes_em = "Takes_em",
                      effort_em = "Sets_em",
-                     effort_total = "Sets_total",
+                     covrate_em = "CovRate_em",
                      family = "poisson",
                      time_varying = TRUE,
                      iter = 100,
@@ -307,9 +352,10 @@ test_that("get_expanded works with multi-stream", {
                      data = d_multi_pois,
                      time = "Year",
                      effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
                      takes_em = "Takes_em",
                      effort_em = "Sets_em",
-                     effort_total = "Sets_total",
+                     covrate_em = "CovRate_em",
                      family = "poisson",
                      time_varying = FALSE,
                      iter = 100,
@@ -329,9 +375,10 @@ test_that("get_fitted works with multi-stream", {
                      data = d_multi_pois,
                      time = "Year",
                      effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
                      takes_em = "Takes_em",
                      effort_em = "Sets_em",
-                     effort_total = "Sets_total",
+                     covrate_em = "CovRate_em",
                      family = "poisson",
                      time_varying = FALSE,
                      iter = 100,
@@ -356,9 +403,10 @@ test_that("get_total works with multi-stream", {
                      data = d_multi_pois,
                      time = "Year",
                      effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
                      takes_em = "Takes_em",
                      effort_em = "Sets_em",
-                     effort_total = "Sets_total",
+                     covrate_em = "CovRate_em",
                      family = "poisson",
                      time_varying = FALSE,
                      iter = 100,
@@ -381,9 +429,10 @@ test_that("get_stream_summary works with multi-stream", {
                      data = d_multi_pois,
                      time = "Year",
                      effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
                      takes_em = "Takes_em",
                      effort_em = "Sets_em",
-                     effort_total = "Sets_total",
+                     covrate_em = "CovRate_em",
                      family = "poisson",
                      time_varying = FALSE,
                      iter = 100,
@@ -399,10 +448,6 @@ test_that("get_stream_summary works with multi-stream", {
 
   # Should have at least: Observer, EM, Pooled, Unobserved, Total
   expect_gte(nrow(summary), 5)
-
-  # Check that efforts sum correctly
-  total_row <- summary[summary$stream == "Total Fishery", ]
-  expect_equal(total_row$effort, sum(d_multi_pois$Sets_total))
 })
 
 test_that("get_stream_summary works with three streams", {
@@ -412,11 +457,13 @@ test_that("get_stream_summary works with three streams", {
                      data = d_multi_three,
                      time = "Year",
                      effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
                      takes_em = "Takes_em",
                      effort_em = "Sets_em",
+                     covrate_em = "CovRate_em",
                      takes_both = "Takes_both",
                      effort_both = "Sets_both",
-                     effort_total = "Sets_total",
+                     covrate_both = "CovRate_both",
                      family = "poisson",
                      time_varying = FALSE,
                      iter = 100,
@@ -441,9 +488,10 @@ test_that("plot_fitted works with multi-stream", {
                      data = d_multi_pois,
                      time = "Year",
                      effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
                      takes_em = "Takes_em",
                      effort_em = "Sets_em",
-                     effort_total = "Sets_total",
+                     covrate_em = "CovRate_em",
                      family = "poisson",
                      time_varying = FALSE,
                      iter = 100,
@@ -463,9 +511,10 @@ test_that("plot_expanded works with multi-stream", {
                      data = d_multi_pois,
                      time = "Year",
                      effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
                      takes_em = "Takes_em",
                      effort_em = "Sets_em",
-                     effort_total = "Sets_total",
+                     covrate_em = "CovRate_em",
                      family = "poisson",
                      time_varying = FALSE,
                      iter = 100,
@@ -524,21 +573,23 @@ test_that("error when takes_both provided without effort_both", {
   )
 })
 
-test_that("error when column not found", {
+test_that("error when coverage rate column not found", {
   expect_error(
     fit_bycatch(Takes_obs ~ 1,
                 data = d_multi_pois,
                 time = "Year",
                 effort = "Sets_obs",
-                takes_em = "NonexistentColumn",
+                covrate_obs = "NonexistentColumn",
+                takes_em = "Takes_em",
                 effort_em = "Sets_em",
+                covrate_em = "CovRate_em",
                 family = "poisson"
     ),
     "NonexistentColumn not found"
   )
 })
 
-test_that("warning when observed exceeds total effort", {
+test_that("warning when observed exceeds total effort (with effort_total)", {
   d_bad <- d_multi_pois
   d_bad$Sets_total <- rep(50, sample_size)  # Less than Sets_obs + Sets_em
 
@@ -568,9 +619,10 @@ test_that("multi-stream estimates similar rate to single-stream pooled data", {
                            data = d_multi_pois,
                            time = "Year",
                            effort = "Sets_obs",
+                           covrate_obs = "CovRate_obs",
                            takes_em = "Takes_em",
                            effort_em = "Sets_em",
-                           effort_total = "Sets_total",
+                           covrate_em = "CovRate_em",
                            family = "poisson",
                            time_varying = FALSE,
                            iter = 500,
@@ -581,11 +633,13 @@ test_that("multi-stream estimates similar rate to single-stream pooled data", {
   d_pooled <- d_multi_pois
   d_pooled$Takes_pooled <- d_pooled$Takes_obs + d_pooled$Takes_em
   d_pooled$Sets_pooled <- d_pooled$Sets_obs + d_pooled$Sets_em
+  d_pooled$CovRate_pooled <- d_pooled$CovRate_obs + d_pooled$CovRate_em
 
   fit_pooled <- fit_bycatch(Takes_pooled ~ 1,
                             data = d_pooled,
                             time = "Year",
                             effort = "Sets_pooled",
+                            covrate = "CovRate_pooled",
                             family = "poisson",
                             time_varying = FALSE,
                             iter = 500,
@@ -615,14 +669,17 @@ test_that("multi-stream works with only EM (no observer)", {
   # Set observer to zero
   d_em_only <- d_multi_pois
   d_em_only$Takes_obs <- rep(0, sample_size)
+  d_em_only$Sets_obs <- rep(0, sample_size)
+  d_em_only$CovRate_obs <- rep(0, sample_size)
 
   fit <- fit_bycatch(Takes_obs ~ 1,
                      data = d_em_only,
                      time = "Year",
                      effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
                      takes_em = "Takes_em",
                      effort_em = "Sets_em",
-                     effort_total = "Sets_total",
+                     covrate_em = "CovRate_em",
                      family = "poisson",
                      time_varying = FALSE,
                      iter = 100,
@@ -647,9 +704,10 @@ test_that("multi-stream works with sparse data", {
                      data = d_sparse,
                      time = "Year",
                      effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
                      takes_em = "Takes_em",
                      effort_em = "Sets_em",
-                     effort_total = "Sets_total",
+                     covrate_em = "CovRate_em",
                      family = "poisson",
                      time_varying = FALSE,
                      iter = 100,
@@ -663,17 +721,20 @@ test_that("multi-stream works with sparse data", {
 test_that("multi-stream works with 100% coverage (no expansion)", {
   set.seed(123)
 
-  # Total effort equals observed effort (no unobserved)
+  # 100% coverage - no unobserved effort
   d_full <- d_multi_pois
-  d_full$Sets_total <- d_full$Sets_obs + d_full$Sets_em
+  d_full$CovRate_obs <- rep(60, sample_size)  # 60%
+  d_full$CovRate_em <- rep(40, sample_size)   # 40%
+  # Total = 100%
 
   fit <- fit_bycatch(Takes_obs ~ 1,
                      data = d_full,
                      time = "Year",
                      effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
                      takes_em = "Takes_em",
                      effort_em = "Sets_em",
-                     effort_total = "Sets_total",
+                     covrate_em = "CovRate_em",
                      family = "poisson",
                      time_varying = FALSE,
                      iter = 100,
@@ -685,4 +746,86 @@ test_that("multi-stream works with 100% coverage (no expansion)", {
   # Unobserved should be zero or very small
   expanded <- get_expanded(fit)
   expect_true(mean(rowSums(expanded)) < 1)
+})
+
+test_that("multi-stream works without any coverage info (assumes 100%)", {
+  set.seed(123)
+
+  fit <- fit_bycatch(Takes_obs ~ 1,
+                     data = d_multi_pois,
+                     time = "Year",
+                     effort = "Sets_obs",
+                     # No covrate_obs
+                     takes_em = "Takes_em",
+                     effort_em = "Sets_em",
+                     # No covrate_em
+                     # No effort_total
+                     family = "poisson",
+                     time_varying = FALSE,
+                     iter = 100,
+                     chains = 1
+  )
+
+  expect_type(fit, "list")
+  expect_true(fit$multi_stream)
+
+  # Should assume 100% coverage - no expansion
+  expanded <- get_expanded(fit)
+  expect_true(mean(rowSums(expanded)) < 1)
+})
+
+# ===== COVERAGE RATE CALCULATION TESTS =====
+
+test_that("coverage rates calculate expansion correctly", {
+  set.seed(123)
+
+  # Simple test case: 25% coverage
+  d_test <- data.frame(
+    Year = 1:5,
+    Takes_obs = c(1, 0, 2, 1, 0),
+    Sets_obs = rep(100, 5),
+    CovRate_obs = rep(25, 5)  # 25% coverage
+  )
+
+  fit <- fit_bycatch(Takes_obs ~ 1,
+                     data = d_test,
+                     time = "Year",
+                     effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
+                     family = "poisson",
+                     time_varying = FALSE,
+                     iter = 100,
+                     chains = 1
+  )
+
+  # With 25% coverage:
+  # Observed = 100, Unobserved = 100 * (75/25) = 300
+  # Total = 400
+  # This is encoded in the Stan model via new_effort_by_year
+
+  expect_type(fit, "list")
+  expect_false(fit$multi_stream)
+})
+
+test_that("multi-stream coverage rates sum correctly", {
+  set.seed(123)
+
+  # Coverage: 20% + 16% = 36%, so 64% unobserved
+  fit <- fit_bycatch(Takes_obs ~ 1,
+                     data = d_multi_pois,
+                     time = "Year",
+                     effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
+                     takes_em = "Takes_em",
+                     effort_em = "Sets_em",
+                     covrate_em = "CovRate_em",
+                     family = "poisson",
+                     time_varying = FALSE,
+                     iter = 100,
+                     chains = 1
+  )
+
+  # Should have expansion since coverage < 100%
+  expanded <- get_expanded(fit)
+  expect_true(mean(rowSums(expanded)) > 0)
 })

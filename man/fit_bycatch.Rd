@@ -2,18 +2,22 @@
 % Please edit documentation in R/fitting.R
 \name{fit_bycatch}
 \alias{fit_bycatch}
-\title{fit_bycatch is the primary function for fitting bycatch models to time series of takes and effort}
+\title{fit_bycatch - Unified version with coverage rate parameters}
 \usage{
 fit_bycatch(
   formula,
   data,
   time = "year",
   effort = "effort",
+  covrate = NULL,
   expansion_rate = NULL,
   takes_em = NULL,
   effort_em = NULL,
+  covrate_em = NULL,
   takes_both = NULL,
   effort_both = NULL,
+  covrate_obs = NULL,
+  covrate_both = NULL,
   effort_total = NULL,
   family = c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle", "lognormal",
     "gamma", "lognormal-hurdle", "gamma-hurdle", "normal", "normal-hurdle"),
@@ -31,20 +35,27 @@ fit_bycatch(
 
 \item{time}{Named column of the 'data' data frame with the label for the time (e.g. year) variable}
 
-\item{effort}{Named column of the 'effort' variable in the data frame with the label for the fishing effort to be used in estimation of mean bycatch rate. This
-represents total observed effort}
+\item{effort}{Named column of the 'effort' variable in the data frame with the label for the fishing effort to be used in estimation of mean bycatch rate. This represents total observed effort}
 
-\item{expansion_rate}{The expansion rate to be used in generating distributions for unobserved sets. If NULL, defaults to 100\% coverage (= 100). Should be the same as the coverage rate. Deprecated if using effort_total.}
+\item{covrate}{Optional: Column name for coverage rate (percentage) for single-stream models. Replaces expansion_rate.}
+
+\item{expansion_rate}{DEPRECATED: Use 'covrate' or 'covrate_obs' instead. The expansion rate to be used in generating distributions for unobserved sets.}
 
 \item{takes_em}{Optional: Column name for bycatch takes recorded by EM (electronic monitoring). Default NULL.}
 
 \item{effort_em}{Optional: Column name for effort monitored by EM. Required if takes_em is provided.}
 
+\item{covrate_em}{Optional: Column name for EM coverage rate (percentage). Used to calculate unobserved effort.}
+
 \item{takes_both}{Optional: Column name for bycatch takes when both Observer and EM are present. Default NULL.}
 
 \item{effort_both}{Optional: Column name for effort with both Observer and EM monitoring. Required if takes_both is provided.}
 
-\item{effort_total}{Optional: Column name for total fishery effort. If provided, replaces expansion_rate for calculating unobserved effort.}
+\item{covrate_obs}{Optional: Column name for Observer coverage rate (percentage). Used to calculate unobserved effort.}
+
+\item{covrate_both}{Optional: Column name for "Both" coverage rate (percentage). Used to calculate unobserved effort.}
+
+\item{effort_total}{Optional: Column name for total fishery effort. If provided, takes precedence over coverage rates. Must be in same units as effort columns.}
 
 \item{family}{Family for response distribution can be discrete ("poisson",
 "nbinom2", "poisson-hurdle","nbinom2-hurdle"), or continuous ("normal",
@@ -71,45 +82,64 @@ transitions: \code{control = list(adapt_delta = 0.99)}. By default,
 list of the data used to fit the model, the matrix of covariates, the expanded bycatch generated via the fit and simulations, and the fitted stan model
 }
 \description{
-fit_bycatch is the primary function for fitting bycatch models to time series of takes and effort
+fit_bycatch - Unified version with coverage rate parameters
 }
 \details{
+\strong{Coverage Rates vs effort_total:}
+
+This function supports two approaches for calculating unobserved effort:
+\enumerate{
+\item \strong{Coverage rates} (recommended): Use \code{covrate}, \code{covrate_obs}, \code{covrate_em}, \code{covrate_both}
+to specify what percentage of the fishery is monitored. The function calculates
+unobserved effort as: \code{observed_effort * ((100 - coverage) / coverage)}
+\item \strong{Total effort}: Use \code{effort_total} to provide the total fishery effort directly.
+Unobserved effort is calculated as: \code{effort_total - observed_effort}
+NOTE: effort_total must be in the same units as your effort columns
+}
+
+\strong{Priority order}: effort_total > coverage rates > 100\% coverage assumed
+
 \strong{Multi-stream monitoring:} When using multiple monitoring streams (Observer, EM, Both),
 the data are kept separate in the statistical model but all share the same underlying bycatch rate.
-This approach assumes all monitoring types have perfect/equal detection (detection = 100\\%) but
+This approach assumes all monitoring types have perfect/equal detection (detection = 100\%) but
 avoids distributional issues that arise from pooling.
 }
 \examples{
 \donttest{
-# Single stream example (backwards compatible)
+# Single stream example with coverage rate
 d <- data.frame(
   "Year" = 2002:2014,
   "Takes" = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0),
-  "expansionRate" = c(24, 22, 14, 32, 28, 25, 30, 7, 26, 21, 22, 23, 27),
+  "CovRate" = c(24, 22, 14, 32, 28, 25, 30, 7, 26, 21, 22, 23, 27),
   "Sets" = c(391, 340, 330, 660, 470, 500, 330, 287, 756, 673, 532, 351, 486)
 )
 fit <- fit_bycatch(Takes ~ 1,
   data = d, time = "Year",
-  effort = "Sets", family = "poisson", time_varying = FALSE
+  effort = "Sets",
+  covrate = "CovRate",
+  family = "poisson",
+  time_varying = FALSE
 )
 
-# Multi-stream example (Observer + EM)
+# Multi-stream example with coverage rates (Observer + EM)
 d_multi <- data.frame(
   Year = 2002:2014,
   Takes_obs = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0),
   Sets_obs = c(200, 180, 150, 350, 250, 270, 180, 150, 400, 350, 280, 180, 250),
+  CovRate_obs = c(20, 19, 17, 19, 21, 21, 20, 20, 20, 19, 20, 19, 19),
   Takes_em = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0),
   Sets_em = c(150, 120, 140, 250, 180, 190, 120, 100, 300, 270, 200, 130, 190),
-  Sets_total = c(1000, 950, 900, 1800, 1200, 1300, 900, 750, 2000, 1800, 1400, 950, 1300)
+  CovRate_em = c(15, 13, 16, 14, 15, 15, 13, 13, 15, 15, 14, 14, 15)
 )
 
 fit_multi <- fit_bycatch(Takes_obs ~ 1,
   data = d_multi,
   time = "Year",
   effort = "Sets_obs",
+  covrate_obs = "CovRate_obs",
   takes_em = "Takes_em",
   effort_em = "Sets_em",
-  effort_total = "Sets_total",
+  covrate_em = "CovRate_em",
   family = "poisson"
 )
 }

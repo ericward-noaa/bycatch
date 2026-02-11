@@ -1,16 +1,19 @@
-#' fit_bycatch is the primary function for fitting bycatch models to time series of takes and effort
+#' fit_bycatch - Unified version with coverage rate parameters
 #'
 #' @param formula The model formula.
 #' @param data A data frame.
 #' @param time Named column of the 'data' data frame with the label for the time (e.g. year) variable
-#' @param effort Named column of the 'effort' variable in the data frame with the label for the fishing effort to be used in estimation of mean bycatch rate. This
-#' represents total observed effort
-#' @param expansion_rate The expansion rate to be used in generating distributions for unobserved sets. If NULL, defaults to 100% coverage (= 100). Should be the same as the coverage rate. Deprecated if using effort_total.
+#' @param effort Named column of the 'effort' variable in the data frame with the label for the fishing effort to be used in estimation of mean bycatch rate. This represents total observed effort
+#' @param covrate Optional: Column name for coverage rate (percentage) for single-stream models. Replaces expansion_rate.
+#' @param expansion_rate DEPRECATED: Use 'covrate' or 'covrate_obs' instead. The expansion rate to be used in generating distributions for unobserved sets.
 #' @param takes_em Optional: Column name for bycatch takes recorded by EM (electronic monitoring). Default NULL.
 #' @param effort_em Optional: Column name for effort monitored by EM. Required if takes_em is provided.
+#' @param covrate_em Optional: Column name for EM coverage rate (percentage). Used to calculate unobserved effort.
 #' @param takes_both Optional: Column name for bycatch takes when both Observer and EM are present. Default NULL.
 #' @param effort_both Optional: Column name for effort with both Observer and EM monitoring. Required if takes_both is provided.
-#' @param effort_total Optional: Column name for total fishery effort. If provided, replaces expansion_rate for calculating unobserved effort.
+#' @param covrate_obs Optional: Column name for Observer coverage rate (percentage). Used to calculate unobserved effort.
+#' @param covrate_both Optional: Column name for "Both" coverage rate (percentage). Used to calculate unobserved effort.
+#' @param effort_total Optional: Column name for total fishery effort. If provided, takes precedence over coverage rates. Must be in same units as effort columns.
 #' @param family Family for response distribution can be discrete ("poisson",
 #' "nbinom2", "poisson-hurdle","nbinom2-hurdle"), or continuous ("normal",
 #' "gamma","lognormal", "normal-hurdle", "gamma-hurdle", "lognormal-hurdle"). The
@@ -37,50 +40,74 @@
 #' @importFrom stats model.frame model.matrix model.response
 #'
 #' @details
+#' **Coverage Rates vs effort_total:**
+#'
+#' This function supports two approaches for calculating unobserved effort:
+#'
+#' 1. **Coverage rates** (recommended): Use `covrate`, `covrate_obs`, `covrate_em`, `covrate_both`
+#'    to specify what percentage of the fishery is monitored. The function calculates
+#'    unobserved effort as: `observed_effort * ((100 - coverage) / coverage)`
+#'
+#' 2. **Total effort**: Use `effort_total` to provide the total fishery effort directly.
+#'    Unobserved effort is calculated as: `effort_total - observed_effort`
+#'    NOTE: effort_total must be in the same units as your effort columns
+#'
+#' **Priority order**: effort_total > coverage rates > 100% coverage assumed
+#'
 #' **Multi-stream monitoring:** When using multiple monitoring streams (Observer, EM, Both),
 #' the data are kept separate in the statistical model but all share the same underlying bycatch rate.
-#' This approach assumes all monitoring types have perfect/equal detection (detection = 100\%) but
+#' This approach assumes all monitoring types have perfect/equal detection (detection = 100%) but
 #' avoids distributional issues that arise from pooling.
 #'
 #' @examples
 #' \donttest{
-#' # Single stream example (backwards compatible)
+#' # Single stream example with coverage rate
 #' d <- data.frame(
 #'   "Year" = 2002:2014,
 #'   "Takes" = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0),
-#'   "expansionRate" = c(24, 22, 14, 32, 28, 25, 30, 7, 26, 21, 22, 23, 27),
+#'   "CovRate" = c(24, 22, 14, 32, 28, 25, 30, 7, 26, 21, 22, 23, 27),
 #'   "Sets" = c(391, 340, 330, 660, 470, 500, 330, 287, 756, 673, 532, 351, 486)
 #' )
 #' fit <- fit_bycatch(Takes ~ 1,
 #'   data = d, time = "Year",
-#'   effort = "Sets", family = "poisson", time_varying = FALSE
+#'   effort = "Sets",
+#'   covrate = "CovRate",
+#'   family = "poisson",
+#'   time_varying = FALSE
 #' )
 #'
-#' # Multi-stream example (Observer + EM)
+#' # Multi-stream example with coverage rates (Observer + EM)
 #' d_multi <- data.frame(
 #'   Year = 2002:2014,
 #'   Takes_obs = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0),
 #'   Sets_obs = c(200, 180, 150, 350, 250, 270, 180, 150, 400, 350, 280, 180, 250),
+#'   CovRate_obs = c(20, 19, 17, 19, 21, 21, 20, 20, 20, 19, 20, 19, 19),
 #'   Takes_em = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0),
 #'   Sets_em = c(150, 120, 140, 250, 180, 190, 120, 100, 300, 270, 200, 130, 190),
-#'   Sets_total = c(1000, 950, 900, 1800, 1200, 1300, 900, 750, 2000, 1800, 1400, 950, 1300)
+#'   CovRate_em = c(15, 13, 16, 14, 15, 15, 13, 13, 15, 15, 14, 14, 15)
 #' )
 #'
 #' fit_multi <- fit_bycatch(Takes_obs ~ 1,
 #'   data = d_multi,
 #'   time = "Year",
 #'   effort = "Sets_obs",
+#'   covrate_obs = "CovRate_obs",
 #'   takes_em = "Takes_em",
 #'   effort_em = "Sets_em",
-#'   effort_total = "Sets_total",
+#'   covrate_em = "CovRate_em",
 #'   family = "poisson"
 #' )
 #' }
-fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansion_rate = NULL,
+fit_bycatch <- function(formula, data, time = "year", effort = "effort",
+                        covrate = NULL,
+                        expansion_rate = NULL,
                         takes_em = NULL,
                         effort_em = NULL,
+                        covrate_em = NULL,
                         takes_both = NULL,
                         effort_both = NULL,
+                        covrate_obs = NULL,
+                        covrate_both = NULL,
                         effort_total = NULL,
                         family = c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle",
                                    "lognormal", "gamma", "lognormal-hurdle", "gamma-hurdle",
@@ -89,6 +116,26 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansi
                         iter = 1000,
                         chains = 3,
                         control = list(adapt_delta = 0.9, max_treedepth = 20), ...) {
+
+  # Handle backward compatibility for expansion_rate
+  if (!is.null(expansion_rate)) {
+    cli_warn("'expansion_rate' parameter is deprecated. Please use 'covrate' for single-stream models or 'covrate_obs' for multi-stream models.")
+
+    # Map expansion_rate to appropriate coverage parameter
+    if (is.null(covrate) && is.null(covrate_obs)) {
+      # Determine if this is multi-stream
+      if (!is.null(takes_em) || !is.null(takes_both)) {
+        covrate_obs <- expansion_rate
+      } else {
+        covrate <- expansion_rate
+      }
+    }
+  }
+
+  # For single-stream models, covrate and covrate_obs are equivalent
+  if (!is.null(covrate) && is.null(covrate_obs) && is.null(takes_em) && is.null(takes_both)) {
+    covrate_obs <- covrate
+  }
 
   # Extract formula components
   mf <- model.frame(formula, data)
@@ -107,7 +154,7 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansi
     stop("The family must be specified as a distribution in the recognized list")
   }
 
-  # Validate multi-stream inputs (ALWAYS check, regardless of mode)
+  # Validate multi-stream inputs
   if (!is.null(takes_em) && is.null(effort_em)) {
     stop("If takes_em is provided, effort_em must also be provided")
   }
@@ -123,30 +170,6 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansi
 
   # Check if multi-stream mode
   multi_stream <- !is.null(takes_em) || !is.null(takes_both)
-
-  # Additional multi-stream validation
-  if (multi_stream) {
-    if (!is.null(effort_total) && !is.null(expansion_rate)) {
-      cli_warn("Both effort_total and expansion_rate provided. Using effort_total and ignoring expansion_rate.")
-    }
-
-    # Check that multi-stream columns exist
-    if (!is.null(takes_em) && !(takes_em %in% colnames(data))) {
-      stop(paste("Column", takes_em, "not found in data"))
-    }
-    if (!is.null(effort_em) && !(effort_em %in% colnames(data))) {
-      stop(paste("Column", effort_em, "not found in data"))
-    }
-    if (!is.null(takes_both) && !(takes_both %in% colnames(data))) {
-      stop(paste("Column", takes_both, "not found in data"))
-    }
-    if (!is.null(effort_both) && !(effort_both %in% colnames(data))) {
-      stop(paste("Column", effort_both, "not found in data"))
-    }
-    if (!is.null(effort_total) && !(effort_total %in% colnames(data))) {
-      stop(paste("Column", effort_total, "not found in data"))
-    }
-  }
 
   # Get response variable
   y <- as.numeric(model.response(mf, "numeric"))
@@ -229,8 +252,12 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansi
     }
 
     # Calculate unobserved effort by year
+    # Priority: effort_total > coverage rates > 100% coverage
+
     if (!is.null(effort_total)) {
-      # Use total effort directly
+      # Original approach: Use external effort_total column
+      cli_inform("Using effort_total column for expansion")
+
       total_effort_by_year <- rep(0, n_year)
       for(i in 1:nrow(data)) {
         t <- time_idx[i]
@@ -248,34 +275,82 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansi
         new_effort_by_year[which(is.na(new_effort_by_year))] <- 0
       }
 
-      cli_inform("Total fishery effort: {sum(total_effort_by_year)}")
-      cli_inform("Observed effort: {sum(effort_by_year)}")
-      cli_inform("Unobserved effort: {sum(new_effort_by_year)}")
+    } else if (!is.null(covrate_obs) || !is.null(covrate_em) || !is.null(covrate_both)) {
+      # Coverage rate approach: Calculate expansion from coverage percentages
+      cli_inform("Using coverage rates for expansion")
 
-    } else if (!is.null(expansion_rate)) {
-      # Use expansion rate (backwards compatible)
-      total_effort_by_year <- rep(0, n_year)
-      for(i in 1:nrow(data)) {
-        t <- time_idx[i]
-        p_expansion <- data[[expansion_rate]][i] / 100
-        total_effort_i <- ceiling(effort_by_year[t] / p_expansion)
-        total_effort_by_year[t] <- max(total_effort_by_year[t], total_effort_i)
+      # Calculate total coverage rate by year
+      total_covrate_by_year <- rep(0, n_year)
+
+      # Add observer coverage
+      if (!is.null(covrate_obs)) {
+        if (!(covrate_obs %in% colnames(data))) {
+          stop(paste("Column", covrate_obs, "not found in data"))
+        }
+        for(i in 1:n_obs) {
+          t <- time_idx_obs[i]
+          total_covrate_by_year[t] <- total_covrate_by_year[t] + data[[covrate_obs]][i]
+        }
       }
-      new_effort_by_year <- total_effort_by_year - effort_by_year
+
+      # Add EM coverage
+      if (!is.null(covrate_em)) {
+        if (!(covrate_em %in% colnames(data))) {
+          stop(paste("Column", covrate_em, "not found in data"))
+        }
+        if (n_em > 0) {
+          for(i in 1:n_em) {
+            t <- time_idx_em[i]
+            total_covrate_by_year[t] <- total_covrate_by_year[t] + data[[covrate_em]][i]
+          }
+        }
+      }
+
+      # Add Both coverage
+      if (!is.null(covrate_both)) {
+        if (!(covrate_both %in% colnames(data))) {
+          stop(paste("Column", covrate_both, "not found in data"))
+        }
+        if (n_both > 0) {
+          for(i in 1:n_both) {
+            t <- time_idx_both[i]
+            total_covrate_by_year[t] <- total_covrate_by_year[t] + data[[covrate_both]][i]
+          }
+        }
+      }
+
+      # Calculate new_effort using coverage rates
+      # Formula: new_effort = observed_effort * ((100 - coverage_rate) / coverage_rate)
+      new_effort_by_year <- rep(0, n_year)
+      for(t in 1:n_year) {
+        if (total_covrate_by_year[t] > 0 && total_covrate_by_year[t] < 100) {
+          # Calculate unobserved proportion
+          unobserved_pct <- 100 - total_covrate_by_year[t]
+          new_effort_by_year[t] <- effort_by_year[t] * (unobserved_pct / total_covrate_by_year[t])
+        } else if (total_covrate_by_year[t] >= 100) {
+          new_effort_by_year[t] <- 0
+        } else {
+          # Coverage is 0 - no information to expand
+          new_effort_by_year[t] <- 0
+          if (effort_by_year[t] > 0) {
+            cli_warn("Year {time_min + t - 1}: Coverage is 0% but effort > 0. Cannot calculate unobserved effort.")
+          }
+        }
+      }
 
     } else {
-      # No expansion (100% coverage)
+      # No expansion information provided
+      cli_inform("No expansion information provided - assuming 100% coverage")
       new_effort_by_year <- rep(0, n_year)
-      cli_inform("No expansion (100% coverage assumed)")
     }
 
-    # Determine if discrete or continuous
+    # Prepare response arrays for Stan
     if (family %in% c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle")) {
       # Discrete family
       yint_obs <- as.integer(takes_obs_vec)
       yint_em <- if(n_em > 0) as.integer(takes_em_vec) else integer(0)
       yint_both <- if(n_both > 0) as.integer(takes_both_vec) else integer(0)
-      yreal_obs <- takes_obs_vec  # Not used but need for Stan
+      yreal_obs <- takes_obs_vec
       yreal_em <- if(n_em > 0) takes_em_vec else numeric(0)
       yreal_both <- if(n_both > 0) takes_both_vec else numeric(0)
     } else {
@@ -289,12 +364,9 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansi
     }
 
     # For multi-stream mode, we need year-level covariates (n_year x K)
-    # For intercept-only model, this is just a column of 1s
-    # For models with covariates, aggregate by year (use first value for each year)
     X_year <- matrix(nrow = n_year, ncol = ncol(X))
     for(k in 1:ncol(X)) {
       for(t in 1:n_year) {
-        # Get first observation for this year
         idx <- which(time_idx == t)[1]
         X_year[t, k] <- X[idx, k]
       }
@@ -302,59 +374,45 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansi
 
     # Prepare data list for Stan
     datalist <- list(
-      # Multi-stream indicator
       multi_stream = 1,
-
-      # Stream counts - use actual counts (can be 0)
       n_obs = n_obs,
       n_em = n_em,
       n_both = n_both,
-
-      # Stream data - discrete
       yint_obs = yint_obs,
       yint_em = yint_em,
       yint_both = yint_both,
-
-      # Stream data - continuous
       yreal_obs = yreal_obs,
       yreal_em = yreal_em,
       yreal_both = yreal_both,
-
-      # Stream effort
       effort_obs = effort_obs_vec,
       effort_em = if(n_em > 0) effort_em_vec else numeric(0),
       effort_both = if(n_both > 0) effort_both_vec else numeric(0),
-
-      # Time indices
       time_idx_obs = time_idx_obs,
       time_idx_em = if(n_em > 0) time_idx_em else integer(0),
       time_idx_both = if(n_both > 0) time_idx_both else integer(0),
-
-      # Unobserved effort by year
       new_effort_by_year = new_effort_by_year,
-
-      # Backwards compatibility (not used in multi-stream mode)
       n_row = nrow(data),
       effort = data[[effort]],
-      new_effort = rep(0, nrow(data)),  # Not used
+      new_effort = rep(0, nrow(data)),
       yint = as.integer(y),
       yreal = y,
       time = time_idx,
-
-      # Common data - use year level covariates
       n_year = n_year,
       K = ncol(X_year),
-      x = X_year,  # Changed from X to X_year
+      x = X_year,
       family = family_id,
       time_varying = as.numeric(time_varying)
     )
 
-    # Store stream info for later use
+    # Store stream info
     stream_info <- list(
       "takes_em" = takes_em,
       "effort_em" = effort_em,
+      "covrate_em" = covrate_em,
       "takes_both" = takes_both,
       "effort_both" = effort_both,
+      "covrate_obs" = covrate_obs,
+      "covrate_both" = covrate_both,
       "effort_total" = effort_total,
       "n_obs" = n_obs,
       "n_em" = n_em,
@@ -362,19 +420,39 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansi
     )
 
   } else {
-    # Single stream mode (backwards compatible)
+    # Single stream mode
 
     observed_effort <- data[[effort]]
 
-    # Calculate unobserved effort (original logic)
-    if (is.null(expansion_rate)) {
-      p_expansion <- rep(1, nrow(data))
-    } else {
-      p_expansion <- data[[expansion_rate]] / 100
-    }
+    # Calculate unobserved effort using coverage rate
+    if (!is.null(covrate_obs)) {
+      # Use coverage rate
+      if (!(covrate_obs %in% colnames(data))) {
+        stop(paste("Column", covrate_obs, "not found in data"))
+      }
 
-    total_effort <- ceiling(observed_effort / p_expansion)
-    new_effort <- ceiling(total_effort * (1 - p_expansion))
+      p_coverage <- data[[covrate_obs]] / 100
+
+      # Calculate total and unobserved effort from coverage
+      total_effort <- observed_effort / p_coverage
+      new_effort <- total_effort - observed_effort
+
+    } else if (!is.null(effort_total)) {
+      # Use effort_total directly
+      total_effort <- data[[effort_total]]
+      new_effort <- total_effort - observed_effort
+
+      # Check for negatives
+      if (any(new_effort < 0, na.rm = TRUE)) {
+        cli_warn("Some observations have effort exceeding effort_total. Setting unobserved effort to 0.")
+        new_effort[new_effort < 0] <- 0
+      }
+    } else {
+      # No expansion (100% coverage)
+      total_effort <- observed_effort
+      new_effort <- rep(0, nrow(data))
+      cli_inform("No expansion information provided - assuming 100% coverage")
+    }
 
     # Prepare response variable
     if (family %in% c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle") == FALSE) {
@@ -395,21 +473,17 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansi
       new_effort_by_year[t] <- new_effort_by_year[t] + new_effort[i]
     }
 
-    # Create year-level covariate matrix (same as multi-stream)
+    # Create year-level covariate matrix
     X_year <- matrix(nrow = n_year, ncol = ncol(X))
     for(k in 1:ncol(X)) {
       for(t in 1:n_year) {
-        # Get first observation for this year
         idx <- which(time_idx == t)[1]
         X_year[t, k] <- X[idx, k]
       }
     }
 
     datalist <- list(
-      # Single stream mode
       multi_stream = 0,
-
-      # Zero-length arrays for multi-stream placeholders
       n_obs = 0,
       n_em = 0,
       n_both = 0,
@@ -426,8 +500,6 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansi
       time_idx_em = integer(0),
       time_idx_both = integer(0),
       new_effort_by_year = new_effort_by_year,
-
-      # Single stream data
       n_row = nrow(data),
       effort = observed_effort,
       new_effort = new_effort,
@@ -481,20 +553,54 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort", expansi
 }
 
 
-
-
-
-
 #' Extract log-likelihood matrix for loo, removing NA observations
-#' @param fit A bycatch model fit object
-#' @return A matrix suitable for loo::loo()
+#'
+#' This function extracts the log-likelihood array from a fitted bycatch model
+#' and removes any columns (observations) that have NA values in any MCMC iteration.
+#' This is necessary because loo::loo() cannot handle NA values.
+#'
+#' @param fit A bycatch model fit object (output from fit_bycatch or fit_bycatch_modified)
+#' @return A matrix suitable for loo::loo() with dimensions (n_iterations x n_valid_observations)
 #' @export
+#'
+#' @importFrom rstan extract
+#'
+#' @examples
+#' \donttest{
+#' # Create example data
+#' d <- data.frame(
+#'   Year = 2002:2014,
+#'   Takes = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0),
+#'   CovRate = c(24, 22, 14, 32, 28, 25, 30, 7, 26, 21, 22, 23, 27),
+#'   Sets = c(391, 340, 330, 660, 470, 500, 330, 287, 756, 673, 532, 351, 486)
+#' )
+#'
+#' # Fit a model
+#' fit <- fit_bycatch(Takes ~ 1,
+#'   data = d,
+#'   time = "Year",
+#'   effort = "Sets",
+#'   covrate = "CovRate",
+#'   family = "poisson",
+#'   time_varying = FALSE
+#' )
+#'
+#' # Extract log-likelihood for LOO-CV
+#' log_lik <- extract_log_lik_for_loo(fit)
+#'
+#' # Run LOO-CV
+#' library(loo)
+#' loo_result <- loo(log_lik)
+#' }
 extract_log_lik_for_loo <- function(fit) {
+  # Extract log-likelihood array from Stan fit
+  # Dimensions: (n_iterations x n_observations)
   log_lik_array <- rstan::extract(fit$fitted_model, pars = "log_lik")$log_lik
 
-  # Check for NAs in any iteration
+  # Check for NAs in any iteration for each observation
   na_cols <- apply(log_lik_array, 2, function(x) any(is.na(x)))
 
+  # Remove observations with NA values and warn user
   if (any(na_cols)) {
     warning(paste("Removing", sum(na_cols), "observations with NA log-likelihood values"))
     log_lik_array <- log_lik_array[, !na_cols, drop = FALSE]
@@ -502,5 +608,3 @@ extract_log_lik_for_loo <- function(fit) {
 
   return(log_lik_array)
 }
-
-

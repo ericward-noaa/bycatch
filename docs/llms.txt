@@ -1,0 +1,156 @@
+# bycatch
+
+[![R-CMD-check](https://github.com/ericward-noaa/bycatch/workflows/R-CMD-check/badge.svg)](https://github.com/ericward-noaa/bycatch/actions)
+
+[![Codecov test
+coverage](https://codecov.io/gh/ericward-noaa/bycatch/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ericward-noaa/bycatch?branch=master)
+
+This is a repository for applications of Bayesian bycatch models, using
+Stan for estimation. These models fit Bayesian GLMs (with or without
+time varying parameters, and with or without covariates) to estimate
+bycatch rates. The package includes functions to estimate fleet-level
+estimates. The primary applications of these models (linked to below)
+are protected species bycatch (e.g. ESA listed birds, marine mammals) in
+the west coast groundfish fisheries off the west coast of the USA. Data
+compilation and analysis is done at the Northwest Fisheries Science
+Center (NWFSC) in Seattle. The pkgdown version of this site can be found
+here: <https://ericward-noaa.github.io/bycatch/>
+
+## Citation:
+
+Paper: Jannot, J.E., Ward, E.J., Somers, K.A., Feist, B.E., Good, T.P.,
+Lawson, D., and J.V. Carretta. 2021. Using Bayesian time-series models
+to estimate humpback whale entanglements in the U.S. west coast
+sablefish pot fishery. Frontiers in Marine Science.
+
+Package: Ward, E.J. J. Jannot, K.E. Richerson, and K. Somers. bycatch:
+Using Bayesian generalized linear models for estimating bycatch rates
+and generating fleet-level expansions.
+[![DOI](https://zenodo.org/badge/85732013.svg)](https://zenodo.org/badge/latestdoi/85732013)
+
+**See also**:
+
+Stohs, S.M. 2008. Predicting effort and protected species bycatch under
+an effort limit or take caps. American Agricultural Economics
+Association Annual Meeting, Orlando, FL.
+
+Gardner, B., Sullivan, P.J., Epperly, S., and Morreale, S.J. 2008.
+Hierarchical modeling of bycatch rates of sea turtles in the western
+North Atlantic. Endangered Species Res. 5(December): 279–289.
+[https://doi:10.3354/esr00105](https://doi:10.3354/esr00105)
+
+Martin, S.L., S.M. Stohs, and J.E. Moore. 2015. Bayesian inference and
+assessment for rare‐event bycatch in marine fisheries: a drift gillnet
+fishery case study. Ecological Applications, 25(2):416-429.
+<https://doi.org/10.1890/14-0059.1>
+
+Good, T.P., J.E. Jannot, K.A. Somers, and E.J. Ward. 2022. Using
+Bayesian time series models to estimate bycatch of an endangered
+albatross. Fisheries Research, 256:106492.
+<https://doi.org/10.1016/j.fishres.2022.106492>
+
+## Reports:
+
+Jannot, J. E., K. A. Somers, V. J. Tuttle, J. Eibner, K. E. Richerson,
+J. T. McVeigh, J. V. Carretta, N. C. Young, J. Freed. 2022. Marine
+Mammal Bycatch in U.S. West Coast Groundfish Fisheries, 2002-19. U.S.
+Department of Commerce, NOAA Technical Memorandum NMFS-NWFSC-165. [doi:
+https://doi.org/10.25923/h6gg-c316](https://doi.org/10.25923/h6gg-c316)
+
+Jannot, J. E., A. Wuest, T. P. Good, K. A. Somers, V. J. Tuttle, K. E.
+Richerson, R. S. Shama, and J. T. McVeigh. 2021. Seabird Bycatch in U.S.
+West Coast Fisheries, 2002–18. U.S. Department of Commerce, NOAA
+Technical Memorandum NMFS-NWFSC-165. [doi:
+https://doi.org/10.25923/78vk-v149](https://doi.org/10.25923/78vk-v149)
+
+Jannot, J. E., K. A. Somers, V. Tuttle, J. McVeigh, J. V. Carretta, and
+V. Helker. 2018. Observed and Estimated Marine Mammal Bycatch in U.S.
+West Coast Groundfish Fisheries, 2002-16. U.S. Department of Commerce,
+NWFSC Processed Report 2018-03. [doi:
+https://doi.org/10.25923/fkf8-0x49](https://doi.org/10.25923/fkf8-0x49)
+
+Good, T. P., E. Ward, J. Jannot, R. Shama, N. Riley, and J. McVeigh.
+2019. Observed and Estimated Bycatch of Short-tailed Albatross in U.S.
+West Coast Groundfish Fisheries 2002-2017. National Marine Fisheries
+Service, NWFSC, 2725 Montlake Blvd E., Seattle, WA 98112
+[link](https://www.pcouncil.org/documents/2019/06/agenda-item-i-4-a-nmfs-report-6-observed-and-estimated-bycatch-of-short-tailed-albatross-in-u-s-west-coast-groundfish-fisheries-2016-2017-electronic-only.pdf/)
+
+Hanson, M.B., T.P. Good, J.E. Jannot, and J. McVeigh. 2019. Estimated
+humpback whale bycatch in the U.S. West Coast Groundfish Fisheries
+2002-2017. National Marine Fisheries Service, NWFSC, 2725 Montlake Blvd
+E., Seattle, WA 98112
+
+Good, T. P., E. Ward, J. Jannot, R. Shama, N. Riley, and J. McVeigh.
+2017. Observed and Estimated Bycatch of Short-tailed Albatross in U.S.
+West Coast Groundfish Fisheries 2014-2015. National Marine Fisheries
+Service, NWFSC, 2725 Montlake Blvd E., Seattle, WA 98112
+[link](https://www.pcouncil.org/documents/2017/04/agenda-item-f-5-a-nmfs-report-6.pdf/)
+
+## NOAA Disclaimer
+
+This repository is a scientific product and is not official
+communication of the National Oceanic and Atmospheric Administration, or
+the United States Department of Commerce. All NOAA GitHub project code
+is provided on an ‘as is’ basis and the user assumes responsibility for
+its use. Any claims against the Department of Commerce or Department of
+Commerce bureaus stemming from the use of this GitHub project will be
+governed by all applicable Federal law. Any reference to specific
+commercial products, processes, or services by service mark, trademark,
+manufacturer, or otherwise, does not constitute or imply their
+endorsement, recommendation or favoring by the Department of Commerce.
+The Department of Commerce seal and logo, or the seal and logo of a DOC
+bureau, shall not be used in any manner to imply endorsement of any
+commercial product or activity by DOC or the United States Government.
+
+![NOAA
+Fisheries](https://raw.githubusercontent.com/nmfs-general-modeling-tools/nmfspalette/main/man/figures/noaa-fisheries-rgb-2line-horizontal-small.png)
+
+[U.S. Department of Commerce](https://www.commerce.gov/) \| [National
+Oceanographic and Atmospheric Administration](https://www.noaa.gov) \|
+[NOAA Fisheries](https://www.fisheries.noaa.gov/)
+
+# Package index
+
+## All functions
+
+- [`bycatch-package`](https://ericward-noaa.github.io/bycatch/reference/bycatch-package.md)
+  [`bycatch`](https://ericward-noaa.github.io/bycatch/reference/bycatch-package.md)
+  : The 'bycatch' package.
+- [`extract_log_lik_for_loo()`](https://ericward-noaa.github.io/bycatch/reference/extract_log_lik_for_loo.md)
+  : Extract log-likelihood matrix for loo, removing NA observations
+- [`fit_bycatch()`](https://ericward-noaa.github.io/bycatch/reference/fit_bycatch.md)
+  : fit_bycatch - Unified version with coverage rate parameters
+- [`get_expanded()`](https://ericward-noaa.github.io/bycatch/reference/get_expanded.md)
+  : get_expanded is a helper function to return a matrix of posterior
+  predictive values for unobserved bycatch
+- [`get_fitted()`](https://ericward-noaa.github.io/bycatch/reference/get_fitted.md)
+  : get_fitted returns df of observed bycatch estimates (lambda of
+  Poisson), accounting for effort but not accounting for observer
+  coverage
+- [`get_stream_summary()`](https://ericward-noaa.github.io/bycatch/reference/get_stream_summary.md)
+  : get_stream_summary provides a summary of monitoring coverage and
+  bycatch by stream
+- [`get_total()`](https://ericward-noaa.github.io/bycatch/reference/get_total.md)
+  : get_total is a helper function to return a matrix of total estimated
+  bycatch
+- [`plot_expanded()`](https://ericward-noaa.github.io/bycatch/reference/plot_expanded.md)
+  : plot_expanded is makes plots of the expanded bycatch estimates,
+  accounting for observer coverage and effort
+- [`plot_fitted()`](https://ericward-noaa.github.io/bycatch/reference/plot_fitted.md)
+  : plot_fitted makes plots bycatch estimates (lambda of Poisson),
+  accounting for effort but not accounting for observer coverage
+
+# Articles
+
+### All vignettes
+
+- [Overview of bycatch
+  package](https://ericward-noaa.github.io/bycatch/articles/a01_overview.md):
+- [Fitting models with the bycatch
+  package](https://ericward-noaa.github.io/bycatch/articles/a02_fitting_models.md):
+- [Expanding bycatch
+  estimates](https://ericward-noaa.github.io/bycatch/articles/a03_expanding_estimates.md):
+- [Diagnosing
+  errors](https://ericward-noaa.github.io/bycatch/articles/a04_diagnosing_problems.md):
+- [Multi-stream
+  monitoring](https://ericward-noaa.github.io/bycatch/articles/a05_multistream.md):

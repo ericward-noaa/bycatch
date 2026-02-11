@@ -7,11 +7,41 @@
 extract_log_lik_for_loo(fit)
 }
 \arguments{
-\item{fit}{A bycatch model fit object}
+\item{fit}{A bycatch model fit object (output from fit_bycatch or fit_bycatch_modified)}
 }
 \value{
-A matrix suitable for loo::loo()
+A matrix suitable for loo::loo() with dimensions (n_iterations x n_valid_observations)
 }
 \description{
-Extract log-likelihood matrix for loo, removing NA observations
+This function extracts the log-likelihood array from a fitted bycatch model
+and removes any columns (observations) that have NA values in any MCMC iteration.
+This is necessary because loo::loo() cannot handle NA values.
+}
+\examples{
+\donttest{
+# Create example data
+d <- data.frame(
+  Year = 2002:2014,
+  Takes = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0),
+  CovRate = c(24, 22, 14, 32, 28, 25, 30, 7, 26, 21, 22, 23, 27),
+  Sets = c(391, 340, 330, 660, 470, 500, 330, 287, 756, 673, 532, 351, 486)
+)
+
+# Fit a model
+fit <- fit_bycatch(Takes ~ 1,
+  data = d,
+  time = "Year",
+  effort = "Sets",
+  covrate = "CovRate",
+  family = "poisson",
+  time_varying = FALSE
+)
+
+# Extract log-likelihood for LOO-CV
+log_lik <- extract_log_lik_for_loo(fit)
+
+# Run LOO-CV
+library(loo)
+loo_result <- loo(log_lik)
+}
 }

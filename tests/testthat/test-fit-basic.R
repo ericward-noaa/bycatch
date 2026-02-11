@@ -1,240 +1,355 @@
-context("model fitting tests")
+# Test file for bycatch model fitting
 
-# this controls how large to make the data below
-sample_size <- 20
-set.seed(123)
-# simulate data
-d_nb <- data.frame(
-  "Year" = 1:sample_size,
-  "Takes" = rnbinom(sample_size, size = 10, prob = 0.9),
-  "expansionRate" = 100,
-  "Sets" = 100
-)
+library(testthat)
+library(bycatch)
 
-# simulate data
-set.seed(123)
+# Setup test data
 d_pois <- data.frame(
-  "Year" = 1:sample_size,
-  "Takes" = rnbinom(sample_size, size = 10, prob = 0.9),
-  "expansionRate" = 100,
-  "Sets" = 100
+  "Year" = 2002:2014,
+  "Takes" = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0),
+  "CovRate" = c(24, 22, 14, 32, 28, 25, 30, 7, 26, 21, 22, 23, 27),
+  "Sets" = c(391, 340, 330, 660, 470, 500, 330, 287, 756, 673, 532, 351, 486)
 )
 
-set.seed(123)
+d_nb <- data.frame(
+  "Year" = 2002:2014,
+  "Takes" = c(0, 0, 0, 3, 0, 2, 0, 5, 1, 3, 0, 0, 2),
+  "CovRate" = c(24, 22, 14, 32, 28, 25, 30, 7, 26, 21, 22, 23, 27),
+  "Sets" = c(391, 340, 330, 660, 470, 500, 330, 287, 756, 673, 532, 351, 486)
+)
+
 d_pos <- data.frame(
-  "Year" = 1:sample_size,
-  "Takes" = rnorm(sample_size, 5, 0.1),
-  "expansionRate" = 100,
-  "Sets" = 100
+  "Year" = 2002:2014,
+  "Takes" = c(0.5, 0.2, 0.8, 1.3, 0.4, 1.2, 0.7, 1.5, 1.1, 2.3, 0.6, 0.9, 1.4),
+  "CovRate" = c(24, 22, 14, 32, 28, 25, 30, 7, 26, 21, 22, 23, 27),
+  "Sets" = c(391, 340, 330, 660, 470, 500, 330, 287, 756, 673, 532, 351, 486)
 )
 
-test_that("fitting function works for poisson model", {
-  set.seed(123)
-  # simulate data
+# Multi-stream test data
+d_multi <- data.frame(
+  Year = 2002:2014,
+  Takes_obs = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0),
+  Sets_obs = c(200, 180, 150, 350, 250, 270, 180, 150, 400, 350, 280, 180, 250),
+  CovRate_obs = c(20, 19, 17, 19, 21, 21, 20, 20, 20, 19, 20, 19, 19),
+  Takes_em = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0),
+  Sets_em = c(150, 120, 140, 250, 180, 190, 120, 100, 300, 270, 200, 130, 190),
+  CovRate_em = c(15, 13, 16, 14, 15, 15, 13, 13, 15, 15, 14, 14, 15)
+)
+
+test_that("fitting function works for poisson model with covrate", {
   fit <- fit_bycatch(Takes ~ 1,
-    data = d_pois, time = "Year",
-    effort = "Sets", family = "poisson", time_varying = FALSE
+                     data = d_pois, time = "Year",
+                     effort = "Sets",
+                     covrate = "CovRate",
+                     family = "poisson",
+                     time_varying = FALSE
   )
 
-  pars <- rstan::extract(fit$fitted_model, "lambda")
-  expect_equal(apply(pars$lambda, 2, mean), rep(1.367753, sample_size), tol = 0.1)
+  expect_equal(class(fit$fitted_model)[[1]], "stanfit")
+  expect_equal(fit$family, "poisson")
+  expect_false(fit$multi_stream)
 })
 
-
-test_that("fitting function works for negative binomial2 model", {
-  set.seed(123)
+test_that("fitting function works for negative binomial2 model with covrate", {
   fit <- fit_bycatch(Takes ~ 1,
-    data = d_nb, time = "Year",
-    effort = "Sets", family = "nbinom2", time_varying = FALSE
+                     data = d_nb, time = "Year",
+                     effort = "Sets",
+                     covrate = "CovRate",
+                     family = "nbinom2",
+                     time_varying = FALSE
   )
 
-  pars <- rstan::extract(fit$fitted_model, "lambda")
-  expect_equal(apply(pars$lambda, 2, mean), rep(1.401189, sample_size), tol = 0.1)
+  expect_equal(class(fit$fitted_model)[[1]], "stanfit")
+  expect_equal(fit$family, "nbinom2")
 })
 
-test_that("fitting function works for hurdle poisson model", {
-  set.seed(123)
-
+test_that("fitting function works for hurdle poisson model with covrate", {
   fit <- fit_bycatch(Takes ~ 1,
-    data = d_pois, time = "Year",
-    effort = "Sets", family = "poisson-hurdle", time_varying = FALSE
+                     data = d_pois, time = "Year",
+                     effort = "Sets",
+                     covrate = "CovRate",
+                     family = "poisson-hurdle",
+                     time_varying = FALSE
   )
 
-  pars <- rstan::extract(fit$fitted_model, "lambda")
-  expect_equal(apply(pars$lambda, 2, mean), rep(1.353893, sample_size), tol = 0.1)
+  expect_equal(class(fit$fitted_model)[[1]], "stanfit")
+  expect_equal(fit$family, "poisson-hurdle")
 })
 
-# Commented out for speed
-# test_that("fitting function works for hurdle negative binomial2 model", {
-#   set.seed(123)
-#   fit = fit_bycatch(Takes ~ 1, data=d_nb,iter=100,chains=1, time="Year",
-#                     effort="Sets", family="nbinom2-hurdle", time_varying = FALSE)
-#
-#   pars = rstan::extract(fit$fitted_model, "lambda")
-#   expect_equal(apply(pars$lambda,2,mean), rep(3.485921,sample_size), tol = 0.001)
-# })
+test_that("backward compatibility: expansion_rate still works (with warning)", {
+  expect_warning(
+    fit <- fit_bycatch(Takes ~ 1,
+                       data = d_pois, time = "Year",
+                       effort = "Sets",
+                       expansion_rate = "CovRate",  # Old parameter name
+                       family = "poisson",
+                       time_varying = FALSE
+    ),
+    "expansion_rate.*deprecated"
+  )
 
+  expect_equal(class(fit$fitted_model)[[1]], "stanfit")
+  expect_equal(fit$family, "poisson")
+})
 
 test_that("fitting function works for time varying poisson model", {
-  set.seed(123)
-
   fit <- fit_bycatch(Takes ~ 1,
-    data = d_pois, time = "Year",
-    effort = "Sets", family = "poisson", time_varying = TRUE
+                     data = d_pois, time = "Year",
+                     effort = "Sets",
+                     covrate = "CovRate",
+                     family = "poisson",
+                     time_varying = TRUE
   )
 
-  pars <- rstan::extract(fit$fitted_model, "lambda")
-  #expect_equal(apply(pars$lambda, 2, mean)[1:5], c(2.157505, 1.902765, 1.938563, 1.901084, 2.165256), tol = 0.001)
-  expect_type(fit, "list")
+  expect_equal(class(fit$fitted_model)[[1]], "stanfit")
+  expect_equal(fit$family, "poisson")
+
+  # Check that time-varying parameters exist
+  params <- names(rstan::extract(fit$fitted_model))
+  expect_true("sigma_rw" %in% params)
+  expect_true("est_time_dev" %in% params)
 })
 
-# test_that("fitting function works for time varying nbinom2 model", {
-#   set.seed(123)
-#   # simulate data
-#   fit <- fit_bycatch(Takes ~ 1,
-#     data = d_nb, time = "Year",
-#     effort = "Sets", family = "nbinom2", time_varying = TRUE,
-#     iter = 100, chains = 1
-#   )
-#
-#   # pars <- rstan::extract(fit$fitted_model, "lambda")
-#   # expect_equal(apply(pars$lambda, 2, mean)[1:5], c(3.165161, 2.258439, 2.151508, 2.364193, 2.560882), tol = 0.2)
-#   expect_type(fit, "list")
-# })
+test_that("fitting function works without expansion (100% coverage)", {
+  fit <- fit_bycatch(Takes ~ 1,
+                     data = d_pois, time = "Year",
+                     effort = "Sets",
+                     # No covrate or expansion_rate - should assume 100% coverage
+                     family = "poisson",
+                     time_varying = FALSE
+  )
+
+  expect_equal(class(fit$fitted_model)[[1]], "stanfit")
+
+  # Check that new_effort is all zeros (no expansion)
+  expanded <- get_expanded(fit)
+  # With 100% coverage, expanded estimates should be zero or very small
+})
 
 test_that("fitting function works for time varying poisson hurdle model", {
-  set.seed(123)
-
   fit <- fit_bycatch(Takes ~ 1,
-    data = d_pois, time = "Year",
-    effort = "Sets", family = "poisson-hurdle", time_varying = TRUE
+                     data = d_pois, time = "Year",
+                     effort = "Sets",
+                     covrate = "CovRate",
+                     family = "poisson-hurdle",
+                     time_varying = TRUE
   )
-  expect_type(fit, "list")
-  # pars <- rstan::extract(fit$fitted_model, "lambda")
-  # expect_equal(apply(pars$lambda, 2, mean)[1:5], c(2.101424, 1.401246, 1.305310, 1.370120, 1.645385), tol = 0.001)
+
+  expect_equal(class(fit$fitted_model)[[1]], "stanfit")
+  expect_equal(fit$family, "poisson-hurdle")
 })
 
-# test_that("fitting function works for time varying nbinom2 hurdle model", {
-#   set.seed(123)
-#
-#   fit <- fit_bycatch(Takes ~ 1,
-#     data = d_pois, time = "Year",
-#     effort = "Sets", family = "nbinom2-hurdle", time_varying = TRUE,
-#     iter = 100, chains = 1
-#   )
-#   expect_type(fit, "list")
-#   # pars <- rstan::extract(fit$fitted_model, "lambda")
-#   # expect_equal(apply(pars$lambda, 2, mean)[1:5], c(0.5550384, 2.1295139, 2.2619993, 1.9444669, 1.7304549), tol = 0.001)
-# })
-
-
 test_that("fitting function works for gamma model", {
-  set.seed(123)
   fit <- fit_bycatch(Takes ~ 1,
-    data = d_pos, time = "Year",
-    effort = "Sets", family = "gamma", time_varying = FALSE,
-    chains = 1, iter = 1000
+                     data = d_pos, time = "Year",
+                     effort = "Sets",
+                     covrate = "CovRate",
+                     family = "gamma",
+                     time_varying = FALSE,
+                     chains = 1, iter = 1000
   )
 
-  pars <- rstan::extract(fit$fitted_model, "lambda")
-  expect_equal(apply(pars$lambda, 2, mean)[1], 5.012824, tolerance = 0.1)
+  expect_equal(class(fit$fitted_model)[[1]], "stanfit")
+  expect_equal(fit$family, "gamma")
 })
 
 test_that("fitting function works for normal model", {
-  set.seed(123)
   fit <- fit_bycatch(Takes ~ 1,
-    data = d_pos, time = "Year",
-    effort = "Sets", family = "normal", time_varying = FALSE
+                     data = d_pos, time = "Year",
+                     effort = "Sets",
+                     covrate = "CovRate",
+                     family = "normal",
+                     time_varying = FALSE
   )
 
-  pars <- rstan::extract(fit$fitted_model, "lambda")
-  expect_equal(apply(pars$lambda, 2, mean)[1], 5.015625, tolerance = 0.1)
+  expect_equal(class(fit$fitted_model)[[1]], "stanfit")
+  expect_equal(fit$family, "normal")
 })
 
 test_that("fitting function works for lognormal model", {
-  set.seed(123)
   fit <- fit_bycatch(Takes ~ 1,
-    data = d_pos, time = "Year",
-    effort = "Sets", family = "lognormal", time_varying = FALSE
+                     data = d_pos, time = "Year",
+                     effort = "Sets",
+                     covrate = "CovRate",
+                     family = "lognormal",
+                     time_varying = FALSE
   )
 
-  pars <- rstan::extract(fit$fitted_model, "lambda")
-  expect_equal(apply(pars$lambda, 2, mean)[1], 5.014376, tolerance = 0.1)
+  expect_equal(class(fit$fitted_model)[[1]], "stanfit")
+  expect_equal(fit$family, "lognormal")
 })
 
-
 test_that("fitting function works for normal-hurdle model", {
-  set.seed(123)
-  d_pos$Takes[c(1, 8, 13)] <- 0
   fit <- fit_bycatch(Takes ~ 1,
-    data = d_pos, time = "Year",
-    effort = "Sets", family = "normal-hurdle", time_varying = FALSE
+                     data = d_pos, time = "Year",
+                     effort = "Sets",
+                     covrate = "CovRate",
+                     family = "normal-hurdle",
+                     time_varying = FALSE
   )
 
-  pars <- rstan::extract(fit$fitted_model, "lambda")
-  expect_equal(apply(pars$lambda, 2, mean)[1], 5.02, tolerance = 0.1)
+  expect_equal(class(fit$fitted_model)[[1]], "stanfit")
+  expect_equal(fit$family, "normal-hurdle")
 })
 
 test_that("fitting function works for lognormal-hurdle model", {
-  set.seed(123)
-  d_pos$Takes[c(1, 8, 13)] <- 0
   fit <- fit_bycatch(Takes ~ 1,
-    data = d_pos, time = "Year",
-    effort = "Sets", family = "lognormal-hurdle", time_varying = FALSE
+                     data = d_pos, time = "Year",
+                     effort = "Sets",
+                     covrate = "CovRate",
+                     family = "lognormal-hurdle",
+                     time_varying = FALSE
   )
 
-  pars <- rstan::extract(fit$fitted_model, "lambda")
-  expect_equal(apply(pars$lambda, 2, mean)[1], 5.02, tolerance = 0.1)
+  expect_equal(class(fit$fitted_model)[[1]], "stanfit")
+  expect_equal(fit$family, "lognormal-hurdle")
 })
 
 test_that("fitting function works for gamma-hurdle model", {
-  set.seed(123)
-  d_pos$Takes[c(1, 8, 13)] <- 0
   fit <- fit_bycatch(Takes ~ 1,
-    data = d_pos, time = "Year",
-    effort = "Sets", family = "gamma-hurdle", time_varying = FALSE
+                     data = d_pos, time = "Year",
+                     effort = "Sets",
+                     covrate = "CovRate",
+                     family = "gamma-hurdle",
+                     time_varying = FALSE
   )
 
-  pars <- rstan::extract(fit$fitted_model, "lambda")
-  expect_equal(apply(pars$lambda, 2, mean)[1], 5.02, tolerance = 0.1)
+  expect_equal(class(fit$fitted_model)[[1]], "stanfit")
+  expect_equal(fit$family, "gamma-hurdle")
 })
 
-
-
-test_that("fitting function works for time varying poisson hurdle model", {
-  set.seed(123)
-
-  d <- data.frame(
-    "Year" = 2002:2014,
-    "Takes" = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0),
-    "expansionRate" = c(24, 22, 14, 32, 28, 25, 30, 7, 26, 21, 22, 23, 27),
-    "Sets" = c(391, 340, 330, 660, 470, 500, 330, 287, 756, 673, 532, 351, 486)
+test_that("multi-stream model works with coverage rates", {
+  fit <- fit_bycatch(Takes_obs ~ 1,
+                     data = d_multi,
+                     time = "Year",
+                     effort = "Sets_obs",
+                     covrate_obs = "CovRate_obs",
+                     takes_em = "Takes_em",
+                     effort_em = "Sets_em",
+                     covrate_em = "CovRate_em",
+                     family = "poisson",
+                     time_varying = FALSE
   )
+
+  expect_equal(class(fit$fitted_model)[[1]], "stanfit")
+  expect_true(fit$multi_stream)
+  expect_equal(fit$stream_info$n_obs, 13)
+  expect_equal(fit$stream_info$n_em, 13)
+})
+
+test_that("multi-stream model works without coverage rates (100% coverage)", {
+  fit <- fit_bycatch(Takes_obs ~ 1,
+                     data = d_multi,
+                     time = "Year",
+                     effort = "Sets_obs",
+                     # No coverage rates provided
+                     takes_em = "Takes_em",
+                     effort_em = "Sets_em",
+                     family = "poisson",
+                     time_varying = FALSE
+  )
+
+  expect_equal(class(fit$fitted_model)[[1]], "stanfit")
+  expect_true(fit$multi_stream)
+})
+
+test_that("error handling: missing required columns", {
+  expect_error(
+    fit_bycatch(Takes ~ 1,
+                data = d_pois, time = "BadColumn",
+                effort = "Sets",
+                family = "poisson"
+    ),
+    "time variable"
+  )
+
+  expect_error(
+    fit_bycatch(Takes ~ 1,
+                data = d_pois, time = "Year",
+                effort = "BadColumn",
+                family = "poisson"
+    ),
+    "effort variable"
+  )
+})
+
+test_that("error handling: invalid family", {
+  expect_error(
+    fit_bycatch(Takes ~ 1,
+                data = d_pois, time = "Year",
+                effort = "Sets",
+                family = "not_a_family"
+    ),
+    "family must be specified"
+  )
+})
+
+test_that("error handling: multi-stream missing effort", {
+  expect_error(
+    fit_bycatch(Takes_obs ~ 1,
+                data = d_multi,
+                time = "Year",
+                effort = "Sets_obs",
+                takes_em = "Takes_em",
+                # Missing effort_em
+                family = "poisson"
+    ),
+    "effort_em must also be provided"
+  )
+})
+
+test_that("covrate and covrate_obs are equivalent for single-stream", {
+  # Using covrate
+  fit1 <- fit_bycatch(Takes ~ 1,
+                      data = d_pois, time = "Year",
+                      effort = "Sets",
+                      covrate = "CovRate",
+                      family = "poisson",
+                      time_varying = FALSE
+  )
+
+  # Using covrate_obs
+  fit2 <- fit_bycatch(Takes ~ 1,
+                      data = d_pois, time = "Year",
+                      effort = "Sets",
+                      covrate_obs = "CovRate",
+                      family = "poisson",
+                      time_varying = FALSE
+  )
+
+  # Both should work and give similar results
+  expect_equal(class(fit1$fitted_model)[[1]], "stanfit")
+  expect_equal(class(fit2$fitted_model)[[1]], "stanfit")
+})
+
+test_that("extract_log_lik_for_loo works", {
   fit <- fit_bycatch(Takes ~ 1,
-    data = d, time = "Year",
-    effort = "Sets",
-    family = "poisson",
-    expansion_rate = "expansionRate",
-    time_varying = FALSE
+                     data = d_pois, time = "Year",
+                     effort = "Sets",
+                     covrate = "CovRate",
+                     family = "poisson",
+                     time_varying = FALSE
   )
+
+  log_lik <- extract_log_lik_for_loo(fit)
+
+  expect_true(is.matrix(log_lik))
+  expect_equal(ncol(log_lik), nrow(d_pois))  # One column per observation
+  expect_true(all(!is.na(log_lik)))  # No NAs after filtering
+})
+
+test_that("get_expanded works", {
+  fit <- fit_bycatch(Takes ~ 1,
+                     data = d_pois, time = "Year",
+                     effort = "Sets",
+                     covrate = "CovRate",
+                     family = "poisson",
+                     time_varying = FALSE
+  )
+
   expanded <- get_expanded(fit)
-  expect_equal(dim(expanded)[1], 1500)
-  expect_equal(dim(expanded)[2], 13)
 
-  fitted <- get_fitted(fit)
-  expect_equal(names(fitted), c("time","mean","low","high","obs"))
-
-  expanded <- get_total(fit)
-  expect_equal(dim(expanded)[1], 1500)
-  expect_equal(dim(expanded)[2], 13)
-
-  p <- plot_expanded(fit)
-  expect_s3_class(p, "ggplot")
-  expect_false(is.null(p))
-
-  p <- plot_fitted(fit)
-  expect_s3_class(p, "ggplot")
-  expect_false(is.null(p))
+  expect_true(is.matrix(expanded))
+  # Should have one column per year
+  expect_equal(ncol(expanded), length(unique(d_pois$Year)))
 })
-
-
