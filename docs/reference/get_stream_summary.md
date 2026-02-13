@@ -73,9 +73,9 @@ fit <- fit_bycatch(Takes_obs ~ 1,
 #> Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.015 seconds (Warm-up)
+#> Chain 1:  Elapsed Time: 0.016 seconds (Warm-up)
 #> Chain 1:                0.014 seconds (Sampling)
-#> Chain 1:                0.029 seconds (Total)
+#> Chain 1:                0.03 seconds (Total)
 #> Chain 1: 
 #> 
 #> SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
@@ -98,9 +98,9 @@ fit <- fit_bycatch(Takes_obs ~ 1,
 #> Chain 2: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #> Chain 2: Iteration: 1000 / 1000 [100%]  (Sampling)
 #> Chain 2: 
-#> Chain 2:  Elapsed Time: 0.015 seconds (Warm-up)
+#> Chain 2:  Elapsed Time: 0.014 seconds (Warm-up)
 #> Chain 2:                0.014 seconds (Sampling)
-#> Chain 2:                0.029 seconds (Total)
+#> Chain 2:                0.028 seconds (Total)
 #> Chain 2: 
 #> 
 #> SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 3).
@@ -124,8 +124,8 @@ fit <- fit_bycatch(Takes_obs ~ 1,
 #> Chain 3: Iteration: 1000 / 1000 [100%]  (Sampling)
 #> Chain 3: 
 #> Chain 3:  Elapsed Time: 0.015 seconds (Warm-up)
-#> Chain 3:                0.012 seconds (Sampling)
-#> Chain 3:                0.027 seconds (Total)
+#> Chain 3:                0.013 seconds (Sampling)
+#> Chain 3:                0.028 seconds (Total)
 #> Chain 3: 
 
 get_stream_summary(fit)

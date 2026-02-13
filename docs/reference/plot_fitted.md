@@ -62,8 +62,8 @@ fit <- fit_bycatch(Takes ~ 1,
 #> 
 #> SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 8e-06 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.08 seconds.
+#> Chain 1: Gradient evaluation took 9e-06 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.09 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -80,15 +80,15 @@ fit <- fit_bycatch(Takes ~ 1,
 #> Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.013 seconds (Warm-up)
+#> Chain 1:  Elapsed Time: 0.014 seconds (Warm-up)
 #> Chain 1:                0.014 seconds (Sampling)
-#> Chain 1:                0.027 seconds (Total)
+#> Chain 1:                0.028 seconds (Total)
 #> Chain 1: 
 #> 
 #> SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
 #> Chain 2: 
-#> Chain 2: Gradient evaluation took 7e-06 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.07 seconds.
+#> Chain 2: Gradient evaluation took 1.1e-05 seconds
+#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.11 seconds.
 #> Chain 2: Adjust your expectations accordingly!
 #> Chain 2: 
 #> Chain 2: 
@@ -112,8 +112,8 @@ fit <- fit_bycatch(Takes ~ 1,
 #> 
 #> SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 3).
 #> Chain 3: 
-#> Chain 3: Gradient evaluation took 6e-06 seconds
-#> Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.06 seconds.
+#> Chain 3: Gradient evaluation took 8e-06 seconds
+#> Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.08 seconds.
 #> Chain 3: Adjust your expectations accordingly!
 #> Chain 3: 
 #> Chain 3: 
@@ -130,9 +130,9 @@ fit <- fit_bycatch(Takes ~ 1,
 #> Chain 3: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #> Chain 3: Iteration: 1000 / 1000 [100%]  (Sampling)
 #> Chain 3: 
-#> Chain 3:  Elapsed Time: 0.012 seconds (Warm-up)
-#> Chain 3:                0.013 seconds (Sampling)
-#> Chain 3:                0.025 seconds (Total)
+#> Chain 3:  Elapsed Time: 0.014 seconds (Warm-up)
+#> Chain 3:                0.014 seconds (Sampling)
+#> Chain 3:                0.028 seconds (Total)
 #> Chain 3: 
 plot_fitted(fit,
   xlab = "Year", ylab = "Fleet-level bycatch",
@@ -151,8 +151,8 @@ fit_nb <- fit_bycatch(Takes ~ 1,
 #> 
 #> SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 1.8e-05 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.18 seconds.
+#> Chain 1: Gradient evaluation took 1.9e-05 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.19 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -169,15 +169,15 @@ fit_nb <- fit_bycatch(Takes ~ 1,
 #> Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.097 seconds (Warm-up)
-#> Chain 1:                0.07 seconds (Sampling)
-#> Chain 1:                0.167 seconds (Total)
+#> Chain 1:  Elapsed Time: 0.1 seconds (Warm-up)
+#> Chain 1:                0.075 seconds (Sampling)
+#> Chain 1:                0.175 seconds (Total)
 #> Chain 1: 
 #> 
 #> SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
 #> Chain 2: 
-#> Chain 2: Gradient evaluation took 1.6e-05 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.16 seconds.
+#> Chain 2: Gradient evaluation took 1.4e-05 seconds
+#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.14 seconds.
 #> Chain 2: Adjust your expectations accordingly!
 #> Chain 2: 
 #> Chain 2: 
@@ -194,15 +194,15 @@ fit_nb <- fit_bycatch(Takes ~ 1,
 #> Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 2: 
-#> Chain 2:  Elapsed Time: 0.097 seconds (Warm-up)
-#> Chain 2:                0.11 seconds (Sampling)
-#> Chain 2:                0.207 seconds (Total)
+#> Chain 2:  Elapsed Time: 0.103 seconds (Warm-up)
+#> Chain 2:                0.12 seconds (Sampling)
+#> Chain 2:                0.223 seconds (Total)
 #> Chain 2: 
 #> 
 #> SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 3).
 #> Chain 3: 
-#> Chain 3: Gradient evaluation took 1e-05 seconds
-#> Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.1 seconds.
+#> Chain 3: Gradient evaluation took 1.1e-05 seconds
+#> Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.11 seconds.
 #> Chain 3: Adjust your expectations accordingly!
 #> Chain 3: 
 #> Chain 3: 
@@ -219,15 +219,15 @@ fit_nb <- fit_bycatch(Takes ~ 1,
 #> Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 3: 
-#> Chain 3:  Elapsed Time: 0.105 seconds (Warm-up)
-#> Chain 3:                0.081 seconds (Sampling)
-#> Chain 3:                0.186 seconds (Total)
+#> Chain 3:  Elapsed Time: 0.106 seconds (Warm-up)
+#> Chain 3:                0.085 seconds (Sampling)
+#> Chain 3:                0.191 seconds (Total)
 #> Chain 3: 
 #> 
 #> SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 4).
 #> Chain 4: 
-#> Chain 4: Gradient evaluation took 1.6e-05 seconds
-#> Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.16 seconds.
+#> Chain 4: Gradient evaluation took 1.1e-05 seconds
+#> Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.11 seconds.
 #> Chain 4: Adjust your expectations accordingly!
 #> Chain 4: 
 #> Chain 4: 
@@ -244,9 +244,9 @@ fit_nb <- fit_bycatch(Takes ~ 1,
 #> Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 4: 
-#> Chain 4:  Elapsed Time: 0.106 seconds (Warm-up)
-#> Chain 4:                0.086 seconds (Sampling)
-#> Chain 4:                0.192 seconds (Total)
+#> Chain 4:  Elapsed Time: 0.109 seconds (Warm-up)
+#> Chain 4:                0.092 seconds (Sampling)
+#> Chain 4:                0.201 seconds (Total)
 #> Chain 4: 
 #> Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
 #> Running the chains for more iterations may help. See
@@ -279,15 +279,15 @@ fit <- fit_bycatch(Takes ~ 1,
 #> Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.155 seconds (Warm-up)
-#> Chain 1:                0.297 seconds (Sampling)
-#> Chain 1:                0.452 seconds (Total)
+#> Chain 1:  Elapsed Time: 0.159 seconds (Warm-up)
+#> Chain 1:                0.311 seconds (Sampling)
+#> Chain 1:                0.47 seconds (Total)
 #> Chain 1: 
 #> 
 #> SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
 #> Chain 2: 
-#> Chain 2: Gradient evaluation took 1e-05 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.1 seconds.
+#> Chain 2: Gradient evaluation took 1.1e-05 seconds
+#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.11 seconds.
 #> Chain 2: Adjust your expectations accordingly!
 #> Chain 2: 
 #> Chain 2: 
@@ -304,15 +304,15 @@ fit <- fit_bycatch(Takes ~ 1,
 #> Chain 2: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #> Chain 2: Iteration: 1000 / 1000 [100%]  (Sampling)
 #> Chain 2: 
-#> Chain 2:  Elapsed Time: 0.172 seconds (Warm-up)
-#> Chain 2:                0.123 seconds (Sampling)
-#> Chain 2:                0.295 seconds (Total)
+#> Chain 2:  Elapsed Time: 0.177 seconds (Warm-up)
+#> Chain 2:                0.126 seconds (Sampling)
+#> Chain 2:                0.303 seconds (Total)
 #> Chain 2: 
 #> 
 #> SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 3).
 #> Chain 3: 
-#> Chain 3: Gradient evaluation took 1.5e-05 seconds
-#> Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.15 seconds.
+#> Chain 3: Gradient evaluation took 1.1e-05 seconds
+#> Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.11 seconds.
 #> Chain 3: Adjust your expectations accordingly!
 #> Chain 3: 
 #> Chain 3: 
@@ -329,9 +329,9 @@ fit <- fit_bycatch(Takes ~ 1,
 #> Chain 3: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #> Chain 3: Iteration: 1000 / 1000 [100%]  (Sampling)
 #> Chain 3: 
-#> Chain 3:  Elapsed Time: 0.155 seconds (Warm-up)
-#> Chain 3:                0.102 seconds (Sampling)
-#> Chain 3:                0.257 seconds (Total)
+#> Chain 3:  Elapsed Time: 0.16 seconds (Warm-up)
+#> Chain 3:                0.106 seconds (Sampling)
+#> Chain 3:                0.266 seconds (Total)
 #> Chain 3: 
 #> Warning: There were 20 divergent transitions after warmup. See
 #> https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
@@ -380,15 +380,15 @@ fit_nb <- fit_bycatch(Takes ~ 1,
 #> Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.117 seconds (Warm-up)
-#> Chain 1:                0.123 seconds (Sampling)
+#> Chain 1:  Elapsed Time: 0.116 seconds (Warm-up)
+#> Chain 1:                0.124 seconds (Sampling)
 #> Chain 1:                0.24 seconds (Total)
 #> Chain 1: 
 #> 
 #> SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
 #> Chain 2: 
-#> Chain 2: Gradient evaluation took 9e-06 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.09 seconds.
+#> Chain 2: Gradient evaluation took 1e-05 seconds
+#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.1 seconds.
 #> Chain 2: Adjust your expectations accordingly!
 #> Chain 2: 
 #> Chain 2: 
@@ -412,8 +412,8 @@ fit_nb <- fit_bycatch(Takes ~ 1,
 #> 
 #> SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 3).
 #> Chain 3: 
-#> Chain 3: Gradient evaluation took 1e-05 seconds
-#> Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.1 seconds.
+#> Chain 3: Gradient evaluation took 1.1e-05 seconds
+#> Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.11 seconds.
 #> Chain 3: Adjust your expectations accordingly!
 #> Chain 3: 
 #> Chain 3: 
@@ -430,15 +430,15 @@ fit_nb <- fit_bycatch(Takes ~ 1,
 #> Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 3: 
-#> Chain 3:  Elapsed Time: 0.131 seconds (Warm-up)
+#> Chain 3:  Elapsed Time: 0.127 seconds (Warm-up)
 #> Chain 3:                0.133 seconds (Sampling)
-#> Chain 3:                0.264 seconds (Total)
+#> Chain 3:                0.26 seconds (Total)
 #> Chain 3: 
 #> 
 #> SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 4).
 #> Chain 4: 
-#> Chain 4: Gradient evaluation took 9e-06 seconds
-#> Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.09 seconds.
+#> Chain 4: Gradient evaluation took 1.1e-05 seconds
+#> Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.11 seconds.
 #> Chain 4: Adjust your expectations accordingly!
 #> Chain 4: 
 #> Chain 4: 
@@ -455,9 +455,9 @@ fit_nb <- fit_bycatch(Takes ~ 1,
 #> Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #> Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 #> Chain 4: 
-#> Chain 4:  Elapsed Time: 0.097 seconds (Warm-up)
-#> Chain 4:                0.114 seconds (Sampling)
-#> Chain 4:                0.211 seconds (Total)
+#> Chain 4:  Elapsed Time: 0.096 seconds (Warm-up)
+#> Chain 4:                0.112 seconds (Sampling)
+#> Chain 4:                0.208 seconds (Total)
 #> Chain 4: 
 #> Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
 #> Running the chains for more iterations may help. See

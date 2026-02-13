@@ -9,15 +9,15 @@ set.seed(123)
 
 ### Load data
 
-For our dummy dataaset, the expansionRate column contains the expansion
-rate. In other words, the number of total sets is the sets divided by
+For our dummy dataaset, the covRate column contains the expansion rate.
+In other words, the number of total sets is the sets divided by
 expansion rate.
 
 ``` r
 # replace this with your own data frame
 d = data.frame("Year"= 2002:2014, 
   "Takes" = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0),
-  "expansionRate" = c(24, 22, 14, 32, 28, 25, 30,  7, 26, 21, 22, 23, 27),
+  "covRate" = c(24, 22, 14, 32, 28, 25, 30,  7, 26, 21, 22, 23, 27),
   "Sets" = c(391, 340, 330, 660, 470, 500, 330, 287, 756, 673, 532, 351, 486))
 ```
 
@@ -33,11 +33,11 @@ fit = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets", family="poisson
 ## Expanding bycatch estimates
 
 By default the model assumes coverage is 100%, and no expansion is done.
-But to do the expansion, we can include the `expansion_rate` argument,
+But to do the expansion, we can include the `covrate` argument,
 
 ``` r
 fit = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets", family="poisson",
-  time_varying = FALSE, expansion_rate = "expansionRate")
+  time_varying = FALSE, covrate = "covRate")
 ```
 
 And we can then plot these estimates. Like the previous function we can

@@ -62,7 +62,7 @@
       <h1>Multi-stream monitoring</h1>
                         <h4 data-toc-skip class="author"></h4>
             
-            <h4 data-toc-skip class="date">2026-02-11</h4>
+            <h4 data-toc-skip class="date">2026-02-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ericward-noaa/bycatch/blob/HEAD/vignettes/a05_multistream.Rmd" class="external-link"><code>vignettes/a05_multistream.Rmd</code></a></small>
       <div class="d-none name"><code>a05_multistream.Rmd</code></div>
@@ -104,20 +104,21 @@ keeping these separate may be easier).</p>
 <p>Let’s start with a basic example where we have both observer and EM
 coverage:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Create example data with two monitoring streams</span></span>
-<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  Year <span class="op">=</span> <span class="fl">2010</span><span class="op">:</span><span class="fl">2019</span>,</span>
 <span>  </span>
 <span>  <span class="co"># Observer stream</span></span>
 <span>  Takes_obs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>,</span>
-<span>  Sets_obs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">10</span><span class="op">)</span>,  <span class="co"># 100 sets observed</span></span>
+<span>  Sets_obs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">10</span><span class="op">)</span>,    <span class="co"># 100 sets observed</span></span>
+<span>  CovRate_obs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">10</span><span class="op">)</span>,  <span class="co"># 20% coverage</span></span>
 <span>  </span>
 <span>  <span class="co"># EM stream  </span></span>
 <span>  Takes_em <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span>  Sets_em <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">80</span>, <span class="fl">10</span><span class="op">)</span>,   <span class="co"># 80 sets monitored by EM</span></span>
+<span>  Sets_em <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">80</span>, <span class="fl">10</span><span class="op">)</span>,      <span class="co"># 80 sets monitored by EM</span></span>
+<span>  CovRate_em <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">16</span>, <span class="fl">10</span><span class="op">)</span>,   <span class="co"># 16% coverage</span></span>
 <span>  </span>
-<span>  <span class="co"># Total fishery effort</span></span>
-<span>  Sets_total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">500</span>, <span class="fl">10</span><span class="op">)</span>  <span class="co"># 500 total sets per year</span></span>
+<span>  <span class="co"># Total fishery effort (optional - for backward compatibility)</span></span>
+<span>  Sets_total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">500</span>, <span class="fl">10</span><span class="op">)</span>   <span class="co"># 500 total sets per year</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -127,16 +128,30 @@ coverage:</p>
 additional monitoring streams:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span></span>
-<span>  <span class="va">Takes_obs</span> <span class="op">~</span> <span class="fl">1</span>,           <span class="co"># Formula uses the observer stream</span></span>
+<span>  <span class="va">Takes_obs</span> <span class="op">~</span> <span class="fl">1</span>,             <span class="co"># Formula uses the observer stream</span></span>
 <span>  data <span class="op">=</span> <span class="va">d</span>,</span>
 <span>  time <span class="op">=</span> <span class="st">"Year"</span>,</span>
-<span>  effort <span class="op">=</span> <span class="st">"Sets_obs"</span>,     <span class="co"># Observer effort</span></span>
-<span>  takes_em <span class="op">=</span> <span class="st">"Takes_em"</span>,   <span class="co"># EM takes (activates multi-stream)</span></span>
-<span>  effort_em <span class="op">=</span> <span class="st">"Sets_em"</span>,   <span class="co"># EM effort</span></span>
-<span>  effort_total <span class="op">=</span> <span class="st">"Sets_total"</span>,  <span class="co"># Required for expansion</span></span>
+<span>  effort <span class="op">=</span> <span class="st">"Sets_obs"</span>,       <span class="co"># Observer effort</span></span>
+<span>  covrate_obs <span class="op">=</span> <span class="st">"CovRate_obs"</span>,  <span class="co"># Observer coverage rate</span></span>
+<span>  takes_em <span class="op">=</span> <span class="st">"Takes_em"</span>,     <span class="co"># EM takes (activates multi-stream)</span></span>
+<span>  effort_em <span class="op">=</span> <span class="st">"Sets_em"</span>,     <span class="co"># EM effort</span></span>
+<span>  covrate_em <span class="op">=</span> <span class="st">"CovRate_em"</span>,    <span class="co"># EM coverage rate</span></span>
 <span>  family <span class="op">=</span> <span class="st">"poisson"</span>,</span>
 <span>  time_varying <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># OLD APPROACH: Using effort_total (still works)</span></span>
+<span><span class="co"># fit &lt;- fit_bycatch(</span></span>
+<span><span class="co">#   Takes_obs ~ 1,</span></span>
+<span><span class="co">#   data = d,</span></span>
+<span><span class="co">#   time = "Year",</span></span>
+<span><span class="co">#   effort = "Sets_obs",</span></span>
+<span><span class="co">#   takes_em = "Takes_em",</span></span>
+<span><span class="co">#   effort_em = "Sets_em",</span></span>
+<span><span class="co">#   effort_total = "Sets_total",  # Old approach</span></span>
+<span><span class="co">#   family = "poisson",</span></span>
+<span><span class="co">#   time_varying = FALSE</span></span>
+<span><span class="co"># )</span></span></code></pre></div>
 <p>The function automatically detects multi-stream mode and should
 display:</p>
 <pre><code>Observer stream: 10 observations
@@ -179,14 +194,14 @@ Expanded bycatch estimates (total fishery)
 <span><span class="co">## 1        Observer   1000             15       15.00000            NA</span></span>
 <span><span class="co">## 2              EM    800              9        9.00000            NA</span></span>
 <span><span class="co">## 3 Pooled Observed   1800             24       24.00000            NA</span></span>
-<span><span class="co">## 4      Unobserved   3200             NA       43.79867            24</span></span>
-<span><span class="co">## 5   Total Fishery   5000             NA       67.79867            48</span></span>
+<span><span class="co">## 4      Unobserved      0             NA       43.79867            24</span></span>
+<span><span class="co">## 5   Total Fishery   1800             NA       67.79867            48</span></span>
 <span><span class="co">##   estimated_high coverage_pct</span></span>
-<span><span class="co">## 1             NA           20</span></span>
-<span><span class="co">## 2             NA           16</span></span>
-<span><span class="co">## 3             NA           36</span></span>
-<span><span class="co">## 4             68           64</span></span>
-<span><span class="co">## 5             92          100</span></span></code></pre>
+<span><span class="co">## 1             NA         55.6</span></span>
+<span><span class="co">## 2             NA         44.4</span></span>
+<span><span class="co">## 3             NA        100.0</span></span>
+<span><span class="co">## 4             68          0.0</span></span>
+<span><span class="co">## 5             92        100.0</span></span></code></pre>
 <p>This table shows: - Takes and effort for each stream (Observer, EM,
 Pooled) - Coverage percentages - Estimated total bycatch with credible
 intervals</p>
@@ -203,16 +218,19 @@ and EM:</p>
 <span>  <span class="co"># Observer-only stream</span></span>
 <span>  Takes_obs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>,</span>
 <span>  Sets_obs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">80</span>, <span class="fl">10</span><span class="op">)</span>,</span>
+<span>  CovRate_obs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">16</span>, <span class="fl">10</span><span class="op">)</span>,  <span class="co"># 16% coverage</span></span>
 <span>  </span>
 <span>  <span class="co"># EM-only stream</span></span>
 <span>  Takes_em <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>  Sets_em <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">70</span>, <span class="fl">10</span><span class="op">)</span>,</span>
+<span>  CovRate_em <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">14</span>, <span class="fl">10</span><span class="op">)</span>,   <span class="co"># 14% coverage</span></span>
 <span>  </span>
 <span>  <span class="co"># Both Observer and EM</span></span>
 <span>  Takes_both <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span>
 <span>  Sets_both <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">10</span><span class="op">)</span>,</span>
+<span>  CovRate_both <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">10</span><span class="op">)</span>,  <span class="co"># 10% coverage</span></span>
 <span>  </span>
-<span>  <span class="co"># Total fishery effort</span></span>
+<span>  <span class="co"># Total fishery effort (optional)</span></span>
 <span>  Sets_total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">500</span>, <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
@@ -221,11 +239,13 @@ and EM:</p>
 <span>  data <span class="op">=</span> <span class="va">d3</span>,</span>
 <span>  time <span class="op">=</span> <span class="st">"Year"</span>,</span>
 <span>  effort <span class="op">=</span> <span class="st">"Sets_obs"</span>,</span>
+<span>  covrate_obs <span class="op">=</span> <span class="st">"CovRate_obs"</span>,</span>
 <span>  takes_em <span class="op">=</span> <span class="st">"Takes_em"</span>,</span>
 <span>  effort_em <span class="op">=</span> <span class="st">"Sets_em"</span>,</span>
-<span>  takes_both <span class="op">=</span> <span class="st">"Takes_both"</span>,    <span class="co"># Third stream</span></span>
+<span>  covrate_em <span class="op">=</span> <span class="st">"CovRate_em"</span>,</span>
+<span>  takes_both <span class="op">=</span> <span class="st">"Takes_both"</span>,        <span class="co"># Third stream</span></span>
 <span>  effort_both <span class="op">=</span> <span class="st">"Sets_both"</span>,</span>
-<span>  effort_total <span class="op">=</span> <span class="st">"Sets_total"</span>,</span>
+<span>  covrate_both <span class="op">=</span> <span class="st">"CovRate_both"</span>,    <span class="co"># Third stream coverage</span></span>
 <span>  family <span class="op">=</span> <span class="st">"poisson"</span>,</span>
 <span>  time_varying <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -241,12 +261,14 @@ pooling:</p>
 <span><span class="va">d_pooled</span><span class="op">$</span><span class="va">Takes_pooled</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">$</span><span class="va">Takes_obs</span> <span class="op">+</span> <span class="va">d</span><span class="op">$</span><span class="va">Takes_em</span></span>
 <span><span class="va">d_pooled</span><span class="op">$</span><span class="va">Sets_pooled</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">$</span><span class="va">Sets_obs</span> <span class="op">+</span> <span class="va">d</span><span class="op">$</span><span class="va">Sets_em</span></span>
 <span></span>
-<span><span class="co"># Fit pooled model</span></span>
+<span><span class="va">d_pooled</span><span class="op">$</span><span class="va">CovRate_pooled</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">$</span><span class="va">CovRate_obs</span> <span class="op">+</span> <span class="va">d</span><span class="op">$</span><span class="va">CovRate_em</span></span>
+<span></span>
 <span><span class="va">fit_pooled</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span></span>
 <span>  <span class="va">Takes_pooled</span> <span class="op">~</span> <span class="fl">1</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">d_pooled</span>,</span>
 <span>  time <span class="op">=</span> <span class="st">"Year"</span>,</span>
 <span>  effort <span class="op">=</span> <span class="st">"Sets_pooled"</span>,</span>
+<span>  covrate <span class="op">=</span> <span class="st">"CovRate_pooled"</span>,  <span class="co"># Add this</span></span>
 <span>  family <span class="op">=</span> <span class="st">"poisson"</span>,</span>
 <span>  time_varying <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -273,15 +295,15 @@ properly pools information across streams.</p>
 </h3>
 <p>Multi-stream mode works with all distribution families:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Negative Binomial</span></span>
-<span><span class="va">fit_nb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes_obs</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">d</span>, time <span class="op">=</span> <span class="st">"Year"</span>,</span>
-<span>  effort <span class="op">=</span> <span class="st">"Sets_obs"</span>, takes_em <span class="op">=</span> <span class="st">"Takes_em"</span>, effort_em <span class="op">=</span> <span class="st">"Sets_em"</span>,</span>
-<span>  effort_total <span class="op">=</span> <span class="st">"Sets_total"</span>, family <span class="op">=</span> <span class="st">"nbinom2"</span>, time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">fit_nb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes_obs</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">d</span>, time <span class="op">=</span> <span class="st">"Year"</span>,</span>
+<span>  effort <span class="op">=</span> <span class="st">"Sets_obs"</span>, covrate_obs <span class="op">=</span> <span class="st">"CovRate_obs"</span>,</span>
+<span>  takes_em <span class="op">=</span> <span class="st">"Takes_em"</span>, effort_em <span class="op">=</span> <span class="st">"Sets_em"</span>, covrate_em <span class="op">=</span> <span class="st">"CovRate_em"</span>,</span>
+<span>  family <span class="op">=</span> <span class="st">"nbinom2"</span>, time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Hurdle Poisson</span></span>
 <span><span class="va">fit_hurdle</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes_obs</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">d</span>, time <span class="op">=</span> <span class="st">"Year"</span>,</span>
-<span>  effort <span class="op">=</span> <span class="st">"Sets_obs"</span>, takes_em <span class="op">=</span> <span class="st">"Takes_em"</span>, effort_em <span class="op">=</span> <span class="st">"Sets_em"</span>,</span>
-<span>  effort_total <span class="op">=</span> <span class="st">"Sets_total"</span>, family <span class="op">=</span> <span class="st">"poisson-hurdle"</span>, time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span>  effort <span class="op">=</span> <span class="st">"Sets_obs"</span>, covrate_obs <span class="op">=</span> <span class="st">"CovRate_obs"</span>,</span>
+<span>  takes_em <span class="op">=</span> <span class="st">"Takes_em"</span>, effort_em <span class="op">=</span> <span class="st">"Sets_em"</span>, covrate_em <span class="op">=</span> <span class="st">"CovRate_em"</span>,</span>
+<span>  family <span class="op">=</span> <span class="st">"poisson-hurdle"</span>, time_varying <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="adding-covariates">Adding covariates<a class="anchor" aria-label="anchor" href="#adding-covariates"></a>
@@ -296,9 +318,10 @@ properly pools information across streams.</p>
 <span>  data <span class="op">=</span> <span class="va">d</span>,</span>
 <span>  time <span class="op">=</span> <span class="st">"Year"</span>,</span>
 <span>  effort <span class="op">=</span> <span class="st">"Sets_obs"</span>,</span>
+<span>  covrate_obs <span class="op">=</span> <span class="st">"CovRate_obs"</span>,</span>
 <span>  takes_em <span class="op">=</span> <span class="st">"Takes_em"</span>,</span>
 <span>  effort_em <span class="op">=</span> <span class="st">"Sets_em"</span>,</span>
-<span>  effort_total <span class="op">=</span> <span class="st">"Sets_total"</span>,</span>
+<span>  covrate_em <span class="op">=</span> <span class="st">"CovRate_em"</span>,</span>
 <span>  family <span class="op">=</span> <span class="st">"poisson"</span>,</span>
 <span>  time_varying <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -317,9 +340,10 @@ properly pools information across streams.</p>
 <span>  data <span class="op">=</span> <span class="va">d</span>,</span>
 <span>  time <span class="op">=</span> <span class="st">"Year"</span>,</span>
 <span>  effort <span class="op">=</span> <span class="st">"Sets_obs"</span>,</span>
+<span>  covrate_obs <span class="op">=</span> <span class="st">"CovRate_obs"</span>,</span>
 <span>  takes_em <span class="op">=</span> <span class="st">"Takes_em"</span>,</span>
 <span>  effort_em <span class="op">=</span> <span class="st">"Sets_em"</span>,</span>
-<span>  effort_total <span class="op">=</span> <span class="st">"Sets_total"</span>,</span>
+<span>  covrate_em <span class="op">=</span> <span class="st">"CovRate_em"</span>,</span>
 <span>  family <span class="op">=</span> <span class="st">"poisson"</span>,</span>
 <span>  time_varying <span class="op">=</span> <span class="cn">TRUE</span>  <span class="co"># Enable time-varying effects</span></span>
 <span><span class="op">)</span></span></code></pre></div>

@@ -62,7 +62,7 @@
       <h1>Expanding bycatch estimates</h1>
                         <h4 data-toc-skip class="author"></h4>
             
-            <h4 data-toc-skip class="date">2026-02-11</h4>
+            <h4 data-toc-skip class="date">2026-02-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ericward-noaa/bycatch/blob/HEAD/vignettes/a03_expanding_estimates.Rmd" class="external-link"><code>vignettes/a03_expanding_estimates.Rmd</code></a></small>
       <div class="d-none name"><code>a03_expanding_estimates.Rmd</code></div>
@@ -78,14 +78,14 @@
 <div class="section level3">
 <h3 id="load-data">Load data<a class="anchor" aria-label="anchor" href="#load-data"></a>
 </h3>
-<p>For our dummy dataaset, the expansionRate column contains the
-expansion rate. In other words, the number of total sets is the sets
-divided by expansion rate.</p>
+<p>For our dummy dataaset, the covRate column contains the expansion
+rate. In other words, the number of total sets is the sets divided by
+expansion rate.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># replace this with your own data frame</span></span>
 <span><span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="st">"Year"</span><span class="op">=</span> <span class="fl">2002</span><span class="op">:</span><span class="fl">2014</span>, </span>
 <span>  <span class="st">"Takes"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span>
-<span>  <span class="st">"expansionRate"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">22</span>, <span class="fl">14</span>, <span class="fl">32</span>, <span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">30</span>,  <span class="fl">7</span>, <span class="fl">26</span>, <span class="fl">21</span>, <span class="fl">22</span>, <span class="fl">23</span>, <span class="fl">27</span><span class="op">)</span>,</span>
+<span>  <span class="st">"covRate"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">22</span>, <span class="fl">14</span>, <span class="fl">32</span>, <span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">30</span>,  <span class="fl">7</span>, <span class="fl">26</span>, <span class="fl">21</span>, <span class="fl">22</span>, <span class="fl">23</span>, <span class="fl">27</span><span class="op">)</span>,</span>
 <span>  <span class="st">"Sets"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">391</span>, <span class="fl">340</span>, <span class="fl">330</span>, <span class="fl">660</span>, <span class="fl">470</span>, <span class="fl">500</span>, <span class="fl">330</span>, <span class="fl">287</span>, <span class="fl">756</span>, <span class="fl">673</span>, <span class="fl">532</span>, <span class="fl">351</span>, <span class="fl">486</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -100,11 +100,11 @@ divided by expansion rate.</p>
 <h2 id="expanding-bycatch-estimates">Expanding bycatch estimates<a class="anchor" aria-label="anchor" href="#expanding-bycatch-estimates"></a>
 </h2>
 <p>By default the model assumes coverage is 100%, and no expansion is
-done. But to do the expansion, we can include the
-<code>expansion_rate</code> argument,</p>
+done. But to do the expansion, we can include the <code>covrate</code>
+argument,</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">=</span> <span class="fu"><a href="../reference/fit_bycatch.html">fit_bycatch</a></span><span class="op">(</span><span class="va">Takes</span> <span class="op">~</span> <span class="fl">1</span>, data<span class="op">=</span><span class="va">d</span>, time<span class="op">=</span><span class="st">"Year"</span>, effort<span class="op">=</span><span class="st">"Sets"</span>, family<span class="op">=</span><span class="st">"poisson"</span>,</span>
-<span>  time_varying <span class="op">=</span> <span class="cn">FALSE</span>, expansion_rate <span class="op">=</span> <span class="st">"expansionRate"</span><span class="op">)</span></span></code></pre></div>
+<span>  time_varying <span class="op">=</span> <span class="cn">FALSE</span>, covrate <span class="op">=</span> <span class="st">"covRate"</span><span class="op">)</span></span></code></pre></div>
 <p>And we can then plot these estimates. Like the previous function we
 can specify whether to include the raw points or not. First, we’ll show
 estimates of total bycatch (observed + unobserved)</p>

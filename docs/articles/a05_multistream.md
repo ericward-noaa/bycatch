@@ -32,20 +32,21 @@ Let’s start with a basic example where we have both observer and EM
 coverage:
 
 ``` r
-# Create example data with two monitoring streams
 d <- data.frame(
   Year = 2010:2019,
   
   # Observer stream
   Takes_obs = c(2, 1, 3, 0, 2, 1, 0, 2, 1, 3),
-  Sets_obs = rep(100, 10),  # 100 sets observed
+  Sets_obs = rep(100, 10),    # 100 sets observed
+  CovRate_obs = rep(20, 10),  # 20% coverage
   
   # EM stream  
   Takes_em = c(1, 0, 2, 1, 1, 0, 2, 1, 0, 1),
-  Sets_em = rep(80, 10),   # 80 sets monitored by EM
+  Sets_em = rep(80, 10),      # 80 sets monitored by EM
+  CovRate_em = rep(16, 10),   # 16% coverage
   
-  # Total fishery effort
-  Sets_total = rep(500, 10)  # 500 total sets per year
+  # Total fishery effort (optional - for backward compatibility)
+  Sets_total = rep(500, 10)   # 500 total sets per year
 )
 ```
 
@@ -56,16 +57,30 @@ monitoring streams:
 
 ``` r
 fit <- fit_bycatch(
-  Takes_obs ~ 1,           # Formula uses the observer stream
+  Takes_obs ~ 1,             # Formula uses the observer stream
   data = d,
   time = "Year",
-  effort = "Sets_obs",     # Observer effort
-  takes_em = "Takes_em",   # EM takes (activates multi-stream)
-  effort_em = "Sets_em",   # EM effort
-  effort_total = "Sets_total",  # Required for expansion
+  effort = "Sets_obs",       # Observer effort
+  covrate_obs = "CovRate_obs",  # Observer coverage rate
+  takes_em = "Takes_em",     # EM takes (activates multi-stream)
+  effort_em = "Sets_em",     # EM effort
+  covrate_em = "CovRate_em",    # EM coverage rate
   family = "poisson",
   time_varying = FALSE
 )
+
+# OLD APPROACH: Using effort_total (still works)
+# fit <- fit_bycatch(
+#   Takes_obs ~ 1,
+#   data = d,
+#   time = "Year",
+#   effort = "Sets_obs",
+#   takes_em = "Takes_em",
+#   effort_em = "Sets_em",
+#   effort_total = "Sets_total",  # Old approach
+#   family = "poisson",
+#   time_varying = FALSE
+# )
 ```
 
 The function automatically detects multi-stream mode and should display:
@@ -115,14 +130,14 @@ print(stream_summary)
     ## 1        Observer   1000             15       15.00000            NA
     ## 2              EM    800              9        9.00000            NA
     ## 3 Pooled Observed   1800             24       24.00000            NA
-    ## 4      Unobserved   3200             NA       43.79867            24
-    ## 5   Total Fishery   5000             NA       67.79867            48
+    ## 4      Unobserved      0             NA       43.79867            24
+    ## 5   Total Fishery   1800             NA       67.79867            48
     ##   estimated_high coverage_pct
-    ## 1             NA           20
-    ## 2             NA           16
-    ## 3             NA           36
-    ## 4             68           64
-    ## 5             92          100
+    ## 1             NA         55.6
+    ## 2             NA         44.4
+    ## 3             NA        100.0
+    ## 4             68          0.0
+    ## 5             92        100.0
 
 This table shows: - Takes and effort for each stream (Observer, EM,
 Pooled) - Coverage percentages - Estimated total bycatch with credible
@@ -140,16 +155,19 @@ d3 <- data.frame(
   # Observer-only stream
   Takes_obs = c(2, 1, 3, 0, 2, 1, 0, 2, 1, 3),
   Sets_obs = rep(80, 10),
+  CovRate_obs = rep(16, 10),  # 16% coverage
   
   # EM-only stream
   Takes_em = c(1, 0, 2, 1, 1, 0, 2, 1, 0, 1),
   Sets_em = rep(70, 10),
+  CovRate_em = rep(14, 10),   # 14% coverage
   
   # Both Observer and EM
   Takes_both = c(1, 1, 0, 1, 0, 1, 1, 0, 1, 0),
   Sets_both = rep(50, 10),
+  CovRate_both = rep(10, 10),  # 10% coverage
   
-  # Total fishery effort
+  # Total fishery effort (optional)
   Sets_total = rep(500, 10)
 )
 ```
@@ -160,11 +178,13 @@ fit3 <- fit_bycatch(
   data = d3,
   time = "Year",
   effort = "Sets_obs",
+  covrate_obs = "CovRate_obs",
   takes_em = "Takes_em",
   effort_em = "Sets_em",
-  takes_both = "Takes_both",    # Third stream
+  covrate_em = "CovRate_em",
+  takes_both = "Takes_both",        # Third stream
   effort_both = "Sets_both",
-  effort_total = "Sets_total",
+  covrate_both = "CovRate_both",    # Third stream coverage
   family = "poisson",
   time_varying = FALSE
 )
@@ -180,12 +200,14 @@ d_pooled <- d
 d_pooled$Takes_pooled <- d$Takes_obs + d$Takes_em
 d_pooled$Sets_pooled <- d$Sets_obs + d$Sets_em
 
-# Fit pooled model
+d_pooled$CovRate_pooled <- d$CovRate_obs + d$CovRate_em
+
 fit_pooled <- fit_bycatch(
   Takes_pooled ~ 1,
   data = d_pooled,
   time = "Year",
   effort = "Sets_pooled",
+  covrate = "CovRate_pooled",  # Add this
   family = "poisson",
   time_varying = FALSE
 )
@@ -221,15 +243,15 @@ properly pools information across streams.
 Multi-stream mode works with all distribution families:
 
 ``` r
-# Negative Binomial
 fit_nb <- fit_bycatch(Takes_obs ~ 1, data = d, time = "Year",
-  effort = "Sets_obs", takes_em = "Takes_em", effort_em = "Sets_em",
-  effort_total = "Sets_total", family = "nbinom2", time_varying = FALSE)
+  effort = "Sets_obs", covrate_obs = "CovRate_obs",
+  takes_em = "Takes_em", effort_em = "Sets_em", covrate_em = "CovRate_em",
+  family = "nbinom2", time_varying = FALSE)
 
-# Hurdle Poisson
 fit_hurdle <- fit_bycatch(Takes_obs ~ 1, data = d, time = "Year",
-  effort = "Sets_obs", takes_em = "Takes_em", effort_em = "Sets_em",
-  effort_total = "Sets_total", family = "poisson-hurdle", time_varying = FALSE)
+  effort = "Sets_obs", covrate_obs = "CovRate_obs",
+  takes_em = "Takes_em", effort_em = "Sets_em", covrate_em = "CovRate_em",
+  family = "poisson-hurdle", time_varying = FALSE)
 ```
 
 ### Adding covariates
@@ -247,9 +269,10 @@ fit_cov <- fit_bycatch(
   data = d,
   time = "Year",
   effort = "Sets_obs",
+  covrate_obs = "CovRate_obs",
   takes_em = "Takes_em",
   effort_em = "Sets_em",
-  effort_total = "Sets_total",
+  covrate_em = "CovRate_em",
   family = "poisson",
   time_varying = FALSE
 )
@@ -271,9 +294,10 @@ fit_tv <- fit_bycatch(
   data = d,
   time = "Year",
   effort = "Sets_obs",
+  covrate_obs = "CovRate_obs",
   takes_em = "Takes_em",
   effort_em = "Sets_em",
-  effort_total = "Sets_total",
+  covrate_em = "CovRate_em",
   family = "poisson",
   time_varying = TRUE  # Enable time-varying effects
 )
