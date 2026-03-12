@@ -5,3 +5,7 @@
 
 .DS_Store
 
+src/bycatch.so
+src/RcppExports.o
+src/stanExports_bycatch.h
+src/stanExports_bycatch.o

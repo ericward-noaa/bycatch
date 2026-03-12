@@ -108,3 +108,21 @@ df = data.frame("time" = d[,"Year"],
   "lower95" = apply(total, 2, quantile, 0.025),
   "upper95" = apply(total, 2, quantile, 0.975))
 ```
+
+Because values in `total` represent a probability distribution, we could
+alternatively ask what’s the probability of getting a value above some
+threshold. For this example, we’ll arbitrarily use a threshold of 4, but
+you can calculate
+
+``` r
+apply(total, 2, function(x) sum(x > 4) / length(x))
+```
+
+    ##  [1] 0.0040000000 0.0040000000 0.0346666667 0.0106666667 0.0060000000
+    ##  [6] 0.0133333333 0.0006666667 0.1693333333 0.0860000000 0.5033333333
+    ## [11] 0.0280000000 0.0026666667 0.0080000000
+
+``` r
+# or equivalently
+#colMeans(total > 4)
+```

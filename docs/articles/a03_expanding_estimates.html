@@ -62,7 +62,7 @@
       <h1>Expanding bycatch estimates</h1>
                         <h4 data-toc-skip class="author"></h4>
             
-            <h4 data-toc-skip class="date">2026-02-13</h4>
+            <h4 data-toc-skip class="date">2026-03-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ericward-noaa/bycatch/blob/HEAD/vignettes/a03_expanding_estimates.Rmd" class="external-link"><code>vignettes/a03_expanding_estimates.Rmd</code></a></small>
       <div class="d-none name"><code>a03_expanding_estimates.Rmd</code></div>
@@ -163,6 +163,18 @@ object,</p>
 <span>  <span class="st">"median"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">total</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>  <span class="st">"lower95"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">total</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.025</span><span class="op">)</span>,</span>
 <span>  <span class="st">"upper95"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">total</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Because values in <code>total</code> represent a probability
+distribution, we could alternatively ask what’s the probability of
+getting a value above some threshold. For this example, we’ll
+arbitrarily use a threshold of 4, but you can calculate</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">total</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span> <span class="op">&gt;</span> <span class="fl">4</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##  [1] 0.0040000000 0.0040000000 0.0346666667 0.0106666667 0.0060000000</span></span>
+<span><span class="co">##  [6] 0.0133333333 0.0006666667 0.1693333333 0.0860000000 0.5033333333</span></span>
+<span><span class="co">## [11] 0.0280000000 0.0026666667 0.0080000000</span></span></code></pre>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># or equivalently</span></span>
+<span><span class="co">#colMeans(total &gt; 4)</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

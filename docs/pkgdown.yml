@@ -1,4 +1,4 @@
-pandoc: 3.6.3
+pandoc: '3.4'
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
@@ -7,7 +7,7 @@ articles:
   a03_expanding_estimates: a03_expanding_estimates.html
   a04_diagnosing_problems: a04_diagnosing_problems.html
   a05_multistream: a05_multistream.html
-last_built: 2026-02-13T13:31Z
+last_built: 2026-03-12T21:04Z
 urls:
   reference: https://ericward-noaa.github.io/bycatch/reference
   article: https://ericward-noaa.github.io/bycatch/articles
