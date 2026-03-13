@@ -42,13 +42,13 @@ print(loo_stats)
     ## 
     ## Computed from 1500 by 13 log-likelihood matrix.
     ## 
-    ##          Estimate   SE
-    ## elpd_loo    -11.0  5.8
-    ## p_loo         2.4  2.0
-    ## looic        22.0 11.5
+    ##          Estimate  SE
+    ## elpd_loo      0.0 0.0
+    ## p_loo         0.0 0.0
+    ## looic         0.0 0.0
     ## ------
-    ## MCSE of elpd_loo is 0.1.
-    ## MCSE and ESS estimates assume MCMC draws (r_eff in [0.3, 0.4]).
+    ## MCSE of elpd_loo is NA.
+    ## MCSE and ESS estimates assume independent draws (r_eff=1).
     ## 
     ## All Pareto k estimates are good (k < 0.69).
     ## See help('pareto-k-diagnostic') for details.

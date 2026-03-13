@@ -84,12 +84,39 @@ package](https://cran.r-project.org/web/packages/loo/vignettes/loo2-example.html
 loo::loo(fit$fitted_model)$estimates
 ```
 
+    ## Warning: Can't fit generalized Pareto distribution because all tail values are
+    ## the same.
+    ## Warning: Can't fit generalized Pareto distribution because all tail values are
+    ## the same.
+    ## Warning: Can't fit generalized Pareto distribution because all tail values are
+    ## the same.
+    ## Warning: Can't fit generalized Pareto distribution because all tail values are
+    ## the same.
+    ## Warning: Can't fit generalized Pareto distribution because all tail values are
+    ## the same.
+    ## Warning: Can't fit generalized Pareto distribution because all tail values are
+    ## the same.
+    ## Warning: Can't fit generalized Pareto distribution because all tail values are
+    ## the same.
+    ## Warning: Can't fit generalized Pareto distribution because all tail values are
+    ## the same.
+    ## Warning: Can't fit generalized Pareto distribution because all tail values are
+    ## the same.
+    ## Warning: Can't fit generalized Pareto distribution because all tail values are
+    ## the same.
+    ## Warning: Can't fit generalized Pareto distribution because all tail values are
+    ## the same.
+    ## Warning: Can't fit generalized Pareto distribution because all tail values are
+    ## the same.
+    ## Warning: Can't fit generalized Pareto distribution because all tail values are
+    ## the same.
+
     ## Warning: Some Pareto k diagnostic values are too high. See help('pareto-k-diagnostic') for details.
 
-    ##            Estimate        SE
-    ## elpd_loo -11.184011  5.946065
-    ## p_loo      2.557443  2.144096
-    ## looic     22.368022 11.892131
+    ##          Estimate SE
+    ## elpd_loo        0  0
+    ## p_loo           0  0
+    ## looic           0  0
 
 ## Negative binomial example
 

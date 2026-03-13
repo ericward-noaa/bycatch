@@ -47,8 +47,8 @@ fit <- fit_bycatch(Takes ~ 1,
 #> 
 #> SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000103 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.03 seconds.
+#> Chain 1: Gradient evaluation took 6.7e-05 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.67 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -66,14 +66,14 @@ fit <- fit_bycatch(Takes ~ 1,
 #> Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
 #> Chain 1: 
 #> Chain 1:  Elapsed Time: 0.004 seconds (Warm-up)
-#> Chain 1:                0.004 seconds (Sampling)
-#> Chain 1:                0.008 seconds (Total)
+#> Chain 1:                0.003 seconds (Sampling)
+#> Chain 1:                0.007 seconds (Total)
 #> Chain 1: 
 #> 
 #> SAMPLING FOR MODEL 'bycatch' NOW (CHAIN 2).
 #> Chain 2: 
-#> Chain 2: Gradient evaluation took 2e-06 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.02 seconds.
+#> Chain 2: Gradient evaluation took 1e-06 seconds
+#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.01 seconds.
 #> Chain 2: Adjust your expectations accordingly!
 #> Chain 2: 
 #> Chain 2: 
@@ -115,9 +115,9 @@ fit <- fit_bycatch(Takes ~ 1,
 #> Chain 3: Iteration: 900 / 1000 [ 90%]  (Sampling)
 #> Chain 3: Iteration: 1000 / 1000 [100%]  (Sampling)
 #> Chain 3: 
-#> Chain 3:  Elapsed Time: 0.004 seconds (Warm-up)
+#> Chain 3:  Elapsed Time: 0.003 seconds (Warm-up)
 #> Chain 3:                0.003 seconds (Sampling)
-#> Chain 3:                0.007 seconds (Total)
+#> Chain 3:                0.006 seconds (Total)
 #> Chain 3: 
 
 # Extract log-likelihood for LOO-CV
@@ -130,5 +130,19 @@ library(loo)
 #> - Online documentation and vignettes at mc-stan.org/loo
 #> - As of v2.0.0 loo defaults to 1 core but we recommend using as many as possible. Use the 'cores' argument or set options(mc.cores = NUM_CORES) for an entire session. 
 loo_result <- loo(log_lik)
+#> Warning: Can't fit generalized Pareto distribution because all tail values are the same.
+#> Warning: Can't fit generalized Pareto distribution because all tail values are the same.
+#> Warning: Can't fit generalized Pareto distribution because all tail values are the same.
+#> Warning: Can't fit generalized Pareto distribution because all tail values are the same.
+#> Warning: Can't fit generalized Pareto distribution because all tail values are the same.
+#> Warning: Can't fit generalized Pareto distribution because all tail values are the same.
+#> Warning: Can't fit generalized Pareto distribution because all tail values are the same.
+#> Warning: Can't fit generalized Pareto distribution because all tail values are the same.
+#> Warning: Can't fit generalized Pareto distribution because all tail values are the same.
+#> Warning: Can't fit generalized Pareto distribution because all tail values are the same.
+#> Warning: Can't fit generalized Pareto distribution because all tail values are the same.
+#> Warning: Can't fit generalized Pareto distribution because all tail values are the same.
+#> Warning: Can't fit generalized Pareto distribution because all tail values are the same.
+#> Warning: Some Pareto k diagnostic values are too high. See help('pareto-k-diagnostic') for details.
 # }
 ```

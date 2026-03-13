@@ -45,8 +45,16 @@ fit = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets", family="poisson
 By default the model assumes coverage is 100%, and no expansion is done. But to do the expansion, we can include the `covrate` argument,
 
 ```{r, results="hide", message=FALSE, warning=FALSE}
+d = data.frame("Year"= 2002:2014, 
+  "Takes" = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0),
+  "covRate" = c(24, 22, 14, 32, 28, 25, 30,  7, 26, 21, 22, 23, 27),
+  "Sets" = c(391, 340, 330, 660, 470, 500, 330, 287, 756, 673, 532, 351, 486))
+
 fit = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets", family="poisson",
   time_varying = FALSE, covrate = "covRate")
+pars <- rstan::extract(fit$fitted_model)
+# beta is the underlying bycatch rate before scaling for effort
+rpois(1000, lambda = exp(pars$beta + log(500)))
 ```
 
 And we can then plot these estimates. Like the previous function we can specify whether to include the raw points or not. First, we'll show estimates of total bycatch (observed + unobserved)
@@ -81,18 +89,6 @@ We could do all kinds of things with this kind of table, like output it to a .cs
 write.table(df, "estimated_bycatch.csv", row.names=F, col.names=T, sep=",")
 ```
 
-### Derived quantities
-
-Or calculate the probability of getting values > 0, by year
-
-```{r}
-pr_zero = function(x) {
-  return(length(which(x==0))/length(x))
-}
-
-pr_pos = 1 - apply(expanded,2, pr_zero)
-print(pr_pos)
-```
 
 ### Make table of total bycatch estimates
 
@@ -108,6 +104,19 @@ df = data.frame("time" = d[,"Year"],
   "upper95" = apply(total, 2, quantile, 0.975))
 ```
 
+### Derived quantities
+
+Or calculate the probability of getting values > 0, by year
+
+```{r}
+pr_zero = function(x) {
+  return(length(which(x==0))/length(x))
+}
+
+pr_pos = 1 - apply(expanded,2, pr_zero)
+print(pr_pos)
+```
+
 Because values in `total` represent a probability distribution, we could alternatively ask what's the probability of getting a value above some threshold. For this example, we'll arbitrarily use a threshold of 4, but you can calculate
 
 ```{r}
@@ -115,5 +124,26 @@ apply(total, 2, function(x) sum(x > 4) / length(x))
 
 # or equivalently
 #colMeans(total > 4)
+```
+
+### Simulating future values
+
+One potential use of this output is to also generate distributions of future bycatch. The workflow to do this is (1) fit the model, (2) extract the parameters (focusing on `beta`, the bycatch rate unadjusted for effort), and (3) simulating the distribution of future bycatch for known effort.
+
+```{r}
+d = data.frame("Year"= 2002:2014,
+  "Takes" = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0),
+  "covRate" = c(24, 22, 14, 32, 28, 25, 30,  7, 26, 21, 22, 23, 27),
+  "Sets" = c(391, 340, 330, 660, 470, 500, 330, 287, 756, 673, 532, 351, 486))
+
+# fit the model
+fit = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets", family="poisson",
+  time_varying = FALSE, covrate = "covRate")
+
+# extract parameters
+pars <- rstan::extract(fit$fitted_model)
+
+# beta is the underlying bycatch rate before scaling for effort - 500 is the future sets
+future_bycatch <- rpois(1000, lambda = exp(pars$beta + log(500)))
 ```
 

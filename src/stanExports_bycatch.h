@@ -27,7 +27,7 @@ namespace model_bycatch_namespace {
 using stan::model::model_base_crtp;
 using namespace stan::math;
 stan::math::profile_map profiles__;
-static constexpr std::array<const char*, 546> locations_array__ =
+static constexpr std::array<const char*, 750> locations_array__ =
   {" (found before start of program)",
   " (in 'bycatch', line 74, column 2 to column 17)",
   " (in 'bycatch', line 75, column 2 to column 47)",
@@ -43,9 +43,9 @@ static constexpr std::array<const char*, 546> locations_array__ =
   " (in 'bycatch', line 87, column 2 to column 39)",
   " (in 'bycatch', line 89, column 2 to column 27)",
   " (in 'bycatch', line 90, column 2 to column 23)",
-  " (in 'bycatch', line 503, column 2 to column 25)",
-  " (in 'bycatch', line 504, column 2 to column 43)",
-  " (in 'bycatch', line 505, column 2 to column 44)",
+  " (in 'bycatch', line 576, column 2 to column 70)",
+  " (in 'bycatch', line 577, column 2 to column 43)",
+  " (in 'bycatch', line 578, column 2 to column 44)",
   " (in 'bycatch', line 92, column 2 to column 18)",
   " (in 'bycatch', line 94, column 4 to column 20)",
   " (in 'bycatch', line 96, column 6 to column 38)",
@@ -68,51 +68,183 @@ static constexpr std::array<const char*, 546> locations_array__ =
   " (in 'bycatch', line 108, column 2 to line 113, column 3)",
   " (in 'bycatch', line 115, column 18 to column 57)",
   " (in 'bycatch', line 115, column 2 to column 57)",
-  " (in 'bycatch', line 509, column 4 to column 19)",
-  " (in 'bycatch', line 526, column 6 to column 24)",
-  " (in 'bycatch', line 528, column 8 to column 80)",
-  " (in 'bycatch', line 529, column 8 to column 67)",
-  " (in 'bycatch', line 541, column 10 to column 98)",
-  " (in 'bycatch', line 540, column 32 to line 542, column 9)",
-  " (in 'bycatch', line 540, column 15 to line 542, column 9)",
-  " (in 'bycatch', line 539, column 10 to column 66)",
-  " (in 'bycatch', line 538, column 31 to line 540, column 9)",
-  " (in 'bycatch', line 538, column 15 to line 542, column 9)",
-  " (in 'bycatch', line 537, column 10 to column 105)",
-  " (in 'bycatch', line 536, column 31 to line 538, column 9)",
-  " (in 'bycatch', line 536, column 15 to line 542, column 9)",
-  " (in 'bycatch', line 535, column 10 to column 105)",
-  " (in 'bycatch', line 534, column 31 to line 536, column 9)",
-  " (in 'bycatch', line 534, column 15 to line 542, column 9)",
-  " (in 'bycatch', line 533, column 10 to column 73)",
-  " (in 'bycatch', line 532, column 31 to line 534, column 9)",
-  " (in 'bycatch', line 532, column 15 to line 542, column 9)",
-  " (in 'bycatch', line 531, column 10 to column 73)",
-  " (in 'bycatch', line 530, column 24 to line 532, column 9)",
-  " (in 'bycatch', line 530, column 8 to line 542, column 9)",
-  " (in 'bycatch', line 527, column 36 to line 543, column 7)",
-  " (in 'bycatch', line 527, column 6 to line 543, column 7)",
-  " (in 'bycatch', line 525, column 11 to line 544, column 5)",
-  " (in 'bycatch', line 512, column 6 to column 19)",
-  " (in 'bycatch', line 514, column 8 to column 67)",
-  " (in 'bycatch', line 522, column 10 to column 98)",
-  " (in 'bycatch', line 521, column 31 to line 523, column 9)",
-  " (in 'bycatch', line 521, column 15 to line 523, column 9)",
-  " (in 'bycatch', line 520, column 10 to column 79)",
-  " (in 'bycatch', line 519, column 31 to line 521, column 9)",
-  " (in 'bycatch', line 519, column 15 to line 523, column 9)",
-  " (in 'bycatch', line 518, column 10 to column 66)",
-  " (in 'bycatch', line 517, column 31 to line 519, column 9)",
-  " (in 'bycatch', line 517, column 15 to line 523, column 9)",
-  " (in 'bycatch', line 516, column 10 to column 47)",
-  " (in 'bycatch', line 515, column 24 to line 517, column 9)",
-  " (in 'bycatch', line 515, column 8 to line 523, column 9)",
-  " (in 'bycatch', line 513, column 36 to line 524, column 7)",
-  " (in 'bycatch', line 513, column 6 to line 524, column 7)",
-  " (in 'bycatch', line 511, column 25 to line 525, column 5)",
-  " (in 'bycatch', line 511, column 4 to line 544, column 5)",
-  " (in 'bycatch', line 507, column 21 to line 545, column 3)",
-  " (in 'bycatch', line 507, column 2 to line 545, column 3)",
+  " (in 'bycatch', line 641, column 4 to column 16)",
+  " (in 'bycatch', line 645, column 6 to column 71)",
+  " (in 'bycatch', line 646, column 6 to column 84)",
+  " (in 'bycatch', line 662, column 10 to column 111)",
+  " (in 'bycatch', line 661, column 15 to line 663, column 9)",
+  " (in 'bycatch', line 660, column 10 to column 39)",
+  " (in 'bycatch', line 659, column 29 to line 661, column 9)",
+  " (in 'bycatch', line 659, column 8 to line 663, column 9)",
+  " (in 'bycatch', line 658, column 29 to line 664, column 7)",
+  " (in 'bycatch', line 658, column 13 to line 664, column 7)",
+  " (in 'bycatch', line 656, column 10 to column 92)",
+  " (in 'bycatch', line 655, column 15 to line 657, column 9)",
+  " (in 'bycatch', line 654, column 10 to column 39)",
+  " (in 'bycatch', line 653, column 29 to line 655, column 9)",
+  " (in 'bycatch', line 653, column 8 to line 657, column 9)",
+  " (in 'bycatch', line 652, column 29 to line 658, column 7)",
+  " (in 'bycatch', line 652, column 13 to line 664, column 7)",
+  " (in 'bycatch', line 651, column 8 to column 91)",
+  " (in 'bycatch', line 650, column 29 to line 652, column 7)",
+  " (in 'bycatch', line 650, column 13 to line 664, column 7)",
+  " (in 'bycatch', line 649, column 8 to column 72)",
+  " (in 'bycatch', line 648, column 22 to line 650, column 7)",
+  " (in 'bycatch', line 648, column 6 to line 664, column 7)",
+  " (in 'bycatch', line 665, column 6 to column 15)",
+  " (in 'bycatch', line 644, column 22 to line 666, column 5)",
+  " (in 'bycatch', line 644, column 4 to line 666, column 5)",
+  " (in 'bycatch', line 670, column 6 to column 68)",
+  " (in 'bycatch', line 671, column 6 to column 81)",
+  " (in 'bycatch', line 687, column 10 to column 109)",
+  " (in 'bycatch', line 686, column 15 to line 688, column 9)",
+  " (in 'bycatch', line 685, column 10 to column 39)",
+  " (in 'bycatch', line 684, column 28 to line 686, column 9)",
+  " (in 'bycatch', line 684, column 8 to line 688, column 9)",
+  " (in 'bycatch', line 683, column 29 to line 689, column 7)",
+  " (in 'bycatch', line 683, column 13 to line 689, column 7)",
+  " (in 'bycatch', line 681, column 10 to column 90)",
+  " (in 'bycatch', line 680, column 15 to line 682, column 9)",
+  " (in 'bycatch', line 679, column 10 to column 39)",
+  " (in 'bycatch', line 678, column 28 to line 680, column 9)",
+  " (in 'bycatch', line 678, column 8 to line 682, column 9)",
+  " (in 'bycatch', line 677, column 29 to line 683, column 7)",
+  " (in 'bycatch', line 677, column 13 to line 689, column 7)",
+  " (in 'bycatch', line 676, column 8 to column 89)",
+  " (in 'bycatch', line 675, column 29 to line 677, column 7)",
+  " (in 'bycatch', line 675, column 13 to line 689, column 7)",
+  " (in 'bycatch', line 674, column 8 to column 70)",
+  " (in 'bycatch', line 673, column 22 to line 675, column 7)",
+  " (in 'bycatch', line 673, column 6 to line 689, column 7)",
+  " (in 'bycatch', line 690, column 6 to column 15)",
+  " (in 'bycatch', line 669, column 21 to line 691, column 5)",
+  " (in 'bycatch', line 669, column 4 to line 691, column 5)",
+  " (in 'bycatch', line 695, column 6 to column 74)",
+  " (in 'bycatch', line 696, column 6 to column 87)",
+  " (in 'bycatch', line 712, column 10 to column 113)",
+  " (in 'bycatch', line 711, column 15 to line 713, column 9)",
+  " (in 'bycatch', line 710, column 10 to column 39)",
+  " (in 'bycatch', line 709, column 30 to line 711, column 9)",
+  " (in 'bycatch', line 709, column 8 to line 713, column 9)",
+  " (in 'bycatch', line 708, column 29 to line 714, column 7)",
+  " (in 'bycatch', line 708, column 13 to line 714, column 7)",
+  " (in 'bycatch', line 706, column 10 to column 94)",
+  " (in 'bycatch', line 705, column 15 to line 707, column 9)",
+  " (in 'bycatch', line 704, column 10 to column 39)",
+  " (in 'bycatch', line 703, column 30 to line 705, column 9)",
+  " (in 'bycatch', line 703, column 8 to line 707, column 9)",
+  " (in 'bycatch', line 702, column 29 to line 708, column 7)",
+  " (in 'bycatch', line 702, column 13 to line 714, column 7)",
+  " (in 'bycatch', line 701, column 8 to column 93)",
+  " (in 'bycatch', line 700, column 29 to line 702, column 7)",
+  " (in 'bycatch', line 700, column 13 to line 714, column 7)",
+  " (in 'bycatch', line 699, column 8 to column 74)",
+  " (in 'bycatch', line 698, column 22 to line 700, column 7)",
+  " (in 'bycatch', line 698, column 6 to line 714, column 7)",
+  " (in 'bycatch', line 715, column 6 to column 15)",
+  " (in 'bycatch', line 694, column 23 to line 716, column 5)",
+  " (in 'bycatch', line 694, column 4 to line 716, column 5)",
+  " (in 'bycatch', line 640, column 7 to line 717, column 3)",
+  " (in 'bycatch', line 584, column 6 to column 55)",
+  " (in 'bycatch', line 585, column 6 to column 68)",
+  " (in 'bycatch', line 634, column 10 to column 89)",
+  " (in 'bycatch', line 633, column 15 to line 635, column 9)",
+  " (in 'bycatch', line 632, column 10 to column 37)",
+  " (in 'bycatch', line 631, column 26 to line 633, column 9)",
+  " (in 'bycatch', line 631, column 8 to line 635, column 9)",
+  " (in 'bycatch', line 630, column 28 to line 636, column 7)",
+  " (in 'bycatch', line 630, column 11 to line 636, column 7)",
+  " (in 'bycatch', line 628, column 8 to column 69)",
+  " (in 'bycatch', line 627, column 27 to line 629, column 7)",
+  " (in 'bycatch', line 627, column 11 to line 636, column 7)",
+  " (in 'bycatch', line 624, column 10 to column 96)",
+  " (in 'bycatch', line 623, column 15 to line 625, column 9)",
+  " (in 'bycatch', line 622, column 10 to column 37)",
+  " (in 'bycatch', line 621, column 26 to line 623, column 9)",
+  " (in 'bycatch', line 621, column 8 to line 625, column 9)",
+  " (in 'bycatch', line 620, column 27 to line 626, column 7)",
+  " (in 'bycatch', line 620, column 11 to line 636, column 7)",
+  " (in 'bycatch', line 617, column 10 to column 96)",
+  " (in 'bycatch', line 616, column 15 to line 618, column 9)",
+  " (in 'bycatch', line 615, column 10 to column 37)",
+  " (in 'bycatch', line 614, column 26 to line 616, column 9)",
+  " (in 'bycatch', line 614, column 8 to line 618, column 9)",
+  " (in 'bycatch', line 613, column 27 to line 619, column 7)",
+  " (in 'bycatch', line 613, column 11 to line 636, column 7)",
+  " (in 'bycatch', line 611, column 8 to column 76)",
+  " (in 'bycatch', line 610, column 27 to line 612, column 7)",
+  " (in 'bycatch', line 610, column 11 to line 636, column 7)",
+  " (in 'bycatch', line 608, column 8 to column 76)",
+  " (in 'bycatch', line 607, column 27 to line 609, column 7)",
+  " (in 'bycatch', line 607, column 11 to line 636, column 7)",
+  " (in 'bycatch', line 604, column 10 to column 101)",
+  " (in 'bycatch', line 603, column 15 to line 605, column 9)",
+  " (in 'bycatch', line 602, column 10 to column 37)",
+  " (in 'bycatch', line 601, column 25 to line 603, column 9)",
+  " (in 'bycatch', line 601, column 8 to line 605, column 9)",
+  " (in 'bycatch', line 600, column 27 to line 606, column 7)",
+  " (in 'bycatch', line 600, column 11 to line 636, column 7)",
+  " (in 'bycatch', line 597, column 10 to column 82)",
+  " (in 'bycatch', line 596, column 15 to line 598, column 9)",
+  " (in 'bycatch', line 595, column 10 to column 37)",
+  " (in 'bycatch', line 594, column 25 to line 596, column 9)",
+  " (in 'bycatch', line 594, column 8 to line 598, column 9)",
+  " (in 'bycatch', line 593, column 27 to line 599, column 7)",
+  " (in 'bycatch', line 593, column 11 to line 636, column 7)",
+  " (in 'bycatch', line 591, column 8 to column 81)",
+  " (in 'bycatch', line 590, column 27 to line 592, column 7)",
+  " (in 'bycatch', line 590, column 11 to line 636, column 7)",
+  " (in 'bycatch', line 588, column 8 to column 62)",
+  " (in 'bycatch', line 587, column 22 to line 589, column 7)",
+  " (in 'bycatch', line 587, column 6 to line 636, column 7)",
+  " (in 'bycatch', line 583, column 22 to line 637, column 5)",
+  " (in 'bycatch', line 583, column 4 to line 637, column 5)",
+  " (in 'bycatch', line 581, column 24 to line 638, column 3)",
+  " (in 'bycatch', line 581, column 2 to line 717, column 3)",
+  " (in 'bycatch', line 737, column 6 to column 24)",
+  " (in 'bycatch', line 739, column 8 to column 80)",
+  " (in 'bycatch', line 740, column 8 to column 67)",
+  " (in 'bycatch', line 753, column 10 to column 98)",
+  " (in 'bycatch', line 752, column 32 to line 754, column 9)",
+  " (in 'bycatch', line 752, column 15 to line 754, column 9)",
+  " (in 'bycatch', line 751, column 10 to column 66)",
+  " (in 'bycatch', line 750, column 31 to line 752, column 9)",
+  " (in 'bycatch', line 750, column 15 to line 754, column 9)",
+  " (in 'bycatch', line 749, column 10 to column 105)",
+  " (in 'bycatch', line 748, column 31 to line 750, column 9)",
+  " (in 'bycatch', line 748, column 15 to line 754, column 9)",
+  " (in 'bycatch', line 747, column 10 to column 105)",
+  " (in 'bycatch', line 746, column 31 to line 748, column 9)",
+  " (in 'bycatch', line 746, column 15 to line 754, column 9)",
+  " (in 'bycatch', line 745, column 10 to column 73)",
+  " (in 'bycatch', line 744, column 31 to line 746, column 9)",
+  " (in 'bycatch', line 744, column 15 to line 754, column 9)",
+  " (in 'bycatch', line 743, column 10 to column 73)",
+  " (in 'bycatch', line 742, column 24 to line 744, column 9)",
+  " (in 'bycatch', line 742, column 8 to line 754, column 9)",
+  " (in 'bycatch', line 738, column 36 to line 755, column 7)",
+  " (in 'bycatch', line 738, column 6 to line 755, column 7)",
+  " (in 'bycatch', line 736, column 11 to line 756, column 5)",
+  " (in 'bycatch', line 722, column 6 to column 19)",
+  " (in 'bycatch', line 724, column 8 to column 67)",
+  " (in 'bycatch', line 733, column 10 to column 98)",
+  " (in 'bycatch', line 732, column 31 to line 734, column 9)",
+  " (in 'bycatch', line 732, column 15 to line 734, column 9)",
+  " (in 'bycatch', line 731, column 10 to column 79)",
+  " (in 'bycatch', line 730, column 31 to line 732, column 9)",
+  " (in 'bycatch', line 730, column 15 to line 734, column 9)",
+  " (in 'bycatch', line 729, column 10 to column 66)",
+  " (in 'bycatch', line 728, column 31 to line 730, column 9)",
+  " (in 'bycatch', line 728, column 15 to line 734, column 9)",
+  " (in 'bycatch', line 727, column 10 to column 47)",
+  " (in 'bycatch', line 726, column 24 to line 728, column 9)",
+  " (in 'bycatch', line 726, column 8 to line 734, column 9)",
+  " (in 'bycatch', line 723, column 36 to line 735, column 7)",
+  " (in 'bycatch', line 723, column 6 to line 735, column 7)",
+  " (in 'bycatch', line 721, column 25 to line 736, column 5)",
+  " (in 'bycatch', line 721, column 4 to line 756, column 5)",
+  " (in 'bycatch', line 720, column 21 to line 757, column 3)",
+  " (in 'bycatch', line 720, column 2 to line 757, column 3)",
   " (in 'bycatch', line 118, column 2 to column 28)",
   " (in 'bycatch', line 120, column 4 to column 34)",
   " (in 'bycatch', line 121, column 4 to column 41)",
@@ -124,281 +256,353 @@ static constexpr std::array<const char*, 546> locations_array__ =
   " (in 'bycatch', line 127, column 4 to column 23)",
   " (in 'bycatch', line 126, column 21 to line 128, column 3)",
   " (in 'bycatch', line 126, column 2 to line 128, column 3)",
-  " (in 'bycatch', line 465, column 6 to column 38)",
-  " (in 'bycatch', line 468, column 10 to column 75)",
-  " (in 'bycatch', line 472, column 12 to column 33)",
-  " (in 'bycatch', line 473, column 12 to column 63)",
-  " (in 'bycatch', line 471, column 15 to line 474, column 11)",
-  " (in 'bycatch', line 470, column 12 to column 33)",
-  " (in 'bycatch', line 469, column 10 to line 474, column 11)",
-  " (in 'bycatch', line 467, column 26 to line 475, column 9)",
-  " (in 'bycatch', line 467, column 8 to line 475, column 9)",
-  " (in 'bycatch', line 466, column 20 to line 476, column 7)",
-  " (in 'bycatch', line 466, column 6 to line 476, column 7)",
-  " (in 'bycatch', line 479, column 10 to column 72)",
-  " (in 'bycatch', line 483, column 12 to column 33)",
-  " (in 'bycatch', line 484, column 12 to column 61)",
-  " (in 'bycatch', line 482, column 15 to line 485, column 11)",
-  " (in 'bycatch', line 481, column 12 to column 33)",
-  " (in 'bycatch', line 480, column 10 to line 485, column 11)",
-  " (in 'bycatch', line 478, column 25 to line 486, column 9)",
-  " (in 'bycatch', line 478, column 8 to line 486, column 9)",
-  " (in 'bycatch', line 477, column 19 to line 487, column 7)",
-  " (in 'bycatch', line 477, column 6 to line 487, column 7)",
-  " (in 'bycatch', line 490, column 10 to column 78)",
-  " (in 'bycatch', line 494, column 12 to column 33)",
-  " (in 'bycatch', line 495, column 12 to column 65)",
-  " (in 'bycatch', line 493, column 15 to line 496, column 11)",
-  " (in 'bycatch', line 492, column 12 to column 33)",
-  " (in 'bycatch', line 491, column 10 to line 496, column 11)",
-  " (in 'bycatch', line 489, column 27 to line 497, column 9)",
-  " (in 'bycatch', line 489, column 8 to line 497, column 9)",
-  " (in 'bycatch', line 488, column 21 to line 498, column 7)",
-  " (in 'bycatch', line 488, column 6 to line 498, column 7)",
-  " (in 'bycatch', line 464, column 26 to line 499, column 5)",
-  " (in 'bycatch', line 464, column 9 to line 499, column 5)",
-  " (in 'bycatch', line 443, column 6 to column 38)",
-  " (in 'bycatch', line 446, column 10 to column 75)",
-  " (in 'bycatch', line 447, column 10 to column 61)",
-  " (in 'bycatch', line 445, column 26 to line 448, column 9)",
-  " (in 'bycatch', line 445, column 8 to line 448, column 9)",
-  " (in 'bycatch', line 444, column 20 to line 449, column 7)",
-  " (in 'bycatch', line 444, column 6 to line 449, column 7)",
-  " (in 'bycatch', line 452, column 10 to column 72)",
-  " (in 'bycatch', line 453, column 10 to column 59)",
-  " (in 'bycatch', line 451, column 25 to line 454, column 9)",
-  " (in 'bycatch', line 451, column 8 to line 454, column 9)",
-  " (in 'bycatch', line 450, column 19 to line 455, column 7)",
-  " (in 'bycatch', line 450, column 6 to line 455, column 7)",
-  " (in 'bycatch', line 458, column 10 to column 78)",
-  " (in 'bycatch', line 459, column 10 to column 63)",
-  " (in 'bycatch', line 457, column 27 to line 460, column 9)",
-  " (in 'bycatch', line 457, column 8 to line 460, column 9)",
-  " (in 'bycatch', line 456, column 21 to line 461, column 7)",
-  " (in 'bycatch', line 456, column 6 to line 461, column 7)",
-  " (in 'bycatch', line 442, column 25 to line 462, column 5)",
-  " (in 'bycatch', line 442, column 9 to line 499, column 5)",
-  " (in 'bycatch', line 406, column 6 to column 39)",
-  " (in 'bycatch', line 409, column 10 to column 75)",
-  " (in 'bycatch', line 413, column 12 to column 33)",
-  " (in 'bycatch', line 414, column 12 to column 70)",
-  " (in 'bycatch', line 412, column 15 to line 415, column 11)",
-  " (in 'bycatch', line 411, column 12 to column 33)",
-  " (in 'bycatch', line 410, column 10 to line 415, column 11)",
-  " (in 'bycatch', line 408, column 26 to line 416, column 9)",
-  " (in 'bycatch', line 408, column 8 to line 416, column 9)",
-  " (in 'bycatch', line 407, column 20 to line 417, column 7)",
-  " (in 'bycatch', line 407, column 6 to line 417, column 7)",
-  " (in 'bycatch', line 420, column 10 to column 72)",
-  " (in 'bycatch', line 424, column 12 to column 33)",
-  " (in 'bycatch', line 425, column 12 to column 68)",
-  " (in 'bycatch', line 423, column 15 to line 426, column 11)",
-  " (in 'bycatch', line 422, column 12 to column 33)",
-  " (in 'bycatch', line 421, column 10 to line 426, column 11)",
-  " (in 'bycatch', line 419, column 25 to line 427, column 9)",
-  " (in 'bycatch', line 419, column 8 to line 427, column 9)",
-  " (in 'bycatch', line 418, column 19 to line 428, column 7)",
-  " (in 'bycatch', line 418, column 6 to line 428, column 7)",
-  " (in 'bycatch', line 431, column 10 to column 78)",
-  " (in 'bycatch', line 435, column 12 to column 33)",
-  " (in 'bycatch', line 436, column 12 to column 72)",
-  " (in 'bycatch', line 434, column 15 to line 437, column 11)",
-  " (in 'bycatch', line 433, column 12 to column 33)",
-  " (in 'bycatch', line 432, column 10 to line 437, column 11)",
-  " (in 'bycatch', line 430, column 27 to line 438, column 9)",
-  " (in 'bycatch', line 430, column 8 to line 438, column 9)",
-  " (in 'bycatch', line 429, column 21 to line 439, column 7)",
-  " (in 'bycatch', line 429, column 6 to line 439, column 7)",
-  " (in 'bycatch', line 405, column 25 to line 440, column 5)",
-  " (in 'bycatch', line 405, column 9 to line 499, column 5)",
-  " (in 'bycatch', line 369, column 6 to column 38)",
-  " (in 'bycatch', line 372, column 10 to column 88)",
-  " (in 'bycatch', line 376, column 12 to column 33)",
-  " (in 'bycatch', line 377, column 12 to column 70)",
-  " (in 'bycatch', line 375, column 15 to line 378, column 11)",
-  " (in 'bycatch', line 374, column 12 to column 33)",
-  " (in 'bycatch', line 373, column 10 to line 378, column 11)",
-  " (in 'bycatch', line 371, column 26 to line 379, column 9)",
-  " (in 'bycatch', line 371, column 8 to line 379, column 9)",
-  " (in 'bycatch', line 370, column 20 to line 380, column 7)",
-  " (in 'bycatch', line 370, column 6 to line 380, column 7)",
-  " (in 'bycatch', line 383, column 10 to column 85)",
-  " (in 'bycatch', line 387, column 12 to column 33)",
-  " (in 'bycatch', line 388, column 12 to column 68)",
-  " (in 'bycatch', line 386, column 15 to line 389, column 11)",
-  " (in 'bycatch', line 385, column 12 to column 33)",
-  " (in 'bycatch', line 384, column 10 to line 389, column 11)",
-  " (in 'bycatch', line 382, column 25 to line 390, column 9)",
-  " (in 'bycatch', line 382, column 8 to line 390, column 9)",
-  " (in 'bycatch', line 381, column 19 to line 391, column 7)",
-  " (in 'bycatch', line 381, column 6 to line 391, column 7)",
-  " (in 'bycatch', line 394, column 10 to column 91)",
-  " (in 'bycatch', line 398, column 12 to column 33)",
-  " (in 'bycatch', line 399, column 12 to column 72)",
-  " (in 'bycatch', line 397, column 15 to line 400, column 11)",
-  " (in 'bycatch', line 396, column 12 to column 33)",
-  " (in 'bycatch', line 395, column 10 to line 400, column 11)",
-  " (in 'bycatch', line 393, column 27 to line 401, column 9)",
-  " (in 'bycatch', line 393, column 8 to line 401, column 9)",
-  " (in 'bycatch', line 392, column 21 to line 402, column 7)",
-  " (in 'bycatch', line 392, column 6 to line 402, column 7)",
-  " (in 'bycatch', line 368, column 25 to line 403, column 5)",
-  " (in 'bycatch', line 368, column 9 to line 499, column 5)",
-  " (in 'bycatch', line 347, column 6 to column 39)",
-  " (in 'bycatch', line 350, column 10 to column 75)",
-  " (in 'bycatch', line 351, column 10 to column 68)",
-  " (in 'bycatch', line 349, column 26 to line 352, column 9)",
-  " (in 'bycatch', line 349, column 8 to line 352, column 9)",
-  " (in 'bycatch', line 348, column 20 to line 353, column 7)",
-  " (in 'bycatch', line 348, column 6 to line 353, column 7)",
-  " (in 'bycatch', line 356, column 10 to column 72)",
-  " (in 'bycatch', line 357, column 10 to column 66)",
-  " (in 'bycatch', line 355, column 25 to line 358, column 9)",
-  " (in 'bycatch', line 355, column 8 to line 358, column 9)",
-  " (in 'bycatch', line 354, column 19 to line 359, column 7)",
-  " (in 'bycatch', line 354, column 6 to line 359, column 7)",
-  " (in 'bycatch', line 362, column 10 to column 78)",
-  " (in 'bycatch', line 363, column 10 to column 70)",
-  " (in 'bycatch', line 361, column 27 to line 364, column 9)",
-  " (in 'bycatch', line 361, column 8 to line 364, column 9)",
-  " (in 'bycatch', line 360, column 21 to line 365, column 7)",
-  " (in 'bycatch', line 360, column 6 to line 365, column 7)",
-  " (in 'bycatch', line 346, column 25 to line 366, column 5)",
-  " (in 'bycatch', line 346, column 9 to line 499, column 5)",
-  " (in 'bycatch', line 325, column 6 to column 38)",
-  " (in 'bycatch', line 328, column 10 to column 88)",
-  " (in 'bycatch', line 329, column 10 to column 68)",
-  " (in 'bycatch', line 327, column 26 to line 330, column 9)",
-  " (in 'bycatch', line 327, column 8 to line 330, column 9)",
-  " (in 'bycatch', line 326, column 20 to line 331, column 7)",
-  " (in 'bycatch', line 326, column 6 to line 331, column 7)",
-  " (in 'bycatch', line 334, column 10 to column 85)",
-  " (in 'bycatch', line 335, column 10 to column 66)",
-  " (in 'bycatch', line 333, column 25 to line 336, column 9)",
-  " (in 'bycatch', line 333, column 8 to line 336, column 9)",
-  " (in 'bycatch', line 332, column 19 to line 337, column 7)",
-  " (in 'bycatch', line 332, column 6 to line 337, column 7)",
-  " (in 'bycatch', line 340, column 10 to column 91)",
-  " (in 'bycatch', line 341, column 10 to column 70)",
-  " (in 'bycatch', line 339, column 27 to line 342, column 9)",
-  " (in 'bycatch', line 339, column 8 to line 342, column 9)",
-  " (in 'bycatch', line 338, column 21 to line 343, column 7)",
-  " (in 'bycatch', line 338, column 6 to line 343, column 7)",
-  " (in 'bycatch', line 324, column 25 to line 344, column 5)",
-  " (in 'bycatch', line 324, column 9 to line 499, column 5)",
-  " (in 'bycatch', line 288, column 6 to column 35)",
-  " (in 'bycatch', line 291, column 10 to column 75)",
-  " (in 'bycatch', line 295, column 12 to column 33)",
-  " (in 'bycatch', line 296, column 12 to column 74)",
-  " (in 'bycatch', line 296, column 69 to column 70)",
-  " (in 'bycatch', line 294, column 15 to line 297, column 11)",
-  " (in 'bycatch', line 293, column 12 to column 33)",
-  " (in 'bycatch', line 292, column 10 to line 297, column 11)",
-  " (in 'bycatch', line 290, column 26 to line 298, column 9)",
-  " (in 'bycatch', line 290, column 8 to line 298, column 9)",
-  " (in 'bycatch', line 289, column 20 to line 299, column 7)",
-  " (in 'bycatch', line 289, column 6 to line 299, column 7)",
-  " (in 'bycatch', line 302, column 10 to column 72)",
-  " (in 'bycatch', line 306, column 12 to column 33)",
-  " (in 'bycatch', line 307, column 12 to column 72)",
-  " (in 'bycatch', line 307, column 67 to column 68)",
-  " (in 'bycatch', line 305, column 15 to line 308, column 11)",
-  " (in 'bycatch', line 304, column 12 to column 33)",
-  " (in 'bycatch', line 303, column 10 to line 308, column 11)",
-  " (in 'bycatch', line 301, column 25 to line 309, column 9)",
-  " (in 'bycatch', line 301, column 8 to line 309, column 9)",
-  " (in 'bycatch', line 300, column 19 to line 310, column 7)",
-  " (in 'bycatch', line 300, column 6 to line 310, column 7)",
-  " (in 'bycatch', line 313, column 10 to column 78)",
-  " (in 'bycatch', line 317, column 12 to column 33)",
-  " (in 'bycatch', line 318, column 12 to column 76)",
-  " (in 'bycatch', line 318, column 71 to column 72)",
-  " (in 'bycatch', line 316, column 15 to line 319, column 11)",
-  " (in 'bycatch', line 315, column 12 to column 33)",
-  " (in 'bycatch', line 314, column 10 to line 319, column 11)",
-  " (in 'bycatch', line 312, column 27 to line 320, column 9)",
-  " (in 'bycatch', line 312, column 8 to line 320, column 9)",
-  " (in 'bycatch', line 311, column 21 to line 321, column 7)",
-  " (in 'bycatch', line 311, column 6 to line 321, column 7)",
-  " (in 'bycatch', line 287, column 25 to line 322, column 5)",
-  " (in 'bycatch', line 287, column 9 to line 499, column 5)",
-  " (in 'bycatch', line 254, column 10 to column 75)",
-  " (in 'bycatch', line 258, column 12 to column 33)",
-  " (in 'bycatch', line 259, column 12 to column 55)",
-  " (in 'bycatch', line 259, column 50 to column 51)",
-  " (in 'bycatch', line 257, column 15 to line 260, column 11)",
-  " (in 'bycatch', line 256, column 12 to column 33)",
-  " (in 'bycatch', line 255, column 10 to line 260, column 11)",
-  " (in 'bycatch', line 253, column 26 to line 261, column 9)",
-  " (in 'bycatch', line 253, column 8 to line 261, column 9)",
-  " (in 'bycatch', line 252, column 20 to line 262, column 7)",
-  " (in 'bycatch', line 252, column 6 to line 262, column 7)",
-  " (in 'bycatch', line 265, column 10 to column 72)",
-  " (in 'bycatch', line 269, column 12 to column 33)",
-  " (in 'bycatch', line 270, column 12 to column 53)",
-  " (in 'bycatch', line 270, column 48 to column 49)",
-  " (in 'bycatch', line 268, column 15 to line 271, column 11)",
-  " (in 'bycatch', line 267, column 12 to column 33)",
-  " (in 'bycatch', line 266, column 10 to line 271, column 11)",
-  " (in 'bycatch', line 264, column 25 to line 272, column 9)",
-  " (in 'bycatch', line 264, column 8 to line 272, column 9)",
-  " (in 'bycatch', line 263, column 19 to line 273, column 7)",
-  " (in 'bycatch', line 263, column 6 to line 273, column 7)",
-  " (in 'bycatch', line 276, column 10 to column 78)",
-  " (in 'bycatch', line 280, column 12 to column 33)",
-  " (in 'bycatch', line 281, column 12 to column 57)",
-  " (in 'bycatch', line 281, column 52 to column 53)",
-  " (in 'bycatch', line 279, column 15 to line 282, column 11)",
-  " (in 'bycatch', line 278, column 12 to column 33)",
-  " (in 'bycatch', line 277, column 10 to line 282, column 11)",
-  " (in 'bycatch', line 275, column 27 to line 283, column 9)",
-  " (in 'bycatch', line 275, column 8 to line 283, column 9)",
-  " (in 'bycatch', line 274, column 21 to line 284, column 7)",
-  " (in 'bycatch', line 274, column 6 to line 284, column 7)",
-  " (in 'bycatch', line 251, column 25 to line 285, column 5)",
-  " (in 'bycatch', line 251, column 9 to line 499, column 5)",
-  " (in 'bycatch', line 230, column 6 to column 35)",
-  " (in 'bycatch', line 233, column 10 to column 75)",
-  " (in 'bycatch', line 234, column 10 to column 65)",
-  " (in 'bycatch', line 232, column 26 to line 235, column 9)",
-  " (in 'bycatch', line 232, column 8 to line 235, column 9)",
-  " (in 'bycatch', line 231, column 20 to line 236, column 7)",
-  " (in 'bycatch', line 231, column 6 to line 236, column 7)",
-  " (in 'bycatch', line 239, column 10 to column 72)",
-  " (in 'bycatch', line 240, column 10 to column 63)",
-  " (in 'bycatch', line 238, column 25 to line 241, column 9)",
-  " (in 'bycatch', line 238, column 8 to line 241, column 9)",
-  " (in 'bycatch', line 237, column 19 to line 242, column 7)",
-  " (in 'bycatch', line 237, column 6 to line 242, column 7)",
-  " (in 'bycatch', line 245, column 10 to column 78)",
-  " (in 'bycatch', line 246, column 10 to column 67)",
-  " (in 'bycatch', line 244, column 27 to line 247, column 9)",
-  " (in 'bycatch', line 244, column 8 to line 247, column 9)",
-  " (in 'bycatch', line 243, column 21 to line 248, column 7)",
-  " (in 'bycatch', line 243, column 6 to line 248, column 7)",
-  " (in 'bycatch', line 229, column 25 to line 249, column 5)",
-  " (in 'bycatch', line 229, column 9 to line 499, column 5)",
-  " (in 'bycatch', line 211, column 10 to column 75)",
-  " (in 'bycatch', line 212, column 10 to column 46)",
-  " (in 'bycatch', line 210, column 26 to line 213, column 9)",
-  " (in 'bycatch', line 210, column 8 to line 213, column 9)",
-  " (in 'bycatch', line 209, column 20 to line 214, column 7)",
-  " (in 'bycatch', line 209, column 6 to line 214, column 7)",
-  " (in 'bycatch', line 217, column 10 to column 72)",
-  " (in 'bycatch', line 218, column 10 to column 44)",
-  " (in 'bycatch', line 216, column 25 to line 219, column 9)",
-  " (in 'bycatch', line 216, column 8 to line 219, column 9)",
-  " (in 'bycatch', line 215, column 19 to line 220, column 7)",
-  " (in 'bycatch', line 215, column 6 to line 220, column 7)",
-  " (in 'bycatch', line 223, column 10 to column 78)",
-  " (in 'bycatch', line 224, column 10 to column 48)",
-  " (in 'bycatch', line 222, column 27 to line 225, column 9)",
-  " (in 'bycatch', line 222, column 8 to line 225, column 9)",
-  " (in 'bycatch', line 221, column 21 to line 226, column 7)",
-  " (in 'bycatch', line 221, column 6 to line 226, column 7)",
-  " (in 'bycatch', line 208, column 20 to line 227, column 5)",
-  " (in 'bycatch', line 208, column 4 to line 499, column 5)",
-  " (in 'bycatch', line 206, column 7 to line 500, column 3)",
+  " (in 'bycatch', line 531, column 6 to column 38)",
+  " (in 'bycatch', line 535, column 12 to column 77)",
+  " (in 'bycatch', line 539, column 14 to column 35)",
+  " (in 'bycatch', line 540, column 14 to column 65)",
+  " (in 'bycatch', line 538, column 17 to line 541, column 13)",
+  " (in 'bycatch', line 537, column 14 to column 35)",
+  " (in 'bycatch', line 536, column 12 to line 541, column 13)",
+  " (in 'bycatch', line 534, column 32 to line 542, column 11)",
+  " (in 'bycatch', line 534, column 10 to line 542, column 11)",
+  " (in 'bycatch', line 533, column 26 to line 543, column 9)",
+  " (in 'bycatch', line 533, column 8 to line 543, column 9)",
+  " (in 'bycatch', line 532, column 20 to line 544, column 7)",
+  " (in 'bycatch', line 532, column 6 to line 544, column 7)",
+  " (in 'bycatch', line 548, column 12 to column 74)",
+  " (in 'bycatch', line 552, column 14 to column 35)",
+  " (in 'bycatch', line 553, column 14 to column 63)",
+  " (in 'bycatch', line 551, column 17 to line 554, column 13)",
+  " (in 'bycatch', line 550, column 14 to column 35)",
+  " (in 'bycatch', line 549, column 12 to line 554, column 13)",
+  " (in 'bycatch', line 547, column 31 to line 555, column 11)",
+  " (in 'bycatch', line 547, column 10 to line 555, column 11)",
+  " (in 'bycatch', line 546, column 25 to line 556, column 9)",
+  " (in 'bycatch', line 546, column 8 to line 556, column 9)",
+  " (in 'bycatch', line 545, column 19 to line 557, column 7)",
+  " (in 'bycatch', line 545, column 6 to line 557, column 7)",
+  " (in 'bycatch', line 561, column 12 to column 80)",
+  " (in 'bycatch', line 565, column 14 to column 35)",
+  " (in 'bycatch', line 566, column 14 to column 67)",
+  " (in 'bycatch', line 564, column 17 to line 567, column 13)",
+  " (in 'bycatch', line 563, column 14 to column 35)",
+  " (in 'bycatch', line 562, column 12 to line 567, column 13)",
+  " (in 'bycatch', line 560, column 33 to line 568, column 11)",
+  " (in 'bycatch', line 560, column 10 to line 568, column 11)",
+  " (in 'bycatch', line 559, column 27 to line 569, column 9)",
+  " (in 'bycatch', line 559, column 8 to line 569, column 9)",
+  " (in 'bycatch', line 558, column 21 to line 570, column 7)",
+  " (in 'bycatch', line 558, column 6 to line 570, column 7)",
+  " (in 'bycatch', line 530, column 26 to line 571, column 5)",
+  " (in 'bycatch', line 530, column 9 to line 571, column 5)",
+  " (in 'bycatch', line 503, column 6 to column 38)",
+  " (in 'bycatch', line 507, column 12 to column 77)",
+  " (in 'bycatch', line 508, column 12 to column 63)",
+  " (in 'bycatch', line 506, column 32 to line 509, column 11)",
+  " (in 'bycatch', line 506, column 10 to line 509, column 11)",
+  " (in 'bycatch', line 505, column 26 to line 510, column 9)",
+  " (in 'bycatch', line 505, column 8 to line 510, column 9)",
+  " (in 'bycatch', line 504, column 20 to line 511, column 7)",
+  " (in 'bycatch', line 504, column 6 to line 511, column 7)",
+  " (in 'bycatch', line 515, column 12 to column 74)",
+  " (in 'bycatch', line 516, column 12 to column 61)",
+  " (in 'bycatch', line 514, column 31 to line 517, column 11)",
+  " (in 'bycatch', line 514, column 10 to line 517, column 11)",
+  " (in 'bycatch', line 513, column 25 to line 518, column 9)",
+  " (in 'bycatch', line 513, column 8 to line 518, column 9)",
+  " (in 'bycatch', line 512, column 19 to line 519, column 7)",
+  " (in 'bycatch', line 512, column 6 to line 519, column 7)",
+  " (in 'bycatch', line 523, column 12 to column 80)",
+  " (in 'bycatch', line 524, column 12 to column 65)",
+  " (in 'bycatch', line 522, column 33 to line 525, column 11)",
+  " (in 'bycatch', line 522, column 10 to line 525, column 11)",
+  " (in 'bycatch', line 521, column 27 to line 526, column 9)",
+  " (in 'bycatch', line 521, column 8 to line 526, column 9)",
+  " (in 'bycatch', line 520, column 21 to line 527, column 7)",
+  " (in 'bycatch', line 520, column 6 to line 527, column 7)",
+  " (in 'bycatch', line 502, column 25 to line 528, column 5)",
+  " (in 'bycatch', line 502, column 9 to line 571, column 5)",
+  " (in 'bycatch', line 454, column 6 to column 39)",
+  " (in 'bycatch', line 458, column 12 to column 77)",
+  " (in 'bycatch', line 462, column 14 to column 35)",
+  " (in 'bycatch', line 464, column 16 to column 74)",
+  " (in 'bycatch', line 463, column 35 to line 465, column 15)",
+  " (in 'bycatch', line 463, column 14 to line 465, column 15)",
+  " (in 'bycatch', line 461, column 17 to line 466, column 13)",
+  " (in 'bycatch', line 460, column 14 to column 35)",
+  " (in 'bycatch', line 459, column 12 to line 466, column 13)",
+  " (in 'bycatch', line 457, column 32 to line 467, column 11)",
+  " (in 'bycatch', line 457, column 10 to line 467, column 11)",
+  " (in 'bycatch', line 456, column 26 to line 468, column 9)",
+  " (in 'bycatch', line 456, column 8 to line 468, column 9)",
+  " (in 'bycatch', line 455, column 20 to line 469, column 7)",
+  " (in 'bycatch', line 455, column 6 to line 469, column 7)",
+  " (in 'bycatch', line 473, column 12 to column 74)",
+  " (in 'bycatch', line 477, column 14 to column 35)",
+  " (in 'bycatch', line 479, column 16 to column 72)",
+  " (in 'bycatch', line 478, column 34 to line 480, column 15)",
+  " (in 'bycatch', line 478, column 14 to line 480, column 15)",
+  " (in 'bycatch', line 476, column 17 to line 481, column 13)",
+  " (in 'bycatch', line 475, column 14 to column 35)",
+  " (in 'bycatch', line 474, column 12 to line 481, column 13)",
+  " (in 'bycatch', line 472, column 31 to line 482, column 11)",
+  " (in 'bycatch', line 472, column 10 to line 482, column 11)",
+  " (in 'bycatch', line 471, column 25 to line 483, column 9)",
+  " (in 'bycatch', line 471, column 8 to line 483, column 9)",
+  " (in 'bycatch', line 470, column 19 to line 484, column 7)",
+  " (in 'bycatch', line 470, column 6 to line 484, column 7)",
+  " (in 'bycatch', line 488, column 12 to column 80)",
+  " (in 'bycatch', line 492, column 14 to column 35)",
+  " (in 'bycatch', line 494, column 16 to column 76)",
+  " (in 'bycatch', line 493, column 36 to line 495, column 15)",
+  " (in 'bycatch', line 493, column 14 to line 495, column 15)",
+  " (in 'bycatch', line 491, column 17 to line 496, column 13)",
+  " (in 'bycatch', line 490, column 14 to column 35)",
+  " (in 'bycatch', line 489, column 12 to line 496, column 13)",
+  " (in 'bycatch', line 487, column 33 to line 497, column 11)",
+  " (in 'bycatch', line 487, column 10 to line 497, column 11)",
+  " (in 'bycatch', line 486, column 27 to line 498, column 9)",
+  " (in 'bycatch', line 486, column 8 to line 498, column 9)",
+  " (in 'bycatch', line 485, column 21 to line 499, column 7)",
+  " (in 'bycatch', line 485, column 6 to line 499, column 7)",
+  " (in 'bycatch', line 453, column 25 to line 500, column 5)",
+  " (in 'bycatch', line 453, column 9 to line 571, column 5)",
+  " (in 'bycatch', line 405, column 6 to column 38)",
+  " (in 'bycatch', line 409, column 12 to column 90)",
+  " (in 'bycatch', line 413, column 14 to column 35)",
+  " (in 'bycatch', line 415, column 16 to column 74)",
+  " (in 'bycatch', line 414, column 35 to line 416, column 15)",
+  " (in 'bycatch', line 414, column 14 to line 416, column 15)",
+  " (in 'bycatch', line 412, column 17 to line 417, column 13)",
+  " (in 'bycatch', line 411, column 14 to column 35)",
+  " (in 'bycatch', line 410, column 12 to line 417, column 13)",
+  " (in 'bycatch', line 408, column 32 to line 418, column 11)",
+  " (in 'bycatch', line 408, column 10 to line 418, column 11)",
+  " (in 'bycatch', line 407, column 26 to line 419, column 9)",
+  " (in 'bycatch', line 407, column 8 to line 419, column 9)",
+  " (in 'bycatch', line 406, column 20 to line 420, column 7)",
+  " (in 'bycatch', line 406, column 6 to line 420, column 7)",
+  " (in 'bycatch', line 424, column 12 to column 87)",
+  " (in 'bycatch', line 428, column 14 to column 35)",
+  " (in 'bycatch', line 430, column 16 to column 72)",
+  " (in 'bycatch', line 429, column 34 to line 431, column 15)",
+  " (in 'bycatch', line 429, column 14 to line 431, column 15)",
+  " (in 'bycatch', line 427, column 17 to line 432, column 13)",
+  " (in 'bycatch', line 426, column 14 to column 35)",
+  " (in 'bycatch', line 425, column 12 to line 432, column 13)",
+  " (in 'bycatch', line 423, column 31 to line 433, column 11)",
+  " (in 'bycatch', line 423, column 10 to line 433, column 11)",
+  " (in 'bycatch', line 422, column 25 to line 434, column 9)",
+  " (in 'bycatch', line 422, column 8 to line 434, column 9)",
+  " (in 'bycatch', line 421, column 19 to line 435, column 7)",
+  " (in 'bycatch', line 421, column 6 to line 435, column 7)",
+  " (in 'bycatch', line 439, column 12 to column 93)",
+  " (in 'bycatch', line 443, column 14 to column 35)",
+  " (in 'bycatch', line 445, column 16 to column 76)",
+  " (in 'bycatch', line 444, column 36 to line 446, column 15)",
+  " (in 'bycatch', line 444, column 14 to line 446, column 15)",
+  " (in 'bycatch', line 442, column 17 to line 447, column 13)",
+  " (in 'bycatch', line 441, column 14 to column 35)",
+  " (in 'bycatch', line 440, column 12 to line 447, column 13)",
+  " (in 'bycatch', line 438, column 33 to line 448, column 11)",
+  " (in 'bycatch', line 438, column 10 to line 448, column 11)",
+  " (in 'bycatch', line 437, column 27 to line 449, column 9)",
+  " (in 'bycatch', line 437, column 8 to line 449, column 9)",
+  " (in 'bycatch', line 436, column 21 to line 450, column 7)",
+  " (in 'bycatch', line 436, column 6 to line 450, column 7)",
+  " (in 'bycatch', line 404, column 25 to line 451, column 5)",
+  " (in 'bycatch', line 404, column 9 to line 571, column 5)",
+  " (in 'bycatch', line 377, column 6 to column 39)",
+  " (in 'bycatch', line 381, column 12 to column 77)",
+  " (in 'bycatch', line 382, column 12 to column 70)",
+  " (in 'bycatch', line 380, column 52 to line 383, column 11)",
+  " (in 'bycatch', line 380, column 10 to line 383, column 11)",
+  " (in 'bycatch', line 379, column 26 to line 384, column 9)",
+  " (in 'bycatch', line 379, column 8 to line 384, column 9)",
+  " (in 'bycatch', line 378, column 20 to line 385, column 7)",
+  " (in 'bycatch', line 378, column 6 to line 385, column 7)",
+  " (in 'bycatch', line 389, column 12 to column 74)",
+  " (in 'bycatch', line 390, column 12 to column 68)",
+  " (in 'bycatch', line 388, column 50 to line 391, column 11)",
+  " (in 'bycatch', line 388, column 10 to line 391, column 11)",
+  " (in 'bycatch', line 387, column 25 to line 392, column 9)",
+  " (in 'bycatch', line 387, column 8 to line 392, column 9)",
+  " (in 'bycatch', line 386, column 19 to line 393, column 7)",
+  " (in 'bycatch', line 386, column 6 to line 393, column 7)",
+  " (in 'bycatch', line 397, column 12 to column 80)",
+  " (in 'bycatch', line 398, column 12 to column 72)",
+  " (in 'bycatch', line 396, column 54 to line 399, column 11)",
+  " (in 'bycatch', line 396, column 10 to line 399, column 11)",
+  " (in 'bycatch', line 395, column 27 to line 400, column 9)",
+  " (in 'bycatch', line 395, column 8 to line 400, column 9)",
+  " (in 'bycatch', line 394, column 21 to line 401, column 7)",
+  " (in 'bycatch', line 394, column 6 to line 401, column 7)",
+  " (in 'bycatch', line 376, column 25 to line 402, column 5)",
+  " (in 'bycatch', line 376, column 9 to line 571, column 5)",
+  " (in 'bycatch', line 349, column 6 to column 38)",
+  " (in 'bycatch', line 353, column 12 to column 90)",
+  " (in 'bycatch', line 354, column 12 to column 70)",
+  " (in 'bycatch', line 352, column 52 to line 355, column 11)",
+  " (in 'bycatch', line 352, column 10 to line 355, column 11)",
+  " (in 'bycatch', line 351, column 26 to line 356, column 9)",
+  " (in 'bycatch', line 351, column 8 to line 356, column 9)",
+  " (in 'bycatch', line 350, column 20 to line 357, column 7)",
+  " (in 'bycatch', line 350, column 6 to line 357, column 7)",
+  " (in 'bycatch', line 361, column 12 to column 87)",
+  " (in 'bycatch', line 362, column 12 to column 68)",
+  " (in 'bycatch', line 360, column 50 to line 363, column 11)",
+  " (in 'bycatch', line 360, column 10 to line 363, column 11)",
+  " (in 'bycatch', line 359, column 25 to line 364, column 9)",
+  " (in 'bycatch', line 359, column 8 to line 364, column 9)",
+  " (in 'bycatch', line 358, column 19 to line 365, column 7)",
+  " (in 'bycatch', line 358, column 6 to line 365, column 7)",
+  " (in 'bycatch', line 369, column 12 to column 93)",
+  " (in 'bycatch', line 370, column 12 to column 72)",
+  " (in 'bycatch', line 368, column 54 to line 371, column 11)",
+  " (in 'bycatch', line 368, column 10 to line 371, column 11)",
+  " (in 'bycatch', line 367, column 27 to line 372, column 9)",
+  " (in 'bycatch', line 367, column 8 to line 372, column 9)",
+  " (in 'bycatch', line 366, column 21 to line 373, column 7)",
+  " (in 'bycatch', line 366, column 6 to line 373, column 7)",
+  " (in 'bycatch', line 348, column 25 to line 374, column 5)",
+  " (in 'bycatch', line 348, column 9 to line 571, column 5)",
+  " (in 'bycatch', line 306, column 6 to column 35)",
+  " (in 'bycatch', line 310, column 12 to column 77)",
+  " (in 'bycatch', line 314, column 14 to column 35)",
+  " (in 'bycatch', line 315, column 14 to column 76)",
+  " (in 'bycatch', line 315, column 71 to column 72)",
+  " (in 'bycatch', line 313, column 17 to line 316, column 13)",
+  " (in 'bycatch', line 312, column 14 to column 35)",
+  " (in 'bycatch', line 311, column 12 to line 316, column 13)",
+  " (in 'bycatch', line 309, column 32 to line 317, column 11)",
+  " (in 'bycatch', line 309, column 10 to line 317, column 11)",
+  " (in 'bycatch', line 308, column 26 to line 318, column 9)",
+  " (in 'bycatch', line 308, column 8 to line 318, column 9)",
+  " (in 'bycatch', line 307, column 20 to line 319, column 7)",
+  " (in 'bycatch', line 307, column 6 to line 319, column 7)",
+  " (in 'bycatch', line 323, column 12 to column 74)",
+  " (in 'bycatch', line 327, column 14 to column 35)",
+  " (in 'bycatch', line 328, column 14 to column 74)",
+  " (in 'bycatch', line 328, column 69 to column 70)",
+  " (in 'bycatch', line 326, column 17 to line 329, column 13)",
+  " (in 'bycatch', line 325, column 14 to column 35)",
+  " (in 'bycatch', line 324, column 12 to line 329, column 13)",
+  " (in 'bycatch', line 322, column 31 to line 330, column 11)",
+  " (in 'bycatch', line 322, column 10 to line 330, column 11)",
+  " (in 'bycatch', line 321, column 25 to line 331, column 9)",
+  " (in 'bycatch', line 321, column 8 to line 331, column 9)",
+  " (in 'bycatch', line 320, column 19 to line 332, column 7)",
+  " (in 'bycatch', line 320, column 6 to line 332, column 7)",
+  " (in 'bycatch', line 336, column 12 to column 80)",
+  " (in 'bycatch', line 340, column 14 to column 35)",
+  " (in 'bycatch', line 341, column 14 to column 78)",
+  " (in 'bycatch', line 341, column 73 to column 74)",
+  " (in 'bycatch', line 339, column 17 to line 342, column 13)",
+  " (in 'bycatch', line 338, column 14 to column 35)",
+  " (in 'bycatch', line 337, column 12 to line 342, column 13)",
+  " (in 'bycatch', line 335, column 33 to line 343, column 11)",
+  " (in 'bycatch', line 335, column 10 to line 343, column 11)",
+  " (in 'bycatch', line 334, column 27 to line 344, column 9)",
+  " (in 'bycatch', line 334, column 8 to line 344, column 9)",
+  " (in 'bycatch', line 333, column 21 to line 345, column 7)",
+  " (in 'bycatch', line 333, column 6 to line 345, column 7)",
+  " (in 'bycatch', line 305, column 25 to line 346, column 5)",
+  " (in 'bycatch', line 305, column 9 to line 571, column 5)",
+  " (in 'bycatch', line 267, column 12 to column 77)",
+  " (in 'bycatch', line 271, column 14 to column 35)",
+  " (in 'bycatch', line 272, column 14 to column 57)",
+  " (in 'bycatch', line 272, column 52 to column 53)",
+  " (in 'bycatch', line 270, column 17 to line 273, column 13)",
+  " (in 'bycatch', line 269, column 14 to column 35)",
+  " (in 'bycatch', line 268, column 12 to line 273, column 13)",
+  " (in 'bycatch', line 266, column 32 to line 274, column 11)",
+  " (in 'bycatch', line 266, column 10 to line 274, column 11)",
+  " (in 'bycatch', line 265, column 26 to line 275, column 9)",
+  " (in 'bycatch', line 265, column 8 to line 275, column 9)",
+  " (in 'bycatch', line 264, column 20 to line 276, column 7)",
+  " (in 'bycatch', line 264, column 6 to line 276, column 7)",
+  " (in 'bycatch', line 280, column 12 to column 74)",
+  " (in 'bycatch', line 284, column 14 to column 35)",
+  " (in 'bycatch', line 285, column 14 to column 55)",
+  " (in 'bycatch', line 285, column 50 to column 51)",
+  " (in 'bycatch', line 283, column 17 to line 286, column 13)",
+  " (in 'bycatch', line 282, column 14 to column 35)",
+  " (in 'bycatch', line 281, column 12 to line 286, column 13)",
+  " (in 'bycatch', line 279, column 31 to line 287, column 11)",
+  " (in 'bycatch', line 279, column 10 to line 287, column 11)",
+  " (in 'bycatch', line 278, column 25 to line 288, column 9)",
+  " (in 'bycatch', line 278, column 8 to line 288, column 9)",
+  " (in 'bycatch', line 277, column 19 to line 289, column 7)",
+  " (in 'bycatch', line 277, column 6 to line 289, column 7)",
+  " (in 'bycatch', line 293, column 12 to column 80)",
+  " (in 'bycatch', line 297, column 14 to column 35)",
+  " (in 'bycatch', line 298, column 14 to column 59)",
+  " (in 'bycatch', line 298, column 54 to column 55)",
+  " (in 'bycatch', line 296, column 17 to line 299, column 13)",
+  " (in 'bycatch', line 295, column 14 to column 35)",
+  " (in 'bycatch', line 294, column 12 to line 299, column 13)",
+  " (in 'bycatch', line 292, column 33 to line 300, column 11)",
+  " (in 'bycatch', line 292, column 10 to line 300, column 11)",
+  " (in 'bycatch', line 291, column 27 to line 301, column 9)",
+  " (in 'bycatch', line 291, column 8 to line 301, column 9)",
+  " (in 'bycatch', line 290, column 21 to line 302, column 7)",
+  " (in 'bycatch', line 290, column 6 to line 302, column 7)",
+  " (in 'bycatch', line 263, column 25 to line 303, column 5)",
+  " (in 'bycatch', line 263, column 9 to line 571, column 5)",
+  " (in 'bycatch', line 236, column 6 to column 35)",
+  " (in 'bycatch', line 240, column 12 to column 77)",
+  " (in 'bycatch', line 241, column 12 to column 67)",
+  " (in 'bycatch', line 239, column 32 to line 242, column 11)",
+  " (in 'bycatch', line 239, column 10 to line 242, column 11)",
+  " (in 'bycatch', line 238, column 26 to line 243, column 9)",
+  " (in 'bycatch', line 238, column 8 to line 243, column 9)",
+  " (in 'bycatch', line 237, column 20 to line 244, column 7)",
+  " (in 'bycatch', line 237, column 6 to line 244, column 7)",
+  " (in 'bycatch', line 248, column 12 to column 74)",
+  " (in 'bycatch', line 249, column 12 to column 65)",
+  " (in 'bycatch', line 247, column 31 to line 250, column 11)",
+  " (in 'bycatch', line 247, column 10 to line 250, column 11)",
+  " (in 'bycatch', line 246, column 25 to line 251, column 9)",
+  " (in 'bycatch', line 246, column 8 to line 251, column 9)",
+  " (in 'bycatch', line 245, column 19 to line 252, column 7)",
+  " (in 'bycatch', line 245, column 6 to line 252, column 7)",
+  " (in 'bycatch', line 256, column 12 to column 80)",
+  " (in 'bycatch', line 257, column 12 to column 69)",
+  " (in 'bycatch', line 255, column 33 to line 258, column 11)",
+  " (in 'bycatch', line 255, column 10 to line 258, column 11)",
+  " (in 'bycatch', line 254, column 27 to line 259, column 9)",
+  " (in 'bycatch', line 254, column 8 to line 259, column 9)",
+  " (in 'bycatch', line 253, column 21 to line 260, column 7)",
+  " (in 'bycatch', line 253, column 6 to line 260, column 7)",
+  " (in 'bycatch', line 235, column 25 to line 261, column 5)",
+  " (in 'bycatch', line 235, column 9 to line 571, column 5)",
+  " (in 'bycatch', line 212, column 12 to column 77)",
+  " (in 'bycatch', line 213, column 12 to column 48)",
+  " (in 'bycatch', line 211, column 32 to line 214, column 11)",
+  " (in 'bycatch', line 211, column 10 to line 214, column 11)",
+  " (in 'bycatch', line 210, column 26 to line 215, column 9)",
+  " (in 'bycatch', line 210, column 8 to line 215, column 9)",
+  " (in 'bycatch', line 209, column 20 to line 216, column 7)",
+  " (in 'bycatch', line 209, column 6 to line 216, column 7)",
+  " (in 'bycatch', line 220, column 12 to column 74)",
+  " (in 'bycatch', line 221, column 12 to column 46)",
+  " (in 'bycatch', line 219, column 31 to line 222, column 11)",
+  " (in 'bycatch', line 219, column 10 to line 222, column 11)",
+  " (in 'bycatch', line 218, column 25 to line 223, column 9)",
+  " (in 'bycatch', line 218, column 8 to line 223, column 9)",
+  " (in 'bycatch', line 217, column 19 to line 224, column 7)",
+  " (in 'bycatch', line 217, column 6 to line 224, column 7)",
+  " (in 'bycatch', line 228, column 12 to column 80)",
+  " (in 'bycatch', line 229, column 12 to column 50)",
+  " (in 'bycatch', line 227, column 33 to line 230, column 11)",
+  " (in 'bycatch', line 227, column 10 to line 230, column 11)",
+  " (in 'bycatch', line 226, column 27 to line 231, column 9)",
+  " (in 'bycatch', line 226, column 8 to line 231, column 9)",
+  " (in 'bycatch', line 225, column 21 to line 232, column 7)",
+  " (in 'bycatch', line 225, column 6 to line 232, column 7)",
+  " (in 'bycatch', line 208, column 20 to line 233, column 5)",
+  " (in 'bycatch', line 208, column 4 to line 571, column 5)",
+  " (in 'bycatch', line 206, column 7 to line 572, column 3)",
   " (in 'bycatch', line 194, column 6 to column 38)",
   " (in 'bycatch', line 199, column 10 to column 31)",
   " (in 'bycatch', line 200, column 10 to column 54)",
@@ -470,7 +674,7 @@ static constexpr std::array<const char*, 546> locations_array__ =
   " (in 'bycatch', line 131, column 20 to line 133, column 5)",
   " (in 'bycatch', line 131, column 4 to line 203, column 5)",
   " (in 'bycatch', line 130, column 24 to line 204, column 3)",
-  " (in 'bycatch', line 130, column 2 to line 500, column 3)",
+  " (in 'bycatch', line 130, column 2 to line 572, column 3)",
   " (in 'bycatch', line 2, column 2 to column 21)",
   " (in 'bycatch', line 3, column 9 to column 14)",
   " (in 'bycatch', line 3, column 2 to column 23)",
@@ -571,9 +775,9 @@ static constexpr std::array<const char*, 546> locations_array__ =
   " (in 'bycatch', line 87, column 9 to column 28)",
   " (in 'bycatch', line 89, column 9 to column 14)",
   " (in 'bycatch', line 90, column 9 to column 14)",
-  " (in 'bycatch', line 503, column 9 to column 15)",
-  " (in 'bycatch', line 504, column 23 to column 41)",
-  " (in 'bycatch', line 505, column 9 to column 31)"};
+  " (in 'bycatch', line 576, column 9 to column 60)",
+  " (in 'bycatch', line 577, column 23 to column 41)",
+  " (in 'bycatch', line 578, column 9 to column 31)"};
 #include <stan_meta_header.hpp>
 class model_bycatch final : public model_base_crtp<model_bycatch> {
 private:
@@ -612,6 +816,7 @@ private:
   int is_discrete;
   int est_time_dev_1dim__;
   int time_dev_1dim__;
+  int log_lik_1dim__;
   int y_new_1dim__;
   int y_new_real_1dim__;
   Eigen::Map<Eigen::Matrix<double,-1,1>> effort{nullptr, 0};
@@ -646,17 +851,17 @@ public:
     try {
       int pos__ = std::numeric_limits<int>::min();
       pos__ = 1;
-      current_statement__ = 443;
+      current_statement__ = 647;
       context__.validate_dims("data initialization", "n_row", "int",
         std::vector<size_t>{});
       n_row = std::numeric_limits<int>::min();
-      current_statement__ = 443;
+      current_statement__ = 647;
       n_row = context__.vals_i("n_row")[(1 - 1)];
-      current_statement__ = 443;
+      current_statement__ = 647;
       stan::math::check_greater_or_equal(function__, "n_row", n_row, 0);
-      current_statement__ = 444;
+      current_statement__ = 648;
       stan::math::validate_non_negative_index("effort", "n_row", n_row);
-      current_statement__ = 445;
+      current_statement__ = 649;
       context__.validate_dims("data initialization", "effort", "double",
         std::vector<size_t>{static_cast<size_t>(n_row)});
       effort_data__ = Eigen::Matrix<double,-1,1>::Constant(n_row,
@@ -665,22 +870,22 @@ public:
         Eigen::Map<Eigen::Matrix<double,-1,1>>(effort_data__.data(), n_row);
       {
         std::vector<local_scalar_t__> effort_flat__;
-        current_statement__ = 445;
+        current_statement__ = 649;
         effort_flat__ = context__.vals_r("effort");
-        current_statement__ = 445;
+        current_statement__ = 649;
         pos__ = 1;
-        current_statement__ = 445;
+        current_statement__ = 649;
         for (int sym1__ = 1; sym1__ <= n_row; ++sym1__) {
-          current_statement__ = 445;
+          current_statement__ = 649;
           stan::model::assign(effort, effort_flat__[(pos__ - 1)],
             "assigning variable effort", stan::model::index_uni(sym1__));
-          current_statement__ = 445;
+          current_statement__ = 649;
           pos__ = (pos__ + 1);
         }
       }
-      current_statement__ = 446;
+      current_statement__ = 650;
       stan::math::validate_non_negative_index("new_effort", "n_row", n_row);
-      current_statement__ = 447;
+      current_statement__ = 651;
       context__.validate_dims("data initialization", "new_effort", "double",
         std::vector<size_t>{static_cast<size_t>(n_row)});
       new_effort_data__ = Eigen::Matrix<double,-1,1>::Constant(n_row,
@@ -690,30 +895,30 @@ public:
         n_row);
       {
         std::vector<local_scalar_t__> new_effort_flat__;
-        current_statement__ = 447;
+        current_statement__ = 651;
         new_effort_flat__ = context__.vals_r("new_effort");
-        current_statement__ = 447;
+        current_statement__ = 651;
         pos__ = 1;
-        current_statement__ = 447;
+        current_statement__ = 651;
         for (int sym1__ = 1; sym1__ <= n_row; ++sym1__) {
-          current_statement__ = 447;
+          current_statement__ = 651;
           stan::model::assign(new_effort, new_effort_flat__[(pos__ - 1)],
             "assigning variable new_effort", stan::model::index_uni(sym1__));
-          current_statement__ = 447;
+          current_statement__ = 651;
           pos__ = (pos__ + 1);
         }
       }
-      current_statement__ = 448;
+      current_statement__ = 652;
       stan::math::validate_non_negative_index("yint", "n_row", n_row);
-      current_statement__ = 449;
+      current_statement__ = 653;
       context__.validate_dims("data initialization", "yint", "int",
         std::vector<size_t>{static_cast<size_t>(n_row)});
       yint = std::vector<int>(n_row, std::numeric_limits<int>::min());
-      current_statement__ = 449;
+      current_statement__ = 653;
       yint = context__.vals_i("yint");
-      current_statement__ = 450;
+      current_statement__ = 654;
       stan::math::validate_non_negative_index("yreal", "n_row", n_row);
-      current_statement__ = 451;
+      current_statement__ = 655;
       context__.validate_dims("data initialization", "yreal", "double",
         std::vector<size_t>{static_cast<size_t>(n_row)});
       yreal_data__ = Eigen::Matrix<double,-1,1>::Constant(n_row,
@@ -722,48 +927,48 @@ public:
         Eigen::Map<Eigen::Matrix<double,-1,1>>(yreal_data__.data(), n_row);
       {
         std::vector<local_scalar_t__> yreal_flat__;
-        current_statement__ = 451;
+        current_statement__ = 655;
         yreal_flat__ = context__.vals_r("yreal");
-        current_statement__ = 451;
+        current_statement__ = 655;
         pos__ = 1;
-        current_statement__ = 451;
+        current_statement__ = 655;
         for (int sym1__ = 1; sym1__ <= n_row; ++sym1__) {
-          current_statement__ = 451;
+          current_statement__ = 655;
           stan::model::assign(yreal, yreal_flat__[(pos__ - 1)],
             "assigning variable yreal", stan::model::index_uni(sym1__));
-          current_statement__ = 451;
+          current_statement__ = 655;
           pos__ = (pos__ + 1);
         }
       }
-      current_statement__ = 452;
+      current_statement__ = 656;
       stan::math::validate_non_negative_index("time", "n_row", n_row);
-      current_statement__ = 453;
+      current_statement__ = 657;
       context__.validate_dims("data initialization", "time", "int",
         std::vector<size_t>{static_cast<size_t>(n_row)});
       time = std::vector<int>(n_row, std::numeric_limits<int>::min());
-      current_statement__ = 453;
+      current_statement__ = 657;
       time = context__.vals_i("time");
-      current_statement__ = 454;
+      current_statement__ = 658;
       context__.validate_dims("data initialization", "n_year", "int",
         std::vector<size_t>{});
       n_year = std::numeric_limits<int>::min();
-      current_statement__ = 454;
+      current_statement__ = 658;
       n_year = context__.vals_i("n_year")[(1 - 1)];
-      current_statement__ = 454;
+      current_statement__ = 658;
       stan::math::check_greater_or_equal(function__, "n_year", n_year, 0);
-      current_statement__ = 455;
+      current_statement__ = 659;
       context__.validate_dims("data initialization", "K", "int",
         std::vector<size_t>{});
       K = std::numeric_limits<int>::min();
-      current_statement__ = 455;
+      current_statement__ = 659;
       K = context__.vals_i("K")[(1 - 1)];
-      current_statement__ = 455;
+      current_statement__ = 659;
       stan::math::check_greater_or_equal(function__, "K", K, 0);
-      current_statement__ = 456;
+      current_statement__ = 660;
       stan::math::validate_non_negative_index("x", "n_year", n_year);
-      current_statement__ = 457;
+      current_statement__ = 661;
       stan::math::validate_non_negative_index("x", "K", K);
-      current_statement__ = 458;
+      current_statement__ = 662;
       context__.validate_dims("data initialization", "x", "double",
         std::vector<size_t>{static_cast<size_t>(n_year),
           static_cast<size_t>(K)});
@@ -773,98 +978,98 @@ public:
         n_year, K);
       {
         std::vector<local_scalar_t__> x_flat__;
-        current_statement__ = 458;
+        current_statement__ = 662;
         x_flat__ = context__.vals_r("x");
-        current_statement__ = 458;
+        current_statement__ = 662;
         pos__ = 1;
-        current_statement__ = 458;
+        current_statement__ = 662;
         for (int sym1__ = 1; sym1__ <= K; ++sym1__) {
-          current_statement__ = 458;
+          current_statement__ = 662;
           for (int sym2__ = 1; sym2__ <= n_year; ++sym2__) {
-            current_statement__ = 458;
+            current_statement__ = 662;
             stan::model::assign(x, x_flat__[(pos__ - 1)],
               "assigning variable x", stan::model::index_uni(sym2__),
               stan::model::index_uni(sym1__));
-            current_statement__ = 458;
+            current_statement__ = 662;
             pos__ = (pos__ + 1);
           }
         }
       }
-      current_statement__ = 459;
+      current_statement__ = 663;
       context__.validate_dims("data initialization", "family", "int",
         std::vector<size_t>{});
       family = std::numeric_limits<int>::min();
-      current_statement__ = 459;
+      current_statement__ = 663;
       family = context__.vals_i("family")[(1 - 1)];
-      current_statement__ = 460;
+      current_statement__ = 664;
       context__.validate_dims("data initialization", "time_varying", "int",
         std::vector<size_t>{});
       time_varying = std::numeric_limits<int>::min();
-      current_statement__ = 460;
+      current_statement__ = 664;
       time_varying = context__.vals_i("time_varying")[(1 - 1)];
-      current_statement__ = 461;
+      current_statement__ = 665;
       context__.validate_dims("data initialization", "multi_stream", "int",
         std::vector<size_t>{});
       multi_stream = std::numeric_limits<int>::min();
-      current_statement__ = 461;
+      current_statement__ = 665;
       multi_stream = context__.vals_i("multi_stream")[(1 - 1)];
-      current_statement__ = 461;
+      current_statement__ = 665;
       stan::math::check_greater_or_equal(function__, "multi_stream",
         multi_stream, 0);
-      current_statement__ = 461;
+      current_statement__ = 665;
       stan::math::check_less_or_equal(function__, "multi_stream",
         multi_stream, 1);
-      current_statement__ = 462;
+      current_statement__ = 666;
       context__.validate_dims("data initialization", "n_obs", "int",
         std::vector<size_t>{});
       n_obs = std::numeric_limits<int>::min();
-      current_statement__ = 462;
+      current_statement__ = 666;
       n_obs = context__.vals_i("n_obs")[(1 - 1)];
-      current_statement__ = 462;
+      current_statement__ = 666;
       stan::math::check_greater_or_equal(function__, "n_obs", n_obs, 0);
-      current_statement__ = 463;
+      current_statement__ = 667;
       context__.validate_dims("data initialization", "n_em", "int",
         std::vector<size_t>{});
       n_em = std::numeric_limits<int>::min();
-      current_statement__ = 463;
+      current_statement__ = 667;
       n_em = context__.vals_i("n_em")[(1 - 1)];
-      current_statement__ = 463;
+      current_statement__ = 667;
       stan::math::check_greater_or_equal(function__, "n_em", n_em, 0);
-      current_statement__ = 464;
+      current_statement__ = 668;
       context__.validate_dims("data initialization", "n_both", "int",
         std::vector<size_t>{});
       n_both = std::numeric_limits<int>::min();
-      current_statement__ = 464;
+      current_statement__ = 668;
       n_both = context__.vals_i("n_both")[(1 - 1)];
-      current_statement__ = 464;
+      current_statement__ = 668;
       stan::math::check_greater_or_equal(function__, "n_both", n_both, 0);
-      current_statement__ = 465;
+      current_statement__ = 669;
       stan::math::validate_non_negative_index("yint_obs", "n_obs", n_obs);
-      current_statement__ = 466;
+      current_statement__ = 670;
       context__.validate_dims("data initialization", "yint_obs", "int",
         std::vector<size_t>{static_cast<size_t>(n_obs)});
       yint_obs = std::vector<int>(n_obs, std::numeric_limits<int>::min());
-      current_statement__ = 466;
+      current_statement__ = 670;
       yint_obs = context__.vals_i("yint_obs");
-      current_statement__ = 467;
+      current_statement__ = 671;
       stan::math::validate_non_negative_index("yint_em", "n_em", n_em);
-      current_statement__ = 468;
+      current_statement__ = 672;
       context__.validate_dims("data initialization", "yint_em", "int",
         std::vector<size_t>{static_cast<size_t>(n_em)});
       yint_em = std::vector<int>(n_em, std::numeric_limits<int>::min());
-      current_statement__ = 468;
+      current_statement__ = 672;
       yint_em = context__.vals_i("yint_em");
-      current_statement__ = 469;
+      current_statement__ = 673;
       stan::math::validate_non_negative_index("yint_both", "n_both", n_both);
-      current_statement__ = 470;
+      current_statement__ = 674;
       context__.validate_dims("data initialization", "yint_both", "int",
         std::vector<size_t>{static_cast<size_t>(n_both)});
       yint_both = std::vector<int>(n_both, std::numeric_limits<int>::min());
-      current_statement__ = 470;
+      current_statement__ = 674;
       yint_both = context__.vals_i("yint_both");
-      current_statement__ = 471;
+      current_statement__ = 675;
       stan::math::validate_non_negative_index("effort_obs", "n_obs", n_obs);
-      current_statement__ = 472;
+      current_statement__ = 676;
       context__.validate_dims("data initialization", "effort_obs", "double",
         std::vector<size_t>{static_cast<size_t>(n_obs)});
       effort_obs_data__ = Eigen::Matrix<double,-1,1>::Constant(n_obs,
@@ -874,22 +1079,22 @@ public:
         n_obs);
       {
         std::vector<local_scalar_t__> effort_obs_flat__;
-        current_statement__ = 472;
+        current_statement__ = 676;
         effort_obs_flat__ = context__.vals_r("effort_obs");
-        current_statement__ = 472;
+        current_statement__ = 676;
         pos__ = 1;
-        current_statement__ = 472;
+        current_statement__ = 676;
         for (int sym1__ = 1; sym1__ <= n_obs; ++sym1__) {
-          current_statement__ = 472;
+          current_statement__ = 676;
           stan::model::assign(effort_obs, effort_obs_flat__[(pos__ - 1)],
             "assigning variable effort_obs", stan::model::index_uni(sym1__));
-          current_statement__ = 472;
+          current_statement__ = 676;
           pos__ = (pos__ + 1);
         }
       }
-      current_statement__ = 473;
+      current_statement__ = 677;
       stan::math::validate_non_negative_index("effort_em", "n_em", n_em);
-      current_statement__ = 474;
+      current_statement__ = 678;
       context__.validate_dims("data initialization", "effort_em", "double",
         std::vector<size_t>{static_cast<size_t>(n_em)});
       effort_em_data__ = Eigen::Matrix<double,-1,1>::Constant(n_em,
@@ -898,22 +1103,22 @@ public:
         Eigen::Map<Eigen::Matrix<double,-1,1>>(effort_em_data__.data(), n_em);
       {
         std::vector<local_scalar_t__> effort_em_flat__;
-        current_statement__ = 474;
+        current_statement__ = 678;
         effort_em_flat__ = context__.vals_r("effort_em");
-        current_statement__ = 474;
+        current_statement__ = 678;
         pos__ = 1;
-        current_statement__ = 474;
+        current_statement__ = 678;
         for (int sym1__ = 1; sym1__ <= n_em; ++sym1__) {
-          current_statement__ = 474;
+          current_statement__ = 678;
           stan::model::assign(effort_em, effort_em_flat__[(pos__ - 1)],
             "assigning variable effort_em", stan::model::index_uni(sym1__));
-          current_statement__ = 474;
+          current_statement__ = 678;
           pos__ = (pos__ + 1);
         }
       }
-      current_statement__ = 475;
+      current_statement__ = 679;
       stan::math::validate_non_negative_index("effort_both", "n_both", n_both);
-      current_statement__ = 476;
+      current_statement__ = 680;
       context__.validate_dims("data initialization", "effort_both", "double",
         std::vector<size_t>{static_cast<size_t>(n_both)});
       effort_both_data__ = Eigen::Matrix<double,-1,1>::Constant(n_both,
@@ -923,22 +1128,22 @@ public:
         n_both);
       {
         std::vector<local_scalar_t__> effort_both_flat__;
-        current_statement__ = 476;
+        current_statement__ = 680;
         effort_both_flat__ = context__.vals_r("effort_both");
-        current_statement__ = 476;
+        current_statement__ = 680;
         pos__ = 1;
-        current_statement__ = 476;
+        current_statement__ = 680;
         for (int sym1__ = 1; sym1__ <= n_both; ++sym1__) {
-          current_statement__ = 476;
+          current_statement__ = 680;
           stan::model::assign(effort_both, effort_both_flat__[(pos__ - 1)],
             "assigning variable effort_both", stan::model::index_uni(sym1__));
-          current_statement__ = 476;
+          current_statement__ = 680;
           pos__ = (pos__ + 1);
         }
       }
-      current_statement__ = 477;
+      current_statement__ = 681;
       stan::math::validate_non_negative_index("yreal_obs", "n_obs", n_obs);
-      current_statement__ = 478;
+      current_statement__ = 682;
       context__.validate_dims("data initialization", "yreal_obs", "double",
         std::vector<size_t>{static_cast<size_t>(n_obs)});
       yreal_obs_data__ = Eigen::Matrix<double,-1,1>::Constant(n_obs,
@@ -948,22 +1153,22 @@ public:
         n_obs);
       {
         std::vector<local_scalar_t__> yreal_obs_flat__;
-        current_statement__ = 478;
+        current_statement__ = 682;
         yreal_obs_flat__ = context__.vals_r("yreal_obs");
-        current_statement__ = 478;
+        current_statement__ = 682;
         pos__ = 1;
-        current_statement__ = 478;
+        current_statement__ = 682;
         for (int sym1__ = 1; sym1__ <= n_obs; ++sym1__) {
-          current_statement__ = 478;
+          current_statement__ = 682;
           stan::model::assign(yreal_obs, yreal_obs_flat__[(pos__ - 1)],
             "assigning variable yreal_obs", stan::model::index_uni(sym1__));
-          current_statement__ = 478;
+          current_statement__ = 682;
           pos__ = (pos__ + 1);
         }
       }
-      current_statement__ = 479;
+      current_statement__ = 683;
       stan::math::validate_non_negative_index("yreal_em", "n_em", n_em);
-      current_statement__ = 480;
+      current_statement__ = 684;
       context__.validate_dims("data initialization", "yreal_em", "double",
         std::vector<size_t>{static_cast<size_t>(n_em)});
       yreal_em_data__ = Eigen::Matrix<double,-1,1>::Constant(n_em,
@@ -972,22 +1177,22 @@ public:
         Eigen::Map<Eigen::Matrix<double,-1,1>>(yreal_em_data__.data(), n_em);
       {
         std::vector<local_scalar_t__> yreal_em_flat__;
-        current_statement__ = 480;
+        current_statement__ = 684;
         yreal_em_flat__ = context__.vals_r("yreal_em");
-        current_statement__ = 480;
+        current_statement__ = 684;
         pos__ = 1;
-        current_statement__ = 480;
+        current_statement__ = 684;
         for (int sym1__ = 1; sym1__ <= n_em; ++sym1__) {
-          current_statement__ = 480;
+          current_statement__ = 684;
           stan::model::assign(yreal_em, yreal_em_flat__[(pos__ - 1)],
             "assigning variable yreal_em", stan::model::index_uni(sym1__));
-          current_statement__ = 480;
+          current_statement__ = 684;
           pos__ = (pos__ + 1);
         }
       }
-      current_statement__ = 481;
+      current_statement__ = 685;
       stan::math::validate_non_negative_index("yreal_both", "n_both", n_both);
-      current_statement__ = 482;
+      current_statement__ = 686;
       context__.validate_dims("data initialization", "yreal_both", "double",
         std::vector<size_t>{static_cast<size_t>(n_both)});
       yreal_both_data__ = Eigen::Matrix<double,-1,1>::Constant(n_both,
@@ -997,49 +1202,49 @@ public:
         n_both);
       {
         std::vector<local_scalar_t__> yreal_both_flat__;
-        current_statement__ = 482;
+        current_statement__ = 686;
         yreal_both_flat__ = context__.vals_r("yreal_both");
-        current_statement__ = 482;
+        current_statement__ = 686;
         pos__ = 1;
-        current_statement__ = 482;
+        current_statement__ = 686;
         for (int sym1__ = 1; sym1__ <= n_both; ++sym1__) {
-          current_statement__ = 482;
+          current_statement__ = 686;
           stan::model::assign(yreal_both, yreal_both_flat__[(pos__ - 1)],
             "assigning variable yreal_both", stan::model::index_uni(sym1__));
-          current_statement__ = 482;
+          current_statement__ = 686;
           pos__ = (pos__ + 1);
         }
       }
-      current_statement__ = 483;
+      current_statement__ = 687;
       stan::math::validate_non_negative_index("time_idx_obs", "n_obs", n_obs);
-      current_statement__ = 484;
+      current_statement__ = 688;
       context__.validate_dims("data initialization", "time_idx_obs", "int",
         std::vector<size_t>{static_cast<size_t>(n_obs)});
       time_idx_obs = std::vector<int>(n_obs, std::numeric_limits<int>::min());
-      current_statement__ = 484;
+      current_statement__ = 688;
       time_idx_obs = context__.vals_i("time_idx_obs");
-      current_statement__ = 485;
+      current_statement__ = 689;
       stan::math::validate_non_negative_index("time_idx_em", "n_em", n_em);
-      current_statement__ = 486;
+      current_statement__ = 690;
       context__.validate_dims("data initialization", "time_idx_em", "int",
         std::vector<size_t>{static_cast<size_t>(n_em)});
       time_idx_em = std::vector<int>(n_em, std::numeric_limits<int>::min());
-      current_statement__ = 486;
+      current_statement__ = 690;
       time_idx_em = context__.vals_i("time_idx_em");
-      current_statement__ = 487;
+      current_statement__ = 691;
       stan::math::validate_non_negative_index("time_idx_both", "n_both",
         n_both);
-      current_statement__ = 488;
+      current_statement__ = 692;
       context__.validate_dims("data initialization", "time_idx_both", "int",
         std::vector<size_t>{static_cast<size_t>(n_both)});
       time_idx_both = std::vector<int>(n_both,
                         std::numeric_limits<int>::min());
-      current_statement__ = 488;
+      current_statement__ = 692;
       time_idx_both = context__.vals_i("time_idx_both");
-      current_statement__ = 489;
+      current_statement__ = 693;
       stan::math::validate_non_negative_index("new_effort_by_year", "n_year",
         n_year);
-      current_statement__ = 490;
+      current_statement__ = 694;
       context__.validate_dims("data initialization", "new_effort_by_year",
         "double", std::vector<size_t>{static_cast<size_t>(n_year)});
       new_effort_by_year_data__ = Eigen::Matrix<double,-1,1>::Constant(n_year,
@@ -1049,154 +1254,160 @@ public:
         n_year);
       {
         std::vector<local_scalar_t__> new_effort_by_year_flat__;
-        current_statement__ = 490;
+        current_statement__ = 694;
         new_effort_by_year_flat__ = context__.vals_r("new_effort_by_year");
-        current_statement__ = 490;
+        current_statement__ = 694;
         pos__ = 1;
-        current_statement__ = 490;
+        current_statement__ = 694;
         for (int sym1__ = 1; sym1__ <= n_year; ++sym1__) {
-          current_statement__ = 490;
+          current_statement__ = 694;
           stan::model::assign(new_effort_by_year,
             new_effort_by_year_flat__[(pos__ - 1)],
             "assigning variable new_effort_by_year",
             stan::model::index_uni(sym1__));
-          current_statement__ = 490;
+          current_statement__ = 694;
           pos__ = (pos__ + 1);
         }
       }
-      current_statement__ = 491;
+      current_statement__ = 695;
       est_phi = std::numeric_limits<int>::min();
-      current_statement__ = 492;
+      current_statement__ = 696;
       est_theta = std::numeric_limits<int>::min();
-      current_statement__ = 493;
+      current_statement__ = 697;
       est_sigma = std::numeric_limits<int>::min();
-      current_statement__ = 494;
+      current_statement__ = 698;
       est_cv = std::numeric_limits<int>::min();
-      current_statement__ = 495;
+      current_statement__ = 699;
       is_discrete = std::numeric_limits<int>::min();
-      current_statement__ = 496;
+      current_statement__ = 700;
       est_phi = 0;
-      current_statement__ = 497;
+      current_statement__ = 701;
       est_theta = 0;
-      current_statement__ = 498;
+      current_statement__ = 702;
       est_sigma = 0;
-      current_statement__ = 499;
+      current_statement__ = 703;
       est_cv = 0;
-      current_statement__ = 500;
+      current_statement__ = 704;
       is_discrete = 0;
-      current_statement__ = 502;
+      current_statement__ = 706;
       if (stan::math::logical_eq(family, 2)) {
-        current_statement__ = 501;
+        current_statement__ = 705;
         est_phi = 1;
       }
-      current_statement__ = 504;
+      current_statement__ = 708;
       if (stan::math::logical_eq(family, 3)) {
-        current_statement__ = 503;
+        current_statement__ = 707;
         est_theta = 1;
       }
-      current_statement__ = 508;
+      current_statement__ = 712;
       if (stan::math::logical_eq(family, 4)) {
-        current_statement__ = 505;
+        current_statement__ = 709;
         est_phi = 1;
-        current_statement__ = 506;
+        current_statement__ = 710;
         est_theta = 1;
       }
-      current_statement__ = 510;
+      current_statement__ = 714;
       if (stan::math::logical_lt(family, 5)) {
-        current_statement__ = 509;
+        current_statement__ = 713;
         is_discrete = 1;
       }
-      current_statement__ = 512;
+      current_statement__ = 716;
       if (stan::math::logical_eq(family, 5)) {
-        current_statement__ = 511;
+        current_statement__ = 715;
         est_sigma = 1;
       }
-      current_statement__ = 516;
+      current_statement__ = 720;
       if (stan::math::logical_eq(family, 7)) {
-        current_statement__ = 513;
+        current_statement__ = 717;
         est_sigma = 1;
-        current_statement__ = 514;
+        current_statement__ = 718;
         est_theta = 1;
       }
-      current_statement__ = 518;
+      current_statement__ = 722;
       if (stan::math::logical_eq(family, 6)) {
-        current_statement__ = 517;
+        current_statement__ = 721;
         est_cv = 1;
       }
-      current_statement__ = 522;
+      current_statement__ = 726;
       if (stan::math::logical_eq(family, 8)) {
-        current_statement__ = 519;
+        current_statement__ = 723;
         est_cv = 1;
-        current_statement__ = 520;
+        current_statement__ = 724;
         est_theta = 1;
       }
-      current_statement__ = 524;
+      current_statement__ = 728;
       if (stan::math::logical_eq(family, 9)) {
-        current_statement__ = 523;
+        current_statement__ = 727;
         est_sigma = 1;
       }
-      current_statement__ = 528;
+      current_statement__ = 732;
       if (stan::math::logical_eq(family, 10)) {
-        current_statement__ = 525;
+        current_statement__ = 729;
         est_sigma = 1;
-        current_statement__ = 526;
+        current_statement__ = 730;
         est_theta = 1;
       }
-      current_statement__ = 529;
+      current_statement__ = 733;
       stan::math::validate_non_negative_index("beta", "K", K);
-      current_statement__ = 530;
+      current_statement__ = 734;
       est_time_dev_1dim__ = std::numeric_limits<int>::min();
-      current_statement__ = 530;
+      current_statement__ = 734;
       est_time_dev_1dim__ = (time_varying * (n_year - 1));
-      current_statement__ = 530;
+      current_statement__ = 734;
       stan::math::validate_non_negative_index("est_time_dev",
         "time_varying * (n_year - 1)", est_time_dev_1dim__);
-      current_statement__ = 531;
+      current_statement__ = 735;
       stan::math::validate_non_negative_index("sigma_rw", "time_varying",
         time_varying);
-      current_statement__ = 532;
+      current_statement__ = 736;
       stan::math::validate_non_negative_index("sigma_logn", "est_sigma",
         est_sigma);
-      current_statement__ = 533;
+      current_statement__ = 737;
       stan::math::validate_non_negative_index("cv_gamma", "est_cv", est_cv);
-      current_statement__ = 534;
+      current_statement__ = 738;
       stan::math::validate_non_negative_index("nb2_phi", "est_phi", est_phi);
-      current_statement__ = 535;
+      current_statement__ = 739;
       stan::math::validate_non_negative_index("theta", "est_theta", est_theta);
-      current_statement__ = 536;
+      current_statement__ = 740;
       stan::math::validate_non_negative_index("log_lambda_base", "n_year",
         n_year);
-      current_statement__ = 537;
+      current_statement__ = 741;
       stan::math::validate_non_negative_index("lambda_base", "n_year", n_year);
-      current_statement__ = 538;
+      current_statement__ = 742;
       stan::math::validate_non_negative_index("pred", "n_year", n_year);
-      current_statement__ = 539;
+      current_statement__ = 743;
       stan::math::validate_non_negative_index("gammaA", "est_cv", est_cv);
-      current_statement__ = 540;
+      current_statement__ = 744;
       time_dev_1dim__ = std::numeric_limits<int>::min();
-      current_statement__ = 540;
+      current_statement__ = 744;
       time_dev_1dim__ = (time_varying * n_year);
-      current_statement__ = 540;
+      current_statement__ = 744;
       stan::math::validate_non_negative_index("time_dev",
         "time_varying * n_year", time_dev_1dim__);
-      current_statement__ = 541;
+      current_statement__ = 745;
       stan::math::validate_non_negative_index("log_lambda", "n_row", n_row);
-      current_statement__ = 542;
+      current_statement__ = 746;
       stan::math::validate_non_negative_index("lambda", "n_row", n_row);
-      current_statement__ = 543;
-      stan::math::validate_non_negative_index("log_lik", "n_year", n_year);
-      current_statement__ = 544;
+      current_statement__ = 747;
+      log_lik_1dim__ = std::numeric_limits<int>::min();
+      current_statement__ = 747;
+      log_lik_1dim__ = (stan::math::logical_eq(multi_stream, 0) ? n_row : ((n_obs
+        + n_em) + n_both));
+      current_statement__ = 747;
+      stan::math::validate_non_negative_index("log_lik",
+        "multi_stream == 0 ? n_row : (n_obs + n_em + n_both)", log_lik_1dim__);
+      current_statement__ = 748;
       y_new_1dim__ = std::numeric_limits<int>::min();
-      current_statement__ = 544;
+      current_statement__ = 748;
       y_new_1dim__ = (n_year * is_discrete);
-      current_statement__ = 544;
+      current_statement__ = 748;
       stan::math::validate_non_negative_index("y_new",
         "n_year * is_discrete", y_new_1dim__);
-      current_statement__ = 545;
+      current_statement__ = 749;
       y_new_real_1dim__ = std::numeric_limits<int>::min();
-      current_statement__ = 545;
+      current_statement__ = 749;
       y_new_real_1dim__ = (n_year * (1 - is_discrete));
-      current_statement__ = 545;
+      current_statement__ = 749;
       stan::math::validate_non_negative_index("y_new_real",
         "n_year * (1 - is_discrete)", y_new_real_1dim__);
     } catch (const std::exception& e) {
@@ -1359,20 +1570,20 @@ public:
       current_statement__ = 11;
       stan::math::check_greater_or_equal(function__, "gammaA", gammaA, 0);
       {
-        current_statement__ = 85;
+        current_statement__ = 217;
         lp_accum__.add(stan::math::student_t_lpdf<propto__>(beta, 3, 0, 2));
-        current_statement__ = 92;
+        current_statement__ = 224;
         if (stan::math::logical_eq(time_varying, 1)) {
-          current_statement__ = 86;
+          current_statement__ = 218;
           lp_accum__.add(stan::math::student_t_lpdf<propto__>(sigma_rw, 3, 0,
                            1));
-          current_statement__ = 87;
+          current_statement__ = 219;
           lp_accum__.add(stan::math::student_t_lpdf<propto__>(
                            stan::model::rvalue(est_time_dev, "est_time_dev",
                              stan::model::index_uni(1)), 3, 0, 2));
-          current_statement__ = 90;
+          current_statement__ = 222;
           for (int i = 2; i <= (n_year - 1); ++i) {
-            current_statement__ = 88;
+            current_statement__ = 220;
             lp_accum__.add(stan::math::normal_lpdf<propto__>(
                              stan::model::rvalue(est_time_dev,
                                "est_time_dev", stan::model::index_uni(i)),
@@ -1383,59 +1594,59 @@ public:
                                stan::model::index_uni(1))));
           }
         }
-        current_statement__ = 95;
+        current_statement__ = 227;
         if (stan::math::logical_eq(est_theta, 1)) {
-          current_statement__ = 93;
+          current_statement__ = 225;
           lp_accum__.add(stan::math::beta_lpdf<propto__>(theta, 1, 1));
         }
-        current_statement__ = 442;
+        current_statement__ = 646;
         if (stan::math::logical_eq(multi_stream, 0)) {
-          current_statement__ = 440;
+          current_statement__ = 644;
           if (stan::math::logical_eq(family, 1)) {
-            current_statement__ = 438;
+            current_statement__ = 642;
             lp_accum__.add(stan::math::poisson_log_lpmf<propto__>(yint,
                              log_lambda));
           } else {
-            current_statement__ = 437;
+            current_statement__ = 641;
             if (stan::math::logical_eq(family, 2)) {
-              current_statement__ = 434;
+              current_statement__ = 638;
               lp_accum__.add(stan::math::student_t_lpdf<propto__>(nb2_phi, 3,
                                0, 2));
-              current_statement__ = 435;
+              current_statement__ = 639;
               lp_accum__.add(stan::math::neg_binomial_2_log_lpmf<propto__>(
                                yint, log_lambda,
                                stan::model::rvalue(nb2_phi, "nb2_phi",
                                  stan::model::index_uni(1))));
             } else {
-              current_statement__ = 433;
+              current_statement__ = 637;
               if (stan::math::logical_eq(family, 3)) {
-                current_statement__ = 431;
+                current_statement__ = 635;
                 for (int i = 1; i <= n_row; ++i) {
-                  current_statement__ = 429;
+                  current_statement__ = 633;
                   if (stan::math::logical_eq(
                         stan::model::rvalue(yint, "yint",
                           stan::model::index_uni(i)), 0)) {
-                    current_statement__ = 428;
+                    current_statement__ = 632;
                     lp_accum__.add(stan::math::bernoulli_lpmf<propto__>(1,
                                      theta));
                   } else {
-                    current_statement__ = 424;
+                    current_statement__ = 628;
                     lp_accum__.add(stan::math::bernoulli_lpmf<propto__>(0,
                                      theta));
-                    current_statement__ = 425;
+                    current_statement__ = 629;
                     lp_accum__.add(stan::math::poisson_lpmf<propto__>(
                                      stan::model::rvalue(yint, "yint",
                                        stan::model::index_uni(i)),
                                      stan::model::rvalue(lambda, "lambda",
                                        stan::model::index_uni(i))));
-                    current_statement__ = 426;
+                    current_statement__ = 630;
                     if (stan::math::logical_lt(
                           stan::model::rvalue(yint, "yint",
                             stan::model::index_uni(i)), 1)) {
-                      current_statement__ = 426;
+                      current_statement__ = 630;
                       lp_accum__.add(stan::math::negative_infinity());
                     } else {
-                      current_statement__ = 426;
+                      current_statement__ = 630;
                       lp_accum__.add(-stan::math::poisson_lccdf((1 - 1),
                                         stan::model::rvalue(lambda, "lambda",
                                           stan::model::index_uni(i))));
@@ -1443,25 +1654,25 @@ public:
                   }
                 }
               } else {
-                current_statement__ = 423;
+                current_statement__ = 627;
                 if (stan::math::logical_eq(family, 4)) {
-                  current_statement__ = 413;
+                  current_statement__ = 617;
                   lp_accum__.add(stan::math::student_t_lpdf<propto__>(
                                    nb2_phi, 3, 0, 2));
-                  current_statement__ = 421;
+                  current_statement__ = 625;
                   for (int i = 1; i <= n_row; ++i) {
-                    current_statement__ = 419;
+                    current_statement__ = 623;
                     if (stan::math::logical_eq(
                           stan::model::rvalue(yint, "yint",
                             stan::model::index_uni(i)), 0)) {
-                      current_statement__ = 418;
+                      current_statement__ = 622;
                       lp_accum__.add(stan::math::bernoulli_lpmf<propto__>(1,
                                        theta));
                     } else {
-                      current_statement__ = 414;
+                      current_statement__ = 618;
                       lp_accum__.add(stan::math::bernoulli_lpmf<propto__>(0,
                                        theta));
-                      current_statement__ = 415;
+                      current_statement__ = 619;
                       lp_accum__.add(stan::math::neg_binomial_2_lpmf<
                                        propto__>(
                                        stan::model::rvalue(yint, "yint",
@@ -1470,14 +1681,14 @@ public:
                                          stan::model::index_uni(i)),
                                        stan::model::rvalue(nb2_phi,
                                          "nb2_phi", stan::model::index_uni(1))));
-                      current_statement__ = 416;
+                      current_statement__ = 620;
                       if (stan::math::logical_lt(
                             stan::model::rvalue(yint, "yint",
                               stan::model::index_uni(i)), 1)) {
-                        current_statement__ = 416;
+                        current_statement__ = 620;
                         lp_accum__.add(stan::math::negative_infinity());
                       } else {
-                        current_statement__ = 416;
+                        current_statement__ = 620;
                         lp_accum__.add(-stan::math::neg_binomial_2_lccdf((1 -
                                           1),
                                           stan::model::rvalue(lambda,
@@ -1490,26 +1701,26 @@ public:
                     }
                   }
                 } else {
-                  current_statement__ = 412;
+                  current_statement__ = 616;
                   if (stan::math::logical_eq(family, 5)) {
-                    current_statement__ = 409;
+                    current_statement__ = 613;
                     lp_accum__.add(stan::math::student_t_lpdf<propto__>(
                                      sigma_logn, 3, 0, 2));
-                    current_statement__ = 410;
+                    current_statement__ = 614;
                     lp_accum__.add(stan::math::lognormal_lpdf<propto__>(
                                      yreal, log_lambda,
                                      stan::model::rvalue(sigma_logn,
                                        "sigma_logn",
                                        stan::model::index_uni(1))));
                   } else {
-                    current_statement__ = 408;
+                    current_statement__ = 612;
                     if (stan::math::logical_eq(family, 6)) {
-                      current_statement__ = 405;
+                      current_statement__ = 609;
                       lp_accum__.add(stan::math::student_t_lpdf<propto__>(
                                        stan::model::rvalue(cv_gamma,
                                          "cv_gamma",
                                          stan::model::index_uni(1)), 3, 0, 2));
-                      current_statement__ = 406;
+                      current_statement__ = 610;
                       lp_accum__.add(stan::math::gamma_lpdf<propto__>(yreal,
                                        stan::model::rvalue(gammaA, "gammaA",
                                          stan::model::index_uni(1)),
@@ -1518,25 +1729,25 @@ public:
                                            "gammaA",
                                            stan::model::index_uni(1)), lambda)));
                     } else {
-                      current_statement__ = 404;
+                      current_statement__ = 608;
                       if (stan::math::logical_eq(family, 7)) {
-                        current_statement__ = 395;
+                        current_statement__ = 599;
                         lp_accum__.add(stan::math::student_t_lpdf<propto__>(
                                          sigma_logn, 3, 0, 2));
-                        current_statement__ = 402;
+                        current_statement__ = 606;
                         for (int i = 1; i <= n_row; ++i) {
-                          current_statement__ = 400;
+                          current_statement__ = 604;
                           if (stan::math::logical_eq(
                                 stan::model::rvalue(yint, "yint",
                                   stan::model::index_uni(i)), 0)) {
-                            current_statement__ = 399;
+                            current_statement__ = 603;
                             lp_accum__.add(stan::math::bernoulli_lpmf<
                                              propto__>(1, theta));
                           } else {
-                            current_statement__ = 396;
+                            current_statement__ = 600;
                             lp_accum__.add(stan::math::bernoulli_lpmf<
                                              propto__>(0, theta));
-                            current_statement__ = 397;
+                            current_statement__ = 601;
                             lp_accum__.add(stan::math::lognormal_lpdf<
                                              propto__>(
                                              stan::model::rvalue(yreal,
@@ -1551,29 +1762,29 @@ public:
                           }
                         }
                       } else {
-                        current_statement__ = 394;
+                        current_statement__ = 598;
                         if (stan::math::logical_eq(family, 8)) {
-                          current_statement__ = 385;
+                          current_statement__ = 589;
                           lp_accum__.add(stan::math::student_t_lpdf<
                                            propto__>(
                                            stan::model::rvalue(cv_gamma,
                                              "cv_gamma",
                                              stan::model::index_uni(1)), 3,
                                            0, 2));
-                          current_statement__ = 392;
+                          current_statement__ = 596;
                           for (int i = 1; i <= n_row; ++i) {
-                            current_statement__ = 390;
+                            current_statement__ = 594;
                             if (stan::math::logical_eq(
                                   stan::model::rvalue(yint, "yint",
                                     stan::model::index_uni(i)), 0)) {
-                              current_statement__ = 389;
+                              current_statement__ = 593;
                               lp_accum__.add(stan::math::bernoulli_lpmf<
                                                propto__>(1, theta));
                             } else {
-                              current_statement__ = 386;
+                              current_statement__ = 590;
                               lp_accum__.add(stan::math::bernoulli_lpmf<
                                                propto__>(0, theta));
-                              current_statement__ = 387;
+                              current_statement__ = 591;
                               lp_accum__.add(stan::math::gamma_lpdf<
                                                propto__>(
                                                stan::model::rvalue(yreal,
@@ -1592,37 +1803,37 @@ public:
                             }
                           }
                         } else {
-                          current_statement__ = 384;
+                          current_statement__ = 588;
                           if (stan::math::logical_eq(family, 9)) {
-                            current_statement__ = 381;
+                            current_statement__ = 585;
                             lp_accum__.add(stan::math::student_t_lpdf<
                                              propto__>(sigma_logn, 3, 0, 2));
-                            current_statement__ = 382;
+                            current_statement__ = 586;
                             lp_accum__.add(stan::math::normal_lpdf<propto__>(
                                              yreal, lambda,
                                              stan::model::rvalue(sigma_logn,
                                                "sigma_logn",
                                                stan::model::index_uni(1))));
                           } else {
-                            current_statement__ = 380;
+                            current_statement__ = 584;
                             if (stan::math::logical_eq(family, 10)) {
-                              current_statement__ = 371;
+                              current_statement__ = 575;
                               lp_accum__.add(stan::math::student_t_lpdf<
                                                propto__>(sigma_logn, 3, 0, 2));
-                              current_statement__ = 378;
+                              current_statement__ = 582;
                               for (int i = 1; i <= n_row; ++i) {
-                                current_statement__ = 376;
+                                current_statement__ = 580;
                                 if (stan::math::logical_eq(
                                       stan::model::rvalue(yint, "yint",
                                         stan::model::index_uni(i)), 0)) {
-                                  current_statement__ = 375;
+                                  current_statement__ = 579;
                                   lp_accum__.add(stan::math::bernoulli_lpmf<
                                                    propto__>(1, theta));
                                 } else {
-                                  current_statement__ = 372;
+                                  current_statement__ = 576;
                                   lp_accum__.add(stan::math::bernoulli_lpmf<
                                                    propto__>(0, theta));
-                                  current_statement__ = 373;
+                                  current_statement__ = 577;
                                   lp_accum__.add(stan::math::normal_lpdf<
                                                    propto__>(
                                                    stan::model::rvalue(yreal,
@@ -1648,82 +1859,18 @@ public:
             }
           }
         } else {
-          current_statement__ = 369;
+          current_statement__ = 573;
           if (stan::math::logical_eq(family, 1)) {
-            current_statement__ = 355;
+            current_statement__ = 555;
             if (stan::math::logical_gt(n_obs, 0)) {
-              current_statement__ = 353;
+              current_statement__ = 553;
               for (int i = 1; i <= n_obs; ++i) {
-                local_scalar_t__ lambda_obs_i = DUMMY_VAR__;
-                current_statement__ = 350;
-                lambda_obs_i = (stan::model::rvalue(lambda_base,
-                                  "lambda_base",
-                                  stan::model::index_uni(
-                                    stan::model::rvalue(time_idx_obs,
-                                      "time_idx_obs",
-                                      stan::model::index_uni(i))))
-                  *
-                  stan::model::rvalue(effort_obs, "effort_obs",
-                    stan::model::index_uni(i)));
-                current_statement__ = 351;
-                lp_accum__.add(stan::math::poisson_lpmf<propto__>(
-                                 stan::model::rvalue(yint_obs, "yint_obs",
-                                   stan::model::index_uni(i)), lambda_obs_i));
-              }
-            }
-            current_statement__ = 361;
-            if (stan::math::logical_gt(n_em, 0)) {
-              current_statement__ = 359;
-              for (int i = 1; i <= n_em; ++i) {
-                local_scalar_t__ lambda_em_i = DUMMY_VAR__;
-                current_statement__ = 356;
-                lambda_em_i = (stan::model::rvalue(lambda_base,
-                                 "lambda_base",
-                                 stan::model::index_uni(
-                                   stan::model::rvalue(time_idx_em,
-                                     "time_idx_em", stan::model::index_uni(i))))
-                  *
-                  stan::model::rvalue(effort_em, "effort_em",
-                    stan::model::index_uni(i)));
-                current_statement__ = 357;
-                lp_accum__.add(stan::math::poisson_lpmf<propto__>(
-                                 stan::model::rvalue(yint_em, "yint_em",
-                                   stan::model::index_uni(i)), lambda_em_i));
-              }
-            }
-            current_statement__ = 367;
-            if (stan::math::logical_gt(n_both, 0)) {
-              current_statement__ = 365;
-              for (int i = 1; i <= n_both; ++i) {
-                local_scalar_t__ lambda_both_i = DUMMY_VAR__;
-                current_statement__ = 362;
-                lambda_both_i = (stan::model::rvalue(lambda_base,
-                                   "lambda_base",
-                                   stan::model::index_uni(
-                                     stan::model::rvalue(time_idx_both,
-                                       "time_idx_both",
-                                       stan::model::index_uni(i))))
-                  *
-                  stan::model::rvalue(effort_both, "effort_both",
-                    stan::model::index_uni(i)));
-                current_statement__ = 363;
-                lp_accum__.add(stan::math::poisson_lpmf<propto__>(
-                                 stan::model::rvalue(yint_both, "yint_both",
-                                   stan::model::index_uni(i)), lambda_both_i));
-              }
-            }
-          } else {
-            current_statement__ = 349;
-            if (stan::math::logical_eq(family, 2)) {
-              current_statement__ = 329;
-              lp_accum__.add(stan::math::student_t_lpdf<propto__>(nb2_phi, 3,
-                               0, 2));
-              current_statement__ = 335;
-              if (stan::math::logical_gt(n_obs, 0)) {
-                current_statement__ = 333;
-                for (int i = 1; i <= n_obs; ++i) {
+                current_statement__ = 551;
+                if (stan::math::logical_gt(
+                      stan::model::rvalue(effort_obs, "effort_obs",
+                        stan::model::index_uni(i)), 0)) {
                   local_scalar_t__ lambda_obs_i = DUMMY_VAR__;
-                  current_statement__ = 330;
+                  current_statement__ = 548;
                   lambda_obs_i = (stan::model::rvalue(lambda_base,
                                     "lambda_base",
                                     stan::model::index_uni(
@@ -1733,21 +1880,23 @@ public:
                     *
                     stan::model::rvalue(effort_obs, "effort_obs",
                       stan::model::index_uni(i)));
-                  current_statement__ = 331;
-                  lp_accum__.add(stan::math::neg_binomial_2_lpmf<propto__>(
+                  current_statement__ = 549;
+                  lp_accum__.add(stan::math::poisson_lpmf<propto__>(
                                    stan::model::rvalue(yint_obs, "yint_obs",
-                                     stan::model::index_uni(i)),
-                                   lambda_obs_i,
-                                   stan::model::rvalue(nb2_phi, "nb2_phi",
-                                     stan::model::index_uni(1))));
+                                     stan::model::index_uni(i)), lambda_obs_i));
                 }
               }
-              current_statement__ = 341;
-              if (stan::math::logical_gt(n_em, 0)) {
-                current_statement__ = 339;
-                for (int i = 1; i <= n_em; ++i) {
+            }
+            current_statement__ = 563;
+            if (stan::math::logical_gt(n_em, 0)) {
+              current_statement__ = 561;
+              for (int i = 1; i <= n_em; ++i) {
+                current_statement__ = 559;
+                if (stan::math::logical_gt(
+                      stan::model::rvalue(effort_em, "effort_em",
+                        stan::model::index_uni(i)), 0)) {
                   local_scalar_t__ lambda_em_i = DUMMY_VAR__;
-                  current_statement__ = 336;
+                  current_statement__ = 556;
                   lambda_em_i = (stan::model::rvalue(lambda_base,
                                    "lambda_base",
                                    stan::model::index_uni(
@@ -1757,20 +1906,23 @@ public:
                     *
                     stan::model::rvalue(effort_em, "effort_em",
                       stan::model::index_uni(i)));
-                  current_statement__ = 337;
-                  lp_accum__.add(stan::math::neg_binomial_2_lpmf<propto__>(
+                  current_statement__ = 557;
+                  lp_accum__.add(stan::math::poisson_lpmf<propto__>(
                                    stan::model::rvalue(yint_em, "yint_em",
-                                     stan::model::index_uni(i)), lambda_em_i,
-                                   stan::model::rvalue(nb2_phi, "nb2_phi",
-                                     stan::model::index_uni(1))));
+                                     stan::model::index_uni(i)), lambda_em_i));
                 }
               }
-              current_statement__ = 347;
-              if (stan::math::logical_gt(n_both, 0)) {
-                current_statement__ = 345;
-                for (int i = 1; i <= n_both; ++i) {
+            }
+            current_statement__ = 571;
+            if (stan::math::logical_gt(n_both, 0)) {
+              current_statement__ = 569;
+              for (int i = 1; i <= n_both; ++i) {
+                current_statement__ = 567;
+                if (stan::math::logical_gt(
+                      stan::model::rvalue(effort_both, "effort_both",
+                        stan::model::index_uni(i)), 0)) {
                   local_scalar_t__ lambda_both_i = DUMMY_VAR__;
-                  current_statement__ = 342;
+                  current_statement__ = 564;
                   lambda_both_i = (stan::model::rvalue(lambda_base,
                                      "lambda_base",
                                      stan::model::index_uni(
@@ -1780,24 +1932,30 @@ public:
                     *
                     stan::model::rvalue(effort_both, "effort_both",
                       stan::model::index_uni(i)));
-                  current_statement__ = 343;
-                  lp_accum__.add(stan::math::neg_binomial_2_lpmf<propto__>(
+                  current_statement__ = 565;
+                  lp_accum__.add(stan::math::poisson_lpmf<propto__>(
                                    stan::model::rvalue(yint_both,
                                      "yint_both", stan::model::index_uni(i)),
-                                   lambda_both_i,
-                                   stan::model::rvalue(nb2_phi, "nb2_phi",
-                                     stan::model::index_uni(1))));
+                                   lambda_both_i));
                 }
               }
-            } else {
-              current_statement__ = 328;
-              if (stan::math::logical_eq(family, 3)) {
-                current_statement__ = 304;
-                if (stan::math::logical_gt(n_obs, 0)) {
-                  current_statement__ = 302;
-                  for (int i = 1; i <= n_obs; ++i) {
+            }
+          } else {
+            current_statement__ = 547;
+            if (stan::math::logical_eq(family, 2)) {
+              current_statement__ = 521;
+              lp_accum__.add(stan::math::student_t_lpdf<propto__>(nb2_phi, 3,
+                               0, 2));
+              current_statement__ = 529;
+              if (stan::math::logical_gt(n_obs, 0)) {
+                current_statement__ = 527;
+                for (int i = 1; i <= n_obs; ++i) {
+                  current_statement__ = 525;
+                  if (stan::math::logical_gt(
+                        stan::model::rvalue(effort_obs, "effort_obs",
+                          stan::model::index_uni(i)), 0)) {
                     local_scalar_t__ lambda_obs_i = DUMMY_VAR__;
-                    current_statement__ = 294;
+                    current_statement__ = 522;
                     lambda_obs_i = (stan::model::rvalue(lambda_base,
                                       "lambda_base",
                                       stan::model::index_uni(
@@ -1807,43 +1965,26 @@ public:
                       *
                       stan::model::rvalue(effort_obs, "effort_obs",
                         stan::model::index_uni(i)));
-                    current_statement__ = 300;
-                    if (stan::math::logical_eq(
-                          stan::model::rvalue(yint_obs, "yint_obs",
-                            stan::model::index_uni(i)), 0)) {
-                      current_statement__ = 299;
-                      lp_accum__.add(stan::math::bernoulli_lpmf<propto__>(1,
-                                       theta));
-                    } else {
-                      current_statement__ = 295;
-                      lp_accum__.add(stan::math::bernoulli_lpmf<propto__>(0,
-                                       theta));
-                      current_statement__ = 296;
-                      lp_accum__.add(stan::math::poisson_lpmf<propto__>(
-                                       stan::model::rvalue(yint_obs,
-                                         "yint_obs",
-                                         stan::model::index_uni(i)),
-                                       lambda_obs_i));
-                      current_statement__ = 297;
-                      if (stan::math::logical_lt(
-                            stan::model::rvalue(yint_obs, "yint_obs",
-                              stan::model::index_uni(i)), 1)) {
-                        current_statement__ = 297;
-                        lp_accum__.add(stan::math::negative_infinity());
-                      } else {
-                        current_statement__ = 297;
-                        lp_accum__.add(-stan::math::poisson_lccdf((1 - 1),
-                                          lambda_obs_i));
-                      }
-                    }
+                    current_statement__ = 523;
+                    lp_accum__.add(stan::math::neg_binomial_2_lpmf<propto__>(
+                                     stan::model::rvalue(yint_obs,
+                                       "yint_obs", stan::model::index_uni(i)),
+                                     lambda_obs_i,
+                                     stan::model::rvalue(nb2_phi, "nb2_phi",
+                                       stan::model::index_uni(1))));
                   }
                 }
-                current_statement__ = 315;
-                if (stan::math::logical_gt(n_em, 0)) {
-                  current_statement__ = 313;
-                  for (int i = 1; i <= n_em; ++i) {
+              }
+              current_statement__ = 537;
+              if (stan::math::logical_gt(n_em, 0)) {
+                current_statement__ = 535;
+                for (int i = 1; i <= n_em; ++i) {
+                  current_statement__ = 533;
+                  if (stan::math::logical_gt(
+                        stan::model::rvalue(effort_em, "effort_em",
+                          stan::model::index_uni(i)), 0)) {
                     local_scalar_t__ lambda_em_i = DUMMY_VAR__;
-                    current_statement__ = 305;
+                    current_statement__ = 530;
                     lambda_em_i = (stan::model::rvalue(lambda_base,
                                      "lambda_base",
                                      stan::model::index_uni(
@@ -1853,42 +1994,26 @@ public:
                       *
                       stan::model::rvalue(effort_em, "effort_em",
                         stan::model::index_uni(i)));
-                    current_statement__ = 311;
-                    if (stan::math::logical_eq(
-                          stan::model::rvalue(yint_em, "yint_em",
-                            stan::model::index_uni(i)), 0)) {
-                      current_statement__ = 310;
-                      lp_accum__.add(stan::math::bernoulli_lpmf<propto__>(1,
-                                       theta));
-                    } else {
-                      current_statement__ = 306;
-                      lp_accum__.add(stan::math::bernoulli_lpmf<propto__>(0,
-                                       theta));
-                      current_statement__ = 307;
-                      lp_accum__.add(stan::math::poisson_lpmf<propto__>(
-                                       stan::model::rvalue(yint_em,
-                                         "yint_em", stan::model::index_uni(i)),
-                                       lambda_em_i));
-                      current_statement__ = 308;
-                      if (stan::math::logical_lt(
-                            stan::model::rvalue(yint_em, "yint_em",
-                              stan::model::index_uni(i)), 1)) {
-                        current_statement__ = 308;
-                        lp_accum__.add(stan::math::negative_infinity());
-                      } else {
-                        current_statement__ = 308;
-                        lp_accum__.add(-stan::math::poisson_lccdf((1 - 1),
-                                          lambda_em_i));
-                      }
-                    }
+                    current_statement__ = 531;
+                    lp_accum__.add(stan::math::neg_binomial_2_lpmf<propto__>(
+                                     stan::model::rvalue(yint_em, "yint_em",
+                                       stan::model::index_uni(i)),
+                                     lambda_em_i,
+                                     stan::model::rvalue(nb2_phi, "nb2_phi",
+                                       stan::model::index_uni(1))));
                   }
                 }
-                current_statement__ = 326;
-                if (stan::math::logical_gt(n_both, 0)) {
-                  current_statement__ = 324;
-                  for (int i = 1; i <= n_both; ++i) {
+              }
+              current_statement__ = 545;
+              if (stan::math::logical_gt(n_both, 0)) {
+                current_statement__ = 543;
+                for (int i = 1; i <= n_both; ++i) {
+                  current_statement__ = 541;
+                  if (stan::math::logical_gt(
+                        stan::model::rvalue(effort_both, "effort_both",
+                          stan::model::index_uni(i)), 0)) {
                     local_scalar_t__ lambda_both_i = DUMMY_VAR__;
-                    current_statement__ = 316;
+                    current_statement__ = 538;
                     lambda_both_i = (stan::model::rvalue(lambda_base,
                                        "lambda_base",
                                        stan::model::index_uni(
@@ -1898,49 +2023,29 @@ public:
                       *
                       stan::model::rvalue(effort_both, "effort_both",
                         stan::model::index_uni(i)));
-                    current_statement__ = 322;
-                    if (stan::math::logical_eq(
-                          stan::model::rvalue(yint_both, "yint_both",
-                            stan::model::index_uni(i)), 0)) {
-                      current_statement__ = 321;
-                      lp_accum__.add(stan::math::bernoulli_lpmf<propto__>(1,
-                                       theta));
-                    } else {
-                      current_statement__ = 317;
-                      lp_accum__.add(stan::math::bernoulli_lpmf<propto__>(0,
-                                       theta));
-                      current_statement__ = 318;
-                      lp_accum__.add(stan::math::poisson_lpmf<propto__>(
-                                       stan::model::rvalue(yint_both,
-                                         "yint_both",
-                                         stan::model::index_uni(i)),
-                                       lambda_both_i));
-                      current_statement__ = 319;
-                      if (stan::math::logical_lt(
-                            stan::model::rvalue(yint_both, "yint_both",
-                              stan::model::index_uni(i)), 1)) {
-                        current_statement__ = 319;
-                        lp_accum__.add(stan::math::negative_infinity());
-                      } else {
-                        current_statement__ = 319;
-                        lp_accum__.add(-stan::math::poisson_lccdf((1 - 1),
-                                          lambda_both_i));
-                      }
-                    }
+                    current_statement__ = 539;
+                    lp_accum__.add(stan::math::neg_binomial_2_lpmf<propto__>(
+                                     stan::model::rvalue(yint_both,
+                                       "yint_both", stan::model::index_uni(i)),
+                                     lambda_both_i,
+                                     stan::model::rvalue(nb2_phi, "nb2_phi",
+                                       stan::model::index_uni(1))));
                   }
                 }
-              } else {
-                current_statement__ = 293;
-                if (stan::math::logical_eq(family, 4)) {
-                  current_statement__ = 258;
-                  lp_accum__.add(stan::math::student_t_lpdf<propto__>(
-                                   nb2_phi, 3, 0, 2));
-                  current_statement__ = 269;
-                  if (stan::math::logical_gt(n_obs, 0)) {
-                    current_statement__ = 267;
-                    for (int i = 1; i <= n_obs; ++i) {
+              }
+            } else {
+              current_statement__ = 520;
+              if (stan::math::logical_eq(family, 3)) {
+                current_statement__ = 492;
+                if (stan::math::logical_gt(n_obs, 0)) {
+                  current_statement__ = 490;
+                  for (int i = 1; i <= n_obs; ++i) {
+                    current_statement__ = 488;
+                    if (stan::math::logical_gt(
+                          stan::model::rvalue(effort_obs, "effort_obs",
+                            stan::model::index_uni(i)), 0)) {
                       local_scalar_t__ lambda_obs_i = DUMMY_VAR__;
-                      current_statement__ = 259;
+                      current_statement__ = 480;
                       lambda_obs_i = (stan::model::rvalue(lambda_base,
                                         "lambda_base",
                                         stan::model::index_uni(
@@ -1950,50 +2055,48 @@ public:
                         *
                         stan::model::rvalue(effort_obs, "effort_obs",
                           stan::model::index_uni(i)));
-                      current_statement__ = 265;
+                      current_statement__ = 486;
                       if (stan::math::logical_eq(
                             stan::model::rvalue(yint_obs, "yint_obs",
                               stan::model::index_uni(i)), 0)) {
-                        current_statement__ = 264;
+                        current_statement__ = 485;
                         lp_accum__.add(stan::math::bernoulli_lpmf<propto__>(
                                          1, theta));
                       } else {
-                        current_statement__ = 260;
+                        current_statement__ = 481;
                         lp_accum__.add(stan::math::bernoulli_lpmf<propto__>(
                                          0, theta));
-                        current_statement__ = 261;
-                        lp_accum__.add(stan::math::neg_binomial_2_lpmf<
-                                         propto__>(
+                        current_statement__ = 482;
+                        lp_accum__.add(stan::math::poisson_lpmf<propto__>(
                                          stan::model::rvalue(yint_obs,
                                            "yint_obs",
                                            stan::model::index_uni(i)),
-                                         lambda_obs_i,
-                                         stan::model::rvalue(nb2_phi,
-                                           "nb2_phi",
-                                           stan::model::index_uni(1))));
-                        current_statement__ = 262;
+                                         lambda_obs_i));
+                        current_statement__ = 483;
                         if (stan::math::logical_lt(
                               stan::model::rvalue(yint_obs, "yint_obs",
                                 stan::model::index_uni(i)), 1)) {
-                          current_statement__ = 262;
+                          current_statement__ = 483;
                           lp_accum__.add(stan::math::negative_infinity());
                         } else {
-                          current_statement__ = 262;
-                          lp_accum__.add(-stan::math::neg_binomial_2_lccdf((1
-                                            - 1), lambda_obs_i,
-                                            stan::model::rvalue(nb2_phi,
-                                              "nb2_phi",
-                                              stan::model::index_uni(1))));
+                          current_statement__ = 483;
+                          lp_accum__.add(-stan::math::poisson_lccdf((1 - 1),
+                                            lambda_obs_i));
                         }
                       }
                     }
                   }
-                  current_statement__ = 280;
-                  if (stan::math::logical_gt(n_em, 0)) {
-                    current_statement__ = 278;
-                    for (int i = 1; i <= n_em; ++i) {
+                }
+                current_statement__ = 505;
+                if (stan::math::logical_gt(n_em, 0)) {
+                  current_statement__ = 503;
+                  for (int i = 1; i <= n_em; ++i) {
+                    current_statement__ = 501;
+                    if (stan::math::logical_gt(
+                          stan::model::rvalue(effort_em, "effort_em",
+                            stan::model::index_uni(i)), 0)) {
                       local_scalar_t__ lambda_em_i = DUMMY_VAR__;
-                      current_statement__ = 270;
+                      current_statement__ = 493;
                       lambda_em_i = (stan::model::rvalue(lambda_base,
                                        "lambda_base",
                                        stan::model::index_uni(
@@ -2003,50 +2106,48 @@ public:
                         *
                         stan::model::rvalue(effort_em, "effort_em",
                           stan::model::index_uni(i)));
-                      current_statement__ = 276;
+                      current_statement__ = 499;
                       if (stan::math::logical_eq(
                             stan::model::rvalue(yint_em, "yint_em",
                               stan::model::index_uni(i)), 0)) {
-                        current_statement__ = 275;
+                        current_statement__ = 498;
                         lp_accum__.add(stan::math::bernoulli_lpmf<propto__>(
                                          1, theta));
                       } else {
-                        current_statement__ = 271;
+                        current_statement__ = 494;
                         lp_accum__.add(stan::math::bernoulli_lpmf<propto__>(
                                          0, theta));
-                        current_statement__ = 272;
-                        lp_accum__.add(stan::math::neg_binomial_2_lpmf<
-                                         propto__>(
+                        current_statement__ = 495;
+                        lp_accum__.add(stan::math::poisson_lpmf<propto__>(
                                          stan::model::rvalue(yint_em,
                                            "yint_em",
                                            stan::model::index_uni(i)),
-                                         lambda_em_i,
-                                         stan::model::rvalue(nb2_phi,
-                                           "nb2_phi",
-                                           stan::model::index_uni(1))));
-                        current_statement__ = 273;
+                                         lambda_em_i));
+                        current_statement__ = 496;
                         if (stan::math::logical_lt(
                               stan::model::rvalue(yint_em, "yint_em",
                                 stan::model::index_uni(i)), 1)) {
-                          current_statement__ = 273;
+                          current_statement__ = 496;
                           lp_accum__.add(stan::math::negative_infinity());
                         } else {
-                          current_statement__ = 273;
-                          lp_accum__.add(-stan::math::neg_binomial_2_lccdf((1
-                                            - 1), lambda_em_i,
-                                            stan::model::rvalue(nb2_phi,
-                                              "nb2_phi",
-                                              stan::model::index_uni(1))));
+                          current_statement__ = 496;
+                          lp_accum__.add(-stan::math::poisson_lccdf((1 - 1),
+                                            lambda_em_i));
                         }
                       }
                     }
                   }
-                  current_statement__ = 291;
-                  if (stan::math::logical_gt(n_both, 0)) {
-                    current_statement__ = 289;
-                    for (int i = 1; i <= n_both; ++i) {
+                }
+                current_statement__ = 518;
+                if (stan::math::logical_gt(n_both, 0)) {
+                  current_statement__ = 516;
+                  for (int i = 1; i <= n_both; ++i) {
+                    current_statement__ = 514;
+                    if (stan::math::logical_gt(
+                          stan::model::rvalue(effort_both, "effort_both",
+                            stan::model::index_uni(i)), 0)) {
                       local_scalar_t__ lambda_both_i = DUMMY_VAR__;
-                      current_statement__ = 281;
+                      current_statement__ = 506;
                       lambda_both_i = (stan::model::rvalue(lambda_base,
                                          "lambda_base",
                                          stan::model::index_uni(
@@ -2056,518 +2157,681 @@ public:
                         *
                         stan::model::rvalue(effort_both, "effort_both",
                           stan::model::index_uni(i)));
-                      current_statement__ = 287;
+                      current_statement__ = 512;
                       if (stan::math::logical_eq(
                             stan::model::rvalue(yint_both, "yint_both",
                               stan::model::index_uni(i)), 0)) {
-                        current_statement__ = 286;
+                        current_statement__ = 511;
                         lp_accum__.add(stan::math::bernoulli_lpmf<propto__>(
                                          1, theta));
                       } else {
-                        current_statement__ = 282;
+                        current_statement__ = 507;
                         lp_accum__.add(stan::math::bernoulli_lpmf<propto__>(
                                          0, theta));
-                        current_statement__ = 283;
-                        lp_accum__.add(stan::math::neg_binomial_2_lpmf<
-                                         propto__>(
+                        current_statement__ = 508;
+                        lp_accum__.add(stan::math::poisson_lpmf<propto__>(
                                          stan::model::rvalue(yint_both,
                                            "yint_both",
                                            stan::model::index_uni(i)),
-                                         lambda_both_i,
-                                         stan::model::rvalue(nb2_phi,
-                                           "nb2_phi",
-                                           stan::model::index_uni(1))));
-                        current_statement__ = 284;
+                                         lambda_both_i));
+                        current_statement__ = 509;
                         if (stan::math::logical_lt(
                               stan::model::rvalue(yint_both, "yint_both",
                                 stan::model::index_uni(i)), 1)) {
-                          current_statement__ = 284;
+                          current_statement__ = 509;
                           lp_accum__.add(stan::math::negative_infinity());
                         } else {
-                          current_statement__ = 284;
-                          lp_accum__.add(-stan::math::neg_binomial_2_lccdf((1
-                                            - 1), lambda_both_i,
-                                            stan::model::rvalue(nb2_phi,
-                                              "nb2_phi",
-                                              stan::model::index_uni(1))));
+                          current_statement__ = 509;
+                          lp_accum__.add(-stan::math::poisson_lccdf((1 - 1),
+                                            lambda_both_i));
+                        }
+                      }
+                    }
+                  }
+                }
+              } else {
+                current_statement__ = 479;
+                if (stan::math::logical_eq(family, 4)) {
+                  current_statement__ = 438;
+                  lp_accum__.add(stan::math::student_t_lpdf<propto__>(
+                                   nb2_phi, 3, 0, 2));
+                  current_statement__ = 451;
+                  if (stan::math::logical_gt(n_obs, 0)) {
+                    current_statement__ = 449;
+                    for (int i = 1; i <= n_obs; ++i) {
+                      current_statement__ = 447;
+                      if (stan::math::logical_gt(
+                            stan::model::rvalue(effort_obs, "effort_obs",
+                              stan::model::index_uni(i)), 0)) {
+                        local_scalar_t__ lambda_obs_i = DUMMY_VAR__;
+                        current_statement__ = 439;
+                        lambda_obs_i = (stan::model::rvalue(lambda_base,
+                                          "lambda_base",
+                                          stan::model::index_uni(
+                                            stan::model::rvalue(time_idx_obs,
+                                              "time_idx_obs",
+                                              stan::model::index_uni(i))))
+                          *
+                          stan::model::rvalue(effort_obs, "effort_obs",
+                            stan::model::index_uni(i)));
+                        current_statement__ = 445;
+                        if (stan::math::logical_eq(
+                              stan::model::rvalue(yint_obs, "yint_obs",
+                                stan::model::index_uni(i)), 0)) {
+                          current_statement__ = 444;
+                          lp_accum__.add(stan::math::bernoulli_lpmf<
+                                           propto__>(1, theta));
+                        } else {
+                          current_statement__ = 440;
+                          lp_accum__.add(stan::math::bernoulli_lpmf<
+                                           propto__>(0, theta));
+                          current_statement__ = 441;
+                          lp_accum__.add(stan::math::neg_binomial_2_lpmf<
+                                           propto__>(
+                                           stan::model::rvalue(yint_obs,
+                                             "yint_obs",
+                                             stan::model::index_uni(i)),
+                                           lambda_obs_i,
+                                           stan::model::rvalue(nb2_phi,
+                                             "nb2_phi",
+                                             stan::model::index_uni(1))));
+                          current_statement__ = 442;
+                          if (stan::math::logical_lt(
+                                stan::model::rvalue(yint_obs, "yint_obs",
+                                  stan::model::index_uni(i)), 1)) {
+                            current_statement__ = 442;
+                            lp_accum__.add(stan::math::negative_infinity());
+                          } else {
+                            current_statement__ = 442;
+                            lp_accum__.add(-stan::math::neg_binomial_2_lccdf(
+                                              (1 - 1), lambda_obs_i,
+                                              stan::model::rvalue(nb2_phi,
+                                                "nb2_phi",
+                                                stan::model::index_uni(1))));
+                          }
+                        }
+                      }
+                    }
+                  }
+                  current_statement__ = 464;
+                  if (stan::math::logical_gt(n_em, 0)) {
+                    current_statement__ = 462;
+                    for (int i = 1; i <= n_em; ++i) {
+                      current_statement__ = 460;
+                      if (stan::math::logical_gt(
+                            stan::model::rvalue(effort_em, "effort_em",
+                              stan::model::index_uni(i)), 0)) {
+                        local_scalar_t__ lambda_em_i = DUMMY_VAR__;
+                        current_statement__ = 452;
+                        lambda_em_i = (stan::model::rvalue(lambda_base,
+                                         "lambda_base",
+                                         stan::model::index_uni(
+                                           stan::model::rvalue(time_idx_em,
+                                             "time_idx_em",
+                                             stan::model::index_uni(i))))
+                          *
+                          stan::model::rvalue(effort_em, "effort_em",
+                            stan::model::index_uni(i)));
+                        current_statement__ = 458;
+                        if (stan::math::logical_eq(
+                              stan::model::rvalue(yint_em, "yint_em",
+                                stan::model::index_uni(i)), 0)) {
+                          current_statement__ = 457;
+                          lp_accum__.add(stan::math::bernoulli_lpmf<
+                                           propto__>(1, theta));
+                        } else {
+                          current_statement__ = 453;
+                          lp_accum__.add(stan::math::bernoulli_lpmf<
+                                           propto__>(0, theta));
+                          current_statement__ = 454;
+                          lp_accum__.add(stan::math::neg_binomial_2_lpmf<
+                                           propto__>(
+                                           stan::model::rvalue(yint_em,
+                                             "yint_em",
+                                             stan::model::index_uni(i)),
+                                           lambda_em_i,
+                                           stan::model::rvalue(nb2_phi,
+                                             "nb2_phi",
+                                             stan::model::index_uni(1))));
+                          current_statement__ = 455;
+                          if (stan::math::logical_lt(
+                                stan::model::rvalue(yint_em, "yint_em",
+                                  stan::model::index_uni(i)), 1)) {
+                            current_statement__ = 455;
+                            lp_accum__.add(stan::math::negative_infinity());
+                          } else {
+                            current_statement__ = 455;
+                            lp_accum__.add(-stan::math::neg_binomial_2_lccdf(
+                                              (1 - 1), lambda_em_i,
+                                              stan::model::rvalue(nb2_phi,
+                                                "nb2_phi",
+                                                stan::model::index_uni(1))));
+                          }
+                        }
+                      }
+                    }
+                  }
+                  current_statement__ = 477;
+                  if (stan::math::logical_gt(n_both, 0)) {
+                    current_statement__ = 475;
+                    for (int i = 1; i <= n_both; ++i) {
+                      current_statement__ = 473;
+                      if (stan::math::logical_gt(
+                            stan::model::rvalue(effort_both, "effort_both",
+                              stan::model::index_uni(i)), 0)) {
+                        local_scalar_t__ lambda_both_i = DUMMY_VAR__;
+                        current_statement__ = 465;
+                        lambda_both_i = (stan::model::rvalue(lambda_base,
+                                           "lambda_base",
+                                           stan::model::index_uni(
+                                             stan::model::rvalue(
+                                               time_idx_both,
+                                               "time_idx_both",
+                                               stan::model::index_uni(i))))
+                          *
+                          stan::model::rvalue(effort_both, "effort_both",
+                            stan::model::index_uni(i)));
+                        current_statement__ = 471;
+                        if (stan::math::logical_eq(
+                              stan::model::rvalue(yint_both, "yint_both",
+                                stan::model::index_uni(i)), 0)) {
+                          current_statement__ = 470;
+                          lp_accum__.add(stan::math::bernoulli_lpmf<
+                                           propto__>(1, theta));
+                        } else {
+                          current_statement__ = 466;
+                          lp_accum__.add(stan::math::bernoulli_lpmf<
+                                           propto__>(0, theta));
+                          current_statement__ = 467;
+                          lp_accum__.add(stan::math::neg_binomial_2_lpmf<
+                                           propto__>(
+                                           stan::model::rvalue(yint_both,
+                                             "yint_both",
+                                             stan::model::index_uni(i)),
+                                           lambda_both_i,
+                                           stan::model::rvalue(nb2_phi,
+                                             "nb2_phi",
+                                             stan::model::index_uni(1))));
+                          current_statement__ = 468;
+                          if (stan::math::logical_lt(
+                                stan::model::rvalue(yint_both, "yint_both",
+                                  stan::model::index_uni(i)), 1)) {
+                            current_statement__ = 468;
+                            lp_accum__.add(stan::math::negative_infinity());
+                          } else {
+                            current_statement__ = 468;
+                            lp_accum__.add(-stan::math::neg_binomial_2_lccdf(
+                                              (1 - 1), lambda_both_i,
+                                              stan::model::rvalue(nb2_phi,
+                                                "nb2_phi",
+                                                stan::model::index_uni(1))));
+                          }
                         }
                       }
                     }
                   }
                 } else {
-                  current_statement__ = 257;
+                  current_statement__ = 437;
                   if (stan::math::logical_eq(family, 5)) {
-                    current_statement__ = 237;
+                    current_statement__ = 411;
                     lp_accum__.add(stan::math::student_t_lpdf<propto__>(
                                      sigma_logn, 3, 0, 2));
-                    current_statement__ = 243;
+                    current_statement__ = 419;
                     if (stan::math::logical_gt(n_obs, 0)) {
-                      current_statement__ = 241;
+                      current_statement__ = 417;
                       for (int i = 1; i <= n_obs; ++i) {
-                        local_scalar_t__ log_lambda_obs_i = DUMMY_VAR__;
-                        current_statement__ = 238;
-                        log_lambda_obs_i = (stan::model::rvalue(
-                                              log_lambda_base,
-                                              "log_lambda_base",
+                        current_statement__ = 415;
+                        if ((stan::math::primitive_value(
+                               stan::math::logical_gt(
+                                 stan::model::rvalue(effort_obs,
+                                   "effort_obs", stan::model::index_uni(i)),
+                                 0))
+                            &&
+                            stan::math::primitive_value(
+                              stan::math::logical_gt(
+                                stan::model::rvalue(yreal_obs, "yreal_obs",
+                                  stan::model::index_uni(i)), 0)))) {
+                          local_scalar_t__ log_lambda_obs_i = DUMMY_VAR__;
+                          current_statement__ = 412;
+                          log_lambda_obs_i = (stan::model::rvalue(
+                                                log_lambda_base,
+                                                "log_lambda_base",
+                                                stan::model::index_uni(
+                                                  stan::model::rvalue(
+                                                    time_idx_obs,
+                                                    "time_idx_obs",
+                                                    stan::model::index_uni(i))))
+                            +
+                            stan::math::log(
+                              stan::model::rvalue(effort_obs, "effort_obs",
+                                stan::model::index_uni(i))));
+                          current_statement__ = 413;
+                          lp_accum__.add(stan::math::lognormal_lpdf<
+                                           propto__>(
+                                           stan::model::rvalue(yreal_obs,
+                                             "yreal_obs",
+                                             stan::model::index_uni(i)),
+                                           log_lambda_obs_i,
+                                           stan::model::rvalue(sigma_logn,
+                                             "sigma_logn",
+                                             stan::model::index_uni(1))));
+                        }
+                      }
+                    }
+                    current_statement__ = 427;
+                    if (stan::math::logical_gt(n_em, 0)) {
+                      current_statement__ = 425;
+                      for (int i = 1; i <= n_em; ++i) {
+                        current_statement__ = 423;
+                        if ((stan::math::primitive_value(
+                               stan::math::logical_gt(
+                                 stan::model::rvalue(effort_em, "effort_em",
+                                   stan::model::index_uni(i)), 0))
+                            &&
+                            stan::math::primitive_value(
+                              stan::math::logical_gt(
+                                stan::model::rvalue(yreal_em, "yreal_em",
+                                  stan::model::index_uni(i)), 0)))) {
+                          local_scalar_t__ log_lambda_em_i = DUMMY_VAR__;
+                          current_statement__ = 420;
+                          log_lambda_em_i = (stan::model::rvalue(
+                                               log_lambda_base,
+                                               "log_lambda_base",
+                                               stan::model::index_uni(
+                                                 stan::model::rvalue(
+                                                   time_idx_em,
+                                                   "time_idx_em",
+                                                   stan::model::index_uni(i))))
+                            +
+                            stan::math::log(
+                              stan::model::rvalue(effort_em, "effort_em",
+                                stan::model::index_uni(i))));
+                          current_statement__ = 421;
+                          lp_accum__.add(stan::math::lognormal_lpdf<
+                                           propto__>(
+                                           stan::model::rvalue(yreal_em,
+                                             "yreal_em",
+                                             stan::model::index_uni(i)),
+                                           log_lambda_em_i,
+                                           stan::model::rvalue(sigma_logn,
+                                             "sigma_logn",
+                                             stan::model::index_uni(1))));
+                        }
+                      }
+                    }
+                    current_statement__ = 435;
+                    if (stan::math::logical_gt(n_both, 0)) {
+                      current_statement__ = 433;
+                      for (int i = 1; i <= n_both; ++i) {
+                        current_statement__ = 431;
+                        if ((stan::math::primitive_value(
+                               stan::math::logical_gt(
+                                 stan::model::rvalue(effort_both,
+                                   "effort_both", stan::model::index_uni(i)),
+                                 0))
+                            &&
+                            stan::math::primitive_value(
+                              stan::math::logical_gt(
+                                stan::model::rvalue(yreal_both, "yreal_both",
+                                  stan::model::index_uni(i)), 0)))) {
+                          local_scalar_t__ log_lambda_both_i = DUMMY_VAR__;
+                          current_statement__ = 428;
+                          log_lambda_both_i = (stan::model::rvalue(
+                                                 log_lambda_base,
+                                                 "log_lambda_base",
+                                                 stan::model::index_uni(
+                                                   stan::model::rvalue(
+                                                     time_idx_both,
+                                                     "time_idx_both",
+                                                     stan::model::index_uni(i))))
+                            +
+                            stan::math::log(
+                              stan::model::rvalue(effort_both, "effort_both",
+                                stan::model::index_uni(i))));
+                          current_statement__ = 429;
+                          lp_accum__.add(stan::math::lognormal_lpdf<
+                                           propto__>(
+                                           stan::model::rvalue(yreal_both,
+                                             "yreal_both",
+                                             stan::model::index_uni(i)),
+                                           log_lambda_both_i,
+                                           stan::model::rvalue(sigma_logn,
+                                             "sigma_logn",
+                                             stan::model::index_uni(1))));
+                        }
+                      }
+                    }
+                  } else {
+                    current_statement__ = 410;
+                    if (stan::math::logical_eq(family, 6)) {
+                      current_statement__ = 384;
+                      lp_accum__.add(stan::math::student_t_lpdf<propto__>(
+                                       stan::model::rvalue(cv_gamma,
+                                         "cv_gamma",
+                                         stan::model::index_uni(1)), 3, 0, 2));
+                      current_statement__ = 392;
+                      if (stan::math::logical_gt(n_obs, 0)) {
+                        current_statement__ = 390;
+                        for (int i = 1; i <= n_obs; ++i) {
+                          current_statement__ = 388;
+                          if ((stan::math::primitive_value(
+                                 stan::math::logical_gt(
+                                   stan::model::rvalue(effort_obs,
+                                     "effort_obs", stan::model::index_uni(i)),
+                                   0))
+                              &&
+                              stan::math::primitive_value(
+                                stan::math::logical_gt(
+                                  stan::model::rvalue(yreal_obs, "yreal_obs",
+                                    stan::model::index_uni(i)), 0)))) {
+                            local_scalar_t__ lambda_obs_i = DUMMY_VAR__;
+                            current_statement__ = 385;
+                            lambda_obs_i = (stan::model::rvalue(lambda_base,
+                                              "lambda_base",
                                               stan::model::index_uni(
                                                 stan::model::rvalue(
                                                   time_idx_obs,
                                                   "time_idx_obs",
                                                   stan::model::index_uni(i))))
-                          +
-                          stan::math::log(
-                            stan::model::rvalue(effort_obs, "effort_obs",
-                              stan::model::index_uni(i))));
-                        current_statement__ = 239;
-                        lp_accum__.add(stan::math::lognormal_lpdf<propto__>(
-                                         stan::model::rvalue(yreal_obs,
-                                           "yreal_obs",
-                                           stan::model::index_uni(i)),
-                                         log_lambda_obs_i,
-                                         stan::model::rvalue(sigma_logn,
-                                           "sigma_logn",
-                                           stan::model::index_uni(1))));
+                              *
+                              stan::model::rvalue(effort_obs, "effort_obs",
+                                stan::model::index_uni(i)));
+                            current_statement__ = 386;
+                            lp_accum__.add(stan::math::gamma_lpdf<propto__>(
+                                             stan::model::rvalue(yreal_obs,
+                                               "yreal_obs",
+                                               stan::model::index_uni(i)),
+                                             stan::model::rvalue(gammaA,
+                                               "gammaA",
+                                               stan::model::index_uni(1)),
+                                             (stan::model::rvalue(gammaA,
+                                                "gammaA",
+                                                stan::model::index_uni(1)) /
+                                             lambda_obs_i)));
+                          }
+                        }
                       }
-                    }
-                    current_statement__ = 249;
-                    if (stan::math::logical_gt(n_em, 0)) {
-                      current_statement__ = 247;
-                      for (int i = 1; i <= n_em; ++i) {
-                        local_scalar_t__ log_lambda_em_i = DUMMY_VAR__;
-                        current_statement__ = 244;
-                        log_lambda_em_i = (stan::model::rvalue(
-                                             log_lambda_base,
-                                             "log_lambda_base",
+                      current_statement__ = 400;
+                      if (stan::math::logical_gt(n_em, 0)) {
+                        current_statement__ = 398;
+                        for (int i = 1; i <= n_em; ++i) {
+                          current_statement__ = 396;
+                          if ((stan::math::primitive_value(
+                                 stan::math::logical_gt(
+                                   stan::model::rvalue(effort_em,
+                                     "effort_em", stan::model::index_uni(i)),
+                                   0))
+                              &&
+                              stan::math::primitive_value(
+                                stan::math::logical_gt(
+                                  stan::model::rvalue(yreal_em, "yreal_em",
+                                    stan::model::index_uni(i)), 0)))) {
+                            local_scalar_t__ lambda_em_i = DUMMY_VAR__;
+                            current_statement__ = 393;
+                            lambda_em_i = (stan::model::rvalue(lambda_base,
+                                             "lambda_base",
                                              stan::model::index_uni(
                                                stan::model::rvalue(
                                                  time_idx_em, "time_idx_em",
                                                  stan::model::index_uni(i))))
-                          +
-                          stan::math::log(
-                            stan::model::rvalue(effort_em, "effort_em",
-                              stan::model::index_uni(i))));
-                        current_statement__ = 245;
-                        lp_accum__.add(stan::math::lognormal_lpdf<propto__>(
-                                         stan::model::rvalue(yreal_em,
-                                           "yreal_em",
-                                           stan::model::index_uni(i)),
-                                         log_lambda_em_i,
-                                         stan::model::rvalue(sigma_logn,
-                                           "sigma_logn",
-                                           stan::model::index_uni(1))));
+                              *
+                              stan::model::rvalue(effort_em, "effort_em",
+                                stan::model::index_uni(i)));
+                            current_statement__ = 394;
+                            lp_accum__.add(stan::math::gamma_lpdf<propto__>(
+                                             stan::model::rvalue(yreal_em,
+                                               "yreal_em",
+                                               stan::model::index_uni(i)),
+                                             stan::model::rvalue(gammaA,
+                                               "gammaA",
+                                               stan::model::index_uni(1)),
+                                             (stan::model::rvalue(gammaA,
+                                                "gammaA",
+                                                stan::model::index_uni(1)) /
+                                             lambda_em_i)));
+                          }
+                        }
                       }
-                    }
-                    current_statement__ = 255;
-                    if (stan::math::logical_gt(n_both, 0)) {
-                      current_statement__ = 253;
-                      for (int i = 1; i <= n_both; ++i) {
-                        local_scalar_t__ log_lambda_both_i = DUMMY_VAR__;
-                        current_statement__ = 250;
-                        log_lambda_both_i = (stan::model::rvalue(
-                                               log_lambda_base,
-                                               "log_lambda_base",
+                      current_statement__ = 408;
+                      if (stan::math::logical_gt(n_both, 0)) {
+                        current_statement__ = 406;
+                        for (int i = 1; i <= n_both; ++i) {
+                          current_statement__ = 404;
+                          if ((stan::math::primitive_value(
+                                 stan::math::logical_gt(
+                                   stan::model::rvalue(effort_both,
+                                     "effort_both", stan::model::index_uni(i)),
+                                   0))
+                              &&
+                              stan::math::primitive_value(
+                                stan::math::logical_gt(
+                                  stan::model::rvalue(yreal_both,
+                                    "yreal_both", stan::model::index_uni(i)),
+                                  0)))) {
+                            local_scalar_t__ lambda_both_i = DUMMY_VAR__;
+                            current_statement__ = 401;
+                            lambda_both_i = (stan::model::rvalue(lambda_base,
+                                               "lambda_base",
                                                stan::model::index_uni(
                                                  stan::model::rvalue(
                                                    time_idx_both,
                                                    "time_idx_both",
                                                    stan::model::index_uni(i))))
-                          +
-                          stan::math::log(
-                            stan::model::rvalue(effort_both, "effort_both",
-                              stan::model::index_uni(i))));
-                        current_statement__ = 251;
-                        lp_accum__.add(stan::math::lognormal_lpdf<propto__>(
-                                         stan::model::rvalue(yreal_both,
-                                           "yreal_both",
-                                           stan::model::index_uni(i)),
-                                         log_lambda_both_i,
-                                         stan::model::rvalue(sigma_logn,
-                                           "sigma_logn",
-                                           stan::model::index_uni(1))));
-                      }
-                    }
-                  } else {
-                    current_statement__ = 236;
-                    if (stan::math::logical_eq(family, 6)) {
-                      current_statement__ = 216;
-                      lp_accum__.add(stan::math::student_t_lpdf<propto__>(
-                                       stan::model::rvalue(cv_gamma,
-                                         "cv_gamma",
-                                         stan::model::index_uni(1)), 3, 0, 2));
-                      current_statement__ = 222;
-                      if (stan::math::logical_gt(n_obs, 0)) {
-                        current_statement__ = 220;
-                        for (int i = 1; i <= n_obs; ++i) {
-                          local_scalar_t__ lambda_obs_i = DUMMY_VAR__;
-                          current_statement__ = 217;
-                          lambda_obs_i = (stan::model::rvalue(lambda_base,
-                                            "lambda_base",
-                                            stan::model::index_uni(
-                                              stan::model::rvalue(
-                                                time_idx_obs, "time_idx_obs",
-                                                stan::model::index_uni(i))))
-                            *
-                            stan::model::rvalue(effort_obs, "effort_obs",
-                              stan::model::index_uni(i)));
-                          current_statement__ = 218;
-                          lp_accum__.add(stan::math::gamma_lpdf<propto__>(
-                                           stan::model::rvalue(yreal_obs,
-                                             "yreal_obs",
-                                             stan::model::index_uni(i)),
-                                           stan::model::rvalue(gammaA,
-                                             "gammaA",
-                                             stan::model::index_uni(1)),
-                                           (stan::model::rvalue(gammaA,
-                                              "gammaA",
-                                              stan::model::index_uni(1)) /
-                                           lambda_obs_i)));
-                        }
-                      }
-                      current_statement__ = 228;
-                      if (stan::math::logical_gt(n_em, 0)) {
-                        current_statement__ = 226;
-                        for (int i = 1; i <= n_em; ++i) {
-                          local_scalar_t__ lambda_em_i = DUMMY_VAR__;
-                          current_statement__ = 223;
-                          lambda_em_i = (stan::model::rvalue(lambda_base,
-                                           "lambda_base",
-                                           stan::model::index_uni(
-                                             stan::model::rvalue(time_idx_em,
-                                               "time_idx_em",
-                                               stan::model::index_uni(i))))
-                            *
-                            stan::model::rvalue(effort_em, "effort_em",
-                              stan::model::index_uni(i)));
-                          current_statement__ = 224;
-                          lp_accum__.add(stan::math::gamma_lpdf<propto__>(
-                                           stan::model::rvalue(yreal_em,
-                                             "yreal_em",
-                                             stan::model::index_uni(i)),
-                                           stan::model::rvalue(gammaA,
-                                             "gammaA",
-                                             stan::model::index_uni(1)),
-                                           (stan::model::rvalue(gammaA,
-                                              "gammaA",
-                                              stan::model::index_uni(1)) /
-                                           lambda_em_i)));
-                        }
-                      }
-                      current_statement__ = 234;
-                      if (stan::math::logical_gt(n_both, 0)) {
-                        current_statement__ = 232;
-                        for (int i = 1; i <= n_both; ++i) {
-                          local_scalar_t__ lambda_both_i = DUMMY_VAR__;
-                          current_statement__ = 229;
-                          lambda_both_i = (stan::model::rvalue(lambda_base,
-                                             "lambda_base",
-                                             stan::model::index_uni(
-                                               stan::model::rvalue(
-                                                 time_idx_both,
-                                                 "time_idx_both",
-                                                 stan::model::index_uni(i))))
-                            *
-                            stan::model::rvalue(effort_both, "effort_both",
-                              stan::model::index_uni(i)));
-                          current_statement__ = 230;
-                          lp_accum__.add(stan::math::gamma_lpdf<propto__>(
-                                           stan::model::rvalue(yreal_both,
-                                             "yreal_both",
-                                             stan::model::index_uni(i)),
-                                           stan::model::rvalue(gammaA,
-                                             "gammaA",
-                                             stan::model::index_uni(1)),
-                                           (stan::model::rvalue(gammaA,
-                                              "gammaA",
-                                              stan::model::index_uni(1)) /
-                                           lambda_both_i)));
+                              *
+                              stan::model::rvalue(effort_both, "effort_both",
+                                stan::model::index_uni(i)));
+                            current_statement__ = 402;
+                            lp_accum__.add(stan::math::gamma_lpdf<propto__>(
+                                             stan::model::rvalue(yreal_both,
+                                               "yreal_both",
+                                               stan::model::index_uni(i)),
+                                             stan::model::rvalue(gammaA,
+                                               "gammaA",
+                                               stan::model::index_uni(1)),
+                                             (stan::model::rvalue(gammaA,
+                                                "gammaA",
+                                                stan::model::index_uni(1)) /
+                                             lambda_both_i)));
+                          }
                         }
                       }
                     } else {
-                      current_statement__ = 215;
+                      current_statement__ = 383;
                       if (stan::math::logical_eq(family, 7)) {
-                        current_statement__ = 183;
+                        current_statement__ = 339;
                         lp_accum__.add(stan::math::student_t_lpdf<propto__>(
                                          sigma_logn, 3, 0, 2));
-                        current_statement__ = 193;
+                        current_statement__ = 353;
                         if (stan::math::logical_gt(n_obs, 0)) {
-                          current_statement__ = 191;
+                          current_statement__ = 351;
                           for (int i = 1; i <= n_obs; ++i) {
-                            local_scalar_t__ log_lambda_obs_i = DUMMY_VAR__;
-                            current_statement__ = 184;
-                            log_lambda_obs_i = (stan::model::rvalue(
-                                                  log_lambda_base,
-                                                  "log_lambda_base",
-                                                  stan::model::index_uni(
-                                                    stan::model::rvalue(
-                                                      time_idx_obs,
-                                                      "time_idx_obs",
-                                                      stan::model::index_uni(
-                                                        i))))
-                              +
-                              stan::math::log(
-                                stan::model::rvalue(effort_obs, "effort_obs",
-                                  stan::model::index_uni(i))));
-                            current_statement__ = 189;
-                            if (stan::math::logical_eq(
-                                  stan::model::rvalue(yint_obs, "yint_obs",
-                                    stan::model::index_uni(i)), 0)) {
-                              current_statement__ = 188;
-                              lp_accum__.add(stan::math::bernoulli_lpmf<
-                                               propto__>(1, theta));
-                            } else {
-                              current_statement__ = 185;
-                              lp_accum__.add(stan::math::bernoulli_lpmf<
-                                               propto__>(0, theta));
-                              current_statement__ = 186;
-                              lp_accum__.add(stan::math::lognormal_lpdf<
-                                               propto__>(
-                                               stan::model::rvalue(yreal_obs,
-                                                 "yreal_obs",
-                                                 stan::model::index_uni(i)),
-                                               log_lambda_obs_i,
-                                               stan::model::rvalue(
-                                                 sigma_logn, "sigma_logn",
-                                                 stan::model::index_uni(1))));
-                            }
-                          }
-                        }
-                        current_statement__ = 203;
-                        if (stan::math::logical_gt(n_em, 0)) {
-                          current_statement__ = 201;
-                          for (int i = 1; i <= n_em; ++i) {
-                            local_scalar_t__ log_lambda_em_i = DUMMY_VAR__;
-                            current_statement__ = 194;
-                            log_lambda_em_i = (stan::model::rvalue(
-                                                 log_lambda_base,
-                                                 "log_lambda_base",
-                                                 stan::model::index_uni(
+                            current_statement__ = 349;
+                            if (stan::math::logical_gt(
+                                  stan::model::rvalue(effort_obs,
+                                    "effort_obs", stan::model::index_uni(i)),
+                                  0)) {
+                              local_scalar_t__ log_lambda_obs_i = DUMMY_VAR__;
+                              current_statement__ = 340;
+                              log_lambda_obs_i = (stan::model::rvalue(
+                                                    log_lambda_base,
+                                                    "log_lambda_base",
+                                                    stan::model::index_uni(
+                                                      stan::model::rvalue(
+                                                        time_idx_obs,
+                                                        "time_idx_obs",
+                                                        stan::model::index_uni(
+                                                          i))))
+                                +
+                                stan::math::log(
+                                  stan::model::rvalue(effort_obs,
+                                    "effort_obs", stan::model::index_uni(i))));
+                              current_statement__ = 347;
+                              if (stan::math::logical_eq(
+                                    stan::model::rvalue(yint_obs, "yint_obs",
+                                      stan::model::index_uni(i)), 0)) {
+                                current_statement__ = 346;
+                                lp_accum__.add(stan::math::bernoulli_lpmf<
+                                                 propto__>(1, theta));
+                              } else {
+                                current_statement__ = 341;
+                                lp_accum__.add(stan::math::bernoulli_lpmf<
+                                                 propto__>(0, theta));
+                                current_statement__ = 344;
+                                if (stan::math::logical_gt(
+                                      stan::model::rvalue(yreal_obs,
+                                        "yreal_obs",
+                                        stan::model::index_uni(i)), 0)) {
+                                  current_statement__ = 342;
+                                  lp_accum__.add(stan::math::lognormal_lpdf<
+                                                   propto__>(
                                                    stan::model::rvalue(
-                                                     time_idx_em,
-                                                     "time_idx_em",
-                                                     stan::model::index_uni(i))))
-                              +
-                              stan::math::log(
-                                stan::model::rvalue(effort_em, "effort_em",
-                                  stan::model::index_uni(i))));
-                            current_statement__ = 199;
-                            if (stan::math::logical_eq(
-                                  stan::model::rvalue(yint_em, "yint_em",
-                                    stan::model::index_uni(i)), 0)) {
-                              current_statement__ = 198;
-                              lp_accum__.add(stan::math::bernoulli_lpmf<
-                                               propto__>(1, theta));
-                            } else {
-                              current_statement__ = 195;
-                              lp_accum__.add(stan::math::bernoulli_lpmf<
-                                               propto__>(0, theta));
-                              current_statement__ = 196;
-                              lp_accum__.add(stan::math::lognormal_lpdf<
-                                               propto__>(
-                                               stan::model::rvalue(yreal_em,
-                                                 "yreal_em",
-                                                 stan::model::index_uni(i)),
-                                               log_lambda_em_i,
-                                               stan::model::rvalue(
-                                                 sigma_logn, "sigma_logn",
-                                                 stan::model::index_uni(1))));
+                                                     yreal_obs, "yreal_obs",
+                                                     stan::model::index_uni(i)),
+                                                   log_lambda_obs_i,
+                                                   stan::model::rvalue(
+                                                     sigma_logn,
+                                                     "sigma_logn",
+                                                     stan::model::index_uni(1))));
+                                }
+                              }
                             }
                           }
                         }
-                        current_statement__ = 213;
-                        if (stan::math::logical_gt(n_both, 0)) {
-                          current_statement__ = 211;
-                          for (int i = 1; i <= n_both; ++i) {
-                            local_scalar_t__ log_lambda_both_i = DUMMY_VAR__;
-                            current_statement__ = 204;
-                            log_lambda_both_i = (stan::model::rvalue(
+                        current_statement__ = 367;
+                        if (stan::math::logical_gt(n_em, 0)) {
+                          current_statement__ = 365;
+                          for (int i = 1; i <= n_em; ++i) {
+                            current_statement__ = 363;
+                            if (stan::math::logical_gt(
+                                  stan::model::rvalue(effort_em, "effort_em",
+                                    stan::model::index_uni(i)), 0)) {
+                              local_scalar_t__ log_lambda_em_i = DUMMY_VAR__;
+                              current_statement__ = 354;
+                              log_lambda_em_i = (stan::model::rvalue(
                                                    log_lambda_base,
                                                    "log_lambda_base",
                                                    stan::model::index_uni(
                                                      stan::model::rvalue(
-                                                       time_idx_both,
-                                                       "time_idx_both",
+                                                       time_idx_em,
+                                                       "time_idx_em",
                                                        stan::model::index_uni(
                                                          i))))
-                              +
-                              stan::math::log(
-                                stan::model::rvalue(effort_both,
-                                  "effort_both", stan::model::index_uni(i))));
-                            current_statement__ = 209;
-                            if (stan::math::logical_eq(
-                                  stan::model::rvalue(yint_both, "yint_both",
-                                    stan::model::index_uni(i)), 0)) {
-                              current_statement__ = 208;
-                              lp_accum__.add(stan::math::bernoulli_lpmf<
-                                               propto__>(1, theta));
-                            } else {
-                              current_statement__ = 205;
-                              lp_accum__.add(stan::math::bernoulli_lpmf<
-                                               propto__>(0, theta));
-                              current_statement__ = 206;
-                              lp_accum__.add(stan::math::lognormal_lpdf<
-                                               propto__>(
-                                               stan::model::rvalue(
-                                                 yreal_both, "yreal_both",
-                                                 stan::model::index_uni(i)),
-                                               log_lambda_both_i,
-                                               stan::model::rvalue(
-                                                 sigma_logn, "sigma_logn",
-                                                 stan::model::index_uni(1))));
+                                +
+                                stan::math::log(
+                                  stan::model::rvalue(effort_em, "effort_em",
+                                    stan::model::index_uni(i))));
+                              current_statement__ = 361;
+                              if (stan::math::logical_eq(
+                                    stan::model::rvalue(yint_em, "yint_em",
+                                      stan::model::index_uni(i)), 0)) {
+                                current_statement__ = 360;
+                                lp_accum__.add(stan::math::bernoulli_lpmf<
+                                                 propto__>(1, theta));
+                              } else {
+                                current_statement__ = 355;
+                                lp_accum__.add(stan::math::bernoulli_lpmf<
+                                                 propto__>(0, theta));
+                                current_statement__ = 358;
+                                if (stan::math::logical_gt(
+                                      stan::model::rvalue(yreal_em,
+                                        "yreal_em", stan::model::index_uni(i)),
+                                      0)) {
+                                  current_statement__ = 356;
+                                  lp_accum__.add(stan::math::lognormal_lpdf<
+                                                   propto__>(
+                                                   stan::model::rvalue(
+                                                     yreal_em, "yreal_em",
+                                                     stan::model::index_uni(i)),
+                                                   log_lambda_em_i,
+                                                   stan::model::rvalue(
+                                                     sigma_logn,
+                                                     "sigma_logn",
+                                                     stan::model::index_uni(1))));
+                                }
+                              }
+                            }
+                          }
+                        }
+                        current_statement__ = 381;
+                        if (stan::math::logical_gt(n_both, 0)) {
+                          current_statement__ = 379;
+                          for (int i = 1; i <= n_both; ++i) {
+                            current_statement__ = 377;
+                            if (stan::math::logical_gt(
+                                  stan::model::rvalue(effort_both,
+                                    "effort_both", stan::model::index_uni(i)),
+                                  0)) {
+                              local_scalar_t__ log_lambda_both_i =
+                                DUMMY_VAR__;
+                              current_statement__ = 368;
+                              log_lambda_both_i = (stan::model::rvalue(
+                                                     log_lambda_base,
+                                                     "log_lambda_base",
+                                                     stan::model::index_uni(
+                                                       stan::model::rvalue(
+                                                         time_idx_both,
+                                                         "time_idx_both",
+                                                         stan::model::index_uni(
+                                                           i))))
+                                +
+                                stan::math::log(
+                                  stan::model::rvalue(effort_both,
+                                    "effort_both", stan::model::index_uni(i))));
+                              current_statement__ = 375;
+                              if (stan::math::logical_eq(
+                                    stan::model::rvalue(yint_both,
+                                      "yint_both", stan::model::index_uni(i)),
+                                    0)) {
+                                current_statement__ = 374;
+                                lp_accum__.add(stan::math::bernoulli_lpmf<
+                                                 propto__>(1, theta));
+                              } else {
+                                current_statement__ = 369;
+                                lp_accum__.add(stan::math::bernoulli_lpmf<
+                                                 propto__>(0, theta));
+                                current_statement__ = 372;
+                                if (stan::math::logical_gt(
+                                      stan::model::rvalue(yreal_both,
+                                        "yreal_both",
+                                        stan::model::index_uni(i)), 0)) {
+                                  current_statement__ = 370;
+                                  lp_accum__.add(stan::math::lognormal_lpdf<
+                                                   propto__>(
+                                                   stan::model::rvalue(
+                                                     yreal_both,
+                                                     "yreal_both",
+                                                     stan::model::index_uni(i)),
+                                                   log_lambda_both_i,
+                                                   stan::model::rvalue(
+                                                     sigma_logn,
+                                                     "sigma_logn",
+                                                     stan::model::index_uni(1))));
+                                }
+                              }
                             }
                           }
                         }
                       } else {
-                        current_statement__ = 182;
+                        current_statement__ = 338;
                         if (stan::math::logical_eq(family, 8)) {
-                          current_statement__ = 150;
+                          current_statement__ = 294;
                           lp_accum__.add(stan::math::student_t_lpdf<
                                            propto__>(
                                            stan::model::rvalue(cv_gamma,
                                              "cv_gamma",
                                              stan::model::index_uni(1)), 3,
                                            0, 2));
-                          current_statement__ = 160;
+                          current_statement__ = 308;
                           if (stan::math::logical_gt(n_obs, 0)) {
-                            current_statement__ = 158;
+                            current_statement__ = 306;
                             for (int i = 1; i <= n_obs; ++i) {
-                              local_scalar_t__ lambda_obs_i = DUMMY_VAR__;
-                              current_statement__ = 151;
-                              lambda_obs_i = (stan::model::rvalue(
-                                                lambda_base, "lambda_base",
-                                                stan::model::index_uni(
-                                                  stan::model::rvalue(
-                                                    time_idx_obs,
-                                                    "time_idx_obs",
-                                                    stan::model::index_uni(i))))
-                                *
-                                stan::model::rvalue(effort_obs, "effort_obs",
-                                  stan::model::index_uni(i)));
-                              current_statement__ = 156;
-                              if (stan::math::logical_eq(
-                                    stan::model::rvalue(yint_obs, "yint_obs",
-                                      stan::model::index_uni(i)), 0)) {
-                                current_statement__ = 155;
-                                lp_accum__.add(stan::math::bernoulli_lpmf<
-                                                 propto__>(1, theta));
-                              } else {
-                                current_statement__ = 152;
-                                lp_accum__.add(stan::math::bernoulli_lpmf<
-                                                 propto__>(0, theta));
-                                current_statement__ = 153;
-                                lp_accum__.add(stan::math::gamma_lpdf<
-                                                 propto__>(
-                                                 stan::model::rvalue(
-                                                   yreal_obs, "yreal_obs",
-                                                   stan::model::index_uni(i)),
-                                                 stan::model::rvalue(gammaA,
-                                                   "gammaA",
-                                                   stan::model::index_uni(1)),
-                                                 (stan::model::rvalue(gammaA,
-                                                    "gammaA",
-                                                    stan::model::index_uni(1))
-                                                 / lambda_obs_i)));
-                              }
-                            }
-                          }
-                          current_statement__ = 170;
-                          if (stan::math::logical_gt(n_em, 0)) {
-                            current_statement__ = 168;
-                            for (int i = 1; i <= n_em; ++i) {
-                              local_scalar_t__ lambda_em_i = DUMMY_VAR__;
-                              current_statement__ = 161;
-                              lambda_em_i = (stan::model::rvalue(lambda_base,
-                                               "lambda_base",
-                                               stan::model::index_uni(
-                                                 stan::model::rvalue(
-                                                   time_idx_em,
-                                                   "time_idx_em",
-                                                   stan::model::index_uni(i))))
-                                *
-                                stan::model::rvalue(effort_em, "effort_em",
-                                  stan::model::index_uni(i)));
-                              current_statement__ = 166;
-                              if (stan::math::logical_eq(
-                                    stan::model::rvalue(yint_em, "yint_em",
-                                      stan::model::index_uni(i)), 0)) {
-                                current_statement__ = 165;
-                                lp_accum__.add(stan::math::bernoulli_lpmf<
-                                                 propto__>(1, theta));
-                              } else {
-                                current_statement__ = 162;
-                                lp_accum__.add(stan::math::bernoulli_lpmf<
-                                                 propto__>(0, theta));
-                                current_statement__ = 163;
-                                lp_accum__.add(stan::math::gamma_lpdf<
-                                                 propto__>(
-                                                 stan::model::rvalue(
-                                                   yreal_em, "yreal_em",
-                                                   stan::model::index_uni(i)),
-                                                 stan::model::rvalue(gammaA,
-                                                   "gammaA",
-                                                   stan::model::index_uni(1)),
-                                                 (stan::model::rvalue(gammaA,
-                                                    "gammaA",
-                                                    stan::model::index_uni(1))
-                                                 / lambda_em_i)));
-                              }
-                            }
-                          }
-                          current_statement__ = 180;
-                          if (stan::math::logical_gt(n_both, 0)) {
-                            current_statement__ = 178;
-                            for (int i = 1; i <= n_both; ++i) {
-                              local_scalar_t__ lambda_both_i = DUMMY_VAR__;
-                              current_statement__ = 171;
-                              lambda_both_i = (stan::model::rvalue(
-                                                 lambda_base, "lambda_base",
-                                                 stan::model::index_uni(
-                                                   stan::model::rvalue(
-                                                     time_idx_both,
-                                                     "time_idx_both",
-                                                     stan::model::index_uni(i))))
-                                *
-                                stan::model::rvalue(effort_both,
-                                  "effort_both", stan::model::index_uni(i)));
-                              current_statement__ = 176;
-                              if (stan::math::logical_eq(
-                                    stan::model::rvalue(yint_both,
-                                      "yint_both", stan::model::index_uni(i)),
+                              current_statement__ = 304;
+                              if (stan::math::logical_gt(
+                                    stan::model::rvalue(effort_obs,
+                                      "effort_obs", stan::model::index_uni(i)),
                                     0)) {
-                                current_statement__ = 175;
-                                lp_accum__.add(stan::math::bernoulli_lpmf<
-                                                 propto__>(1, theta));
-                              } else {
-                                current_statement__ = 172;
-                                lp_accum__.add(stan::math::bernoulli_lpmf<
-                                                 propto__>(0, theta));
-                                current_statement__ = 173;
-                                lp_accum__.add(stan::math::gamma_lpdf<
-                                                 propto__>(
-                                                 stan::model::rvalue(
-                                                   yreal_both, "yreal_both",
-                                                   stan::model::index_uni(i)),
-                                                 stan::model::rvalue(gammaA,
-                                                   "gammaA",
-                                                   stan::model::index_uni(1)),
-                                                 (stan::model::rvalue(gammaA,
-                                                    "gammaA",
-                                                    stan::model::index_uni(1))
-                                                 / lambda_both_i)));
-                              }
-                            }
-                          }
-                        } else {
-                          current_statement__ = 149;
-                          if (stan::math::logical_eq(family, 9)) {
-                            current_statement__ = 129;
-                            lp_accum__.add(stan::math::student_t_lpdf<
-                                             propto__>(sigma_logn, 3, 0, 2));
-                            current_statement__ = 135;
-                            if (stan::math::logical_gt(n_obs, 0)) {
-                              current_statement__ = 133;
-                              for (int i = 1; i <= n_obs; ++i) {
                                 local_scalar_t__ lambda_obs_i = DUMMY_VAR__;
-                                current_statement__ = 130;
+                                current_statement__ = 295;
                                 lambda_obs_i = (stan::model::rvalue(
                                                   lambda_base, "lambda_base",
                                                   stan::model::index_uni(
@@ -2579,24 +2843,55 @@ public:
                                   *
                                   stan::model::rvalue(effort_obs,
                                     "effort_obs", stan::model::index_uni(i)));
-                                current_statement__ = 131;
-                                lp_accum__.add(stan::math::normal_lpdf<
-                                                 propto__>(
-                                                 stan::model::rvalue(
-                                                   yreal_obs, "yreal_obs",
-                                                   stan::model::index_uni(i)),
-                                                 lambda_obs_i,
-                                                 stan::model::rvalue(
-                                                   sigma_logn, "sigma_logn",
-                                                   stan::model::index_uni(1))));
+                                current_statement__ = 302;
+                                if (stan::math::logical_eq(
+                                      stan::model::rvalue(yint_obs,
+                                        "yint_obs", stan::model::index_uni(i)),
+                                      0)) {
+                                  current_statement__ = 301;
+                                  lp_accum__.add(stan::math::bernoulli_lpmf<
+                                                   propto__>(1, theta));
+                                } else {
+                                  current_statement__ = 296;
+                                  lp_accum__.add(stan::math::bernoulli_lpmf<
+                                                   propto__>(0, theta));
+                                  current_statement__ = 299;
+                                  if (stan::math::logical_gt(
+                                        stan::model::rvalue(yreal_obs,
+                                          "yreal_obs",
+                                          stan::model::index_uni(i)), 0)) {
+                                    current_statement__ = 297;
+                                    lp_accum__.add(stan::math::gamma_lpdf<
+                                                     propto__>(
+                                                     stan::model::rvalue(
+                                                       yreal_obs,
+                                                       "yreal_obs",
+                                                       stan::model::index_uni(
+                                                         i)),
+                                                     stan::model::rvalue(
+                                                       gammaA, "gammaA",
+                                                       stan::model::index_uni(
+                                                         1)),
+                                                     (stan::model::rvalue(
+                                                        gammaA, "gammaA",
+                                                        stan::model::index_uni(
+                                                          1)) / lambda_obs_i)));
+                                  }
+                                }
                               }
                             }
-                            current_statement__ = 141;
-                            if (stan::math::logical_gt(n_em, 0)) {
-                              current_statement__ = 139;
-                              for (int i = 1; i <= n_em; ++i) {
+                          }
+                          current_statement__ = 322;
+                          if (stan::math::logical_gt(n_em, 0)) {
+                            current_statement__ = 320;
+                            for (int i = 1; i <= n_em; ++i) {
+                              current_statement__ = 318;
+                              if (stan::math::logical_gt(
+                                    stan::model::rvalue(effort_em,
+                                      "effort_em", stan::model::index_uni(i)),
+                                    0)) {
                                 local_scalar_t__ lambda_em_i = DUMMY_VAR__;
-                                current_statement__ = 136;
+                                current_statement__ = 309;
                                 lambda_em_i = (stan::model::rvalue(
                                                  lambda_base, "lambda_base",
                                                  stan::model::index_uni(
@@ -2607,24 +2902,53 @@ public:
                                   *
                                   stan::model::rvalue(effort_em, "effort_em",
                                     stan::model::index_uni(i)));
-                                current_statement__ = 137;
-                                lp_accum__.add(stan::math::normal_lpdf<
-                                                 propto__>(
-                                                 stan::model::rvalue(
-                                                   yreal_em, "yreal_em",
-                                                   stan::model::index_uni(i)),
-                                                 lambda_em_i,
-                                                 stan::model::rvalue(
-                                                   sigma_logn, "sigma_logn",
-                                                   stan::model::index_uni(1))));
+                                current_statement__ = 316;
+                                if (stan::math::logical_eq(
+                                      stan::model::rvalue(yint_em, "yint_em",
+                                        stan::model::index_uni(i)), 0)) {
+                                  current_statement__ = 315;
+                                  lp_accum__.add(stan::math::bernoulli_lpmf<
+                                                   propto__>(1, theta));
+                                } else {
+                                  current_statement__ = 310;
+                                  lp_accum__.add(stan::math::bernoulli_lpmf<
+                                                   propto__>(0, theta));
+                                  current_statement__ = 313;
+                                  if (stan::math::logical_gt(
+                                        stan::model::rvalue(yreal_em,
+                                          "yreal_em",
+                                          stan::model::index_uni(i)), 0)) {
+                                    current_statement__ = 311;
+                                    lp_accum__.add(stan::math::gamma_lpdf<
+                                                     propto__>(
+                                                     stan::model::rvalue(
+                                                       yreal_em, "yreal_em",
+                                                       stan::model::index_uni(
+                                                         i)),
+                                                     stan::model::rvalue(
+                                                       gammaA, "gammaA",
+                                                       stan::model::index_uni(
+                                                         1)),
+                                                     (stan::model::rvalue(
+                                                        gammaA, "gammaA",
+                                                        stan::model::index_uni(
+                                                          1)) / lambda_em_i)));
+                                  }
+                                }
                               }
                             }
-                            current_statement__ = 147;
-                            if (stan::math::logical_gt(n_both, 0)) {
-                              current_statement__ = 145;
-                              for (int i = 1; i <= n_both; ++i) {
+                          }
+                          current_statement__ = 336;
+                          if (stan::math::logical_gt(n_both, 0)) {
+                            current_statement__ = 334;
+                            for (int i = 1; i <= n_both; ++i) {
+                              current_statement__ = 332;
+                              if (stan::math::logical_gt(
+                                    stan::model::rvalue(effort_both,
+                                      "effort_both",
+                                      stan::model::index_uni(i)), 0)) {
                                 local_scalar_t__ lambda_both_i = DUMMY_VAR__;
-                                current_statement__ = 142;
+                                current_statement__ = 323;
                                 lambda_both_i = (stan::model::rvalue(
                                                    lambda_base,
                                                    "lambda_base",
@@ -2637,30 +2961,62 @@ public:
                                   *
                                   stan::model::rvalue(effort_both,
                                     "effort_both", stan::model::index_uni(i)));
-                                current_statement__ = 143;
-                                lp_accum__.add(stan::math::normal_lpdf<
-                                                 propto__>(
-                                                 stan::model::rvalue(
-                                                   yreal_both, "yreal_both",
-                                                   stan::model::index_uni(i)),
-                                                 lambda_both_i,
-                                                 stan::model::rvalue(
-                                                   sigma_logn, "sigma_logn",
-                                                   stan::model::index_uni(1))));
+                                current_statement__ = 330;
+                                if (stan::math::logical_eq(
+                                      stan::model::rvalue(yint_both,
+                                        "yint_both",
+                                        stan::model::index_uni(i)), 0)) {
+                                  current_statement__ = 329;
+                                  lp_accum__.add(stan::math::bernoulli_lpmf<
+                                                   propto__>(1, theta));
+                                } else {
+                                  current_statement__ = 324;
+                                  lp_accum__.add(stan::math::bernoulli_lpmf<
+                                                   propto__>(0, theta));
+                                  current_statement__ = 327;
+                                  if (stan::math::logical_gt(
+                                        stan::model::rvalue(yreal_both,
+                                          "yreal_both",
+                                          stan::model::index_uni(i)), 0)) {
+                                    current_statement__ = 325;
+                                    lp_accum__.add(stan::math::gamma_lpdf<
+                                                     propto__>(
+                                                     stan::model::rvalue(
+                                                       yreal_both,
+                                                       "yreal_both",
+                                                       stan::model::index_uni(
+                                                         i)),
+                                                     stan::model::rvalue(
+                                                       gammaA, "gammaA",
+                                                       stan::model::index_uni(
+                                                         1)),
+                                                     (stan::model::rvalue(
+                                                        gammaA, "gammaA",
+                                                        stan::model::index_uni(
+                                                          1)) /
+                                                     lambda_both_i)));
+                                  }
+                                }
                               }
                             }
-                          } else {
-                            current_statement__ = 128;
-                            if (stan::math::logical_eq(family, 10)) {
-                              current_statement__ = 96;
-                              lp_accum__.add(stan::math::student_t_lpdf<
-                                               propto__>(sigma_logn, 3, 0, 2));
-                              current_statement__ = 106;
-                              if (stan::math::logical_gt(n_obs, 0)) {
-                                current_statement__ = 104;
-                                for (int i = 1; i <= n_obs; ++i) {
+                          }
+                        } else {
+                          current_statement__ = 293;
+                          if (stan::math::logical_eq(family, 9)) {
+                            current_statement__ = 267;
+                            lp_accum__.add(stan::math::student_t_lpdf<
+                                             propto__>(sigma_logn, 3, 0, 2));
+                            current_statement__ = 275;
+                            if (stan::math::logical_gt(n_obs, 0)) {
+                              current_statement__ = 273;
+                              for (int i = 1; i <= n_obs; ++i) {
+                                current_statement__ = 271;
+                                if (stan::math::logical_gt(
+                                      stan::model::rvalue(effort_obs,
+                                        "effort_obs",
+                                        stan::model::index_uni(i)), 0)) {
                                   local_scalar_t__ lambda_obs_i = DUMMY_VAR__;
-                                  current_statement__ = 97;
+                                  current_statement__ = 268;
                                   lambda_obs_i = (stan::model::rvalue(
                                                     lambda_base,
                                                     "lambda_base",
@@ -2673,40 +3029,31 @@ public:
                                     *
                                     stan::model::rvalue(effort_obs,
                                       "effort_obs", stan::model::index_uni(i)));
-                                  current_statement__ = 102;
-                                  if (stan::math::logical_eq(
-                                        stan::model::rvalue(yint_obs,
-                                          "yint_obs",
-                                          stan::model::index_uni(i)), 0)) {
-                                    current_statement__ = 101;
-                                    lp_accum__.add(stan::math::bernoulli_lpmf<
-                                                     propto__>(1, theta));
-                                  } else {
-                                    current_statement__ = 98;
-                                    lp_accum__.add(stan::math::bernoulli_lpmf<
-                                                     propto__>(0, theta));
-                                    current_statement__ = 99;
-                                    lp_accum__.add(stan::math::normal_lpdf<
-                                                     propto__>(
-                                                     stan::model::rvalue(
-                                                       yreal_obs,
-                                                       "yreal_obs",
-                                                       stan::model::index_uni(
-                                                         i)), lambda_obs_i,
-                                                     stan::model::rvalue(
-                                                       sigma_logn,
-                                                       "sigma_logn",
-                                                       stan::model::index_uni(
-                                                         1))));
-                                  }
+                                  current_statement__ = 269;
+                                  lp_accum__.add(stan::math::normal_lpdf<
+                                                   propto__>(
+                                                   stan::model::rvalue(
+                                                     yreal_obs, "yreal_obs",
+                                                     stan::model::index_uni(i)),
+                                                   lambda_obs_i,
+                                                   stan::model::rvalue(
+                                                     sigma_logn,
+                                                     "sigma_logn",
+                                                     stan::model::index_uni(1))));
                                 }
                               }
-                              current_statement__ = 116;
-                              if (stan::math::logical_gt(n_em, 0)) {
-                                current_statement__ = 114;
-                                for (int i = 1; i <= n_em; ++i) {
+                            }
+                            current_statement__ = 283;
+                            if (stan::math::logical_gt(n_em, 0)) {
+                              current_statement__ = 281;
+                              for (int i = 1; i <= n_em; ++i) {
+                                current_statement__ = 279;
+                                if (stan::math::logical_gt(
+                                      stan::model::rvalue(effort_em,
+                                        "effort_em",
+                                        stan::model::index_uni(i)), 0)) {
                                   local_scalar_t__ lambda_em_i = DUMMY_VAR__;
-                                  current_statement__ = 107;
+                                  current_statement__ = 276;
                                   lambda_em_i = (stan::model::rvalue(
                                                    lambda_base,
                                                    "lambda_base",
@@ -2719,40 +3066,32 @@ public:
                                     *
                                     stan::model::rvalue(effort_em,
                                       "effort_em", stan::model::index_uni(i)));
-                                  current_statement__ = 112;
-                                  if (stan::math::logical_eq(
-                                        stan::model::rvalue(yint_em,
-                                          "yint_em",
-                                          stan::model::index_uni(i)), 0)) {
-                                    current_statement__ = 111;
-                                    lp_accum__.add(stan::math::bernoulli_lpmf<
-                                                     propto__>(1, theta));
-                                  } else {
-                                    current_statement__ = 108;
-                                    lp_accum__.add(stan::math::bernoulli_lpmf<
-                                                     propto__>(0, theta));
-                                    current_statement__ = 109;
-                                    lp_accum__.add(stan::math::normal_lpdf<
-                                                     propto__>(
-                                                     stan::model::rvalue(
-                                                       yreal_em, "yreal_em",
-                                                       stan::model::index_uni(
-                                                         i)), lambda_em_i,
-                                                     stan::model::rvalue(
-                                                       sigma_logn,
-                                                       "sigma_logn",
-                                                       stan::model::index_uni(
-                                                         1))));
-                                  }
+                                  current_statement__ = 277;
+                                  lp_accum__.add(stan::math::normal_lpdf<
+                                                   propto__>(
+                                                   stan::model::rvalue(
+                                                     yreal_em, "yreal_em",
+                                                     stan::model::index_uni(i)),
+                                                   lambda_em_i,
+                                                   stan::model::rvalue(
+                                                     sigma_logn,
+                                                     "sigma_logn",
+                                                     stan::model::index_uni(1))));
                                 }
                               }
-                              current_statement__ = 126;
-                              if (stan::math::logical_gt(n_both, 0)) {
-                                current_statement__ = 124;
-                                for (int i = 1; i <= n_both; ++i) {
+                            }
+                            current_statement__ = 291;
+                            if (stan::math::logical_gt(n_both, 0)) {
+                              current_statement__ = 289;
+                              for (int i = 1; i <= n_both; ++i) {
+                                current_statement__ = 287;
+                                if (stan::math::logical_gt(
+                                      stan::model::rvalue(effort_both,
+                                        "effort_both",
+                                        stan::model::index_uni(i)), 0)) {
                                   local_scalar_t__ lambda_both_i =
                                     DUMMY_VAR__;
-                                  current_statement__ = 117;
+                                  current_statement__ = 284;
                                   lambda_both_i = (stan::model::rvalue(
                                                      lambda_base,
                                                      "lambda_base",
@@ -2766,31 +3105,187 @@ public:
                                     stan::model::rvalue(effort_both,
                                       "effort_both",
                                       stan::model::index_uni(i)));
-                                  current_statement__ = 122;
-                                  if (stan::math::logical_eq(
-                                        stan::model::rvalue(yint_both,
-                                          "yint_both",
+                                  current_statement__ = 285;
+                                  lp_accum__.add(stan::math::normal_lpdf<
+                                                   propto__>(
+                                                   stan::model::rvalue(
+                                                     yreal_both,
+                                                     "yreal_both",
+                                                     stan::model::index_uni(i)),
+                                                   lambda_both_i,
+                                                   stan::model::rvalue(
+                                                     sigma_logn,
+                                                     "sigma_logn",
+                                                     stan::model::index_uni(1))));
+                                }
+                              }
+                            }
+                          } else {
+                            current_statement__ = 266;
+                            if (stan::math::logical_eq(family, 10)) {
+                              current_statement__ = 228;
+                              lp_accum__.add(stan::math::student_t_lpdf<
+                                               propto__>(sigma_logn, 3, 0, 2));
+                              current_statement__ = 240;
+                              if (stan::math::logical_gt(n_obs, 0)) {
+                                current_statement__ = 238;
+                                for (int i = 1; i <= n_obs; ++i) {
+                                  current_statement__ = 236;
+                                  if (stan::math::logical_gt(
+                                        stan::model::rvalue(effort_obs,
+                                          "effort_obs",
                                           stan::model::index_uni(i)), 0)) {
-                                    current_statement__ = 121;
-                                    lp_accum__.add(stan::math::bernoulli_lpmf<
-                                                     propto__>(1, theta));
-                                  } else {
-                                    current_statement__ = 118;
-                                    lp_accum__.add(stan::math::bernoulli_lpmf<
-                                                     propto__>(0, theta));
-                                    current_statement__ = 119;
-                                    lp_accum__.add(stan::math::normal_lpdf<
-                                                     propto__>(
-                                                     stan::model::rvalue(
-                                                       yreal_both,
-                                                       "yreal_both",
+                                    local_scalar_t__ lambda_obs_i =
+                                      DUMMY_VAR__;
+                                    current_statement__ = 229;
+                                    lambda_obs_i = (stan::model::rvalue(
+                                                      lambda_base,
+                                                      "lambda_base",
+                                                      stan::model::index_uni(
+                                                        stan::model::rvalue(
+                                                          time_idx_obs,
+                                                          "time_idx_obs",
+                                                          stan::model::index_uni(
+                                                            i))))
+                                      *
+                                      stan::model::rvalue(effort_obs,
+                                        "effort_obs",
+                                        stan::model::index_uni(i)));
+                                    current_statement__ = 234;
+                                    if (stan::math::logical_eq(
+                                          stan::model::rvalue(yint_obs,
+                                            "yint_obs",
+                                            stan::model::index_uni(i)), 0)) {
+                                      current_statement__ = 233;
+                                      lp_accum__.add(stan::math::bernoulli_lpmf<
+                                                       propto__>(1, theta));
+                                    } else {
+                                      current_statement__ = 230;
+                                      lp_accum__.add(stan::math::bernoulli_lpmf<
+                                                       propto__>(0, theta));
+                                      current_statement__ = 231;
+                                      lp_accum__.add(stan::math::normal_lpdf<
+                                                       propto__>(
+                                                       stan::model::rvalue(
+                                                         yreal_obs,
+                                                         "yreal_obs",
+                                                         stan::model::index_uni(
+                                                           i)), lambda_obs_i,
+                                                       stan::model::rvalue(
+                                                         sigma_logn,
+                                                         "sigma_logn",
+                                                         stan::model::index_uni(
+                                                           1))));
+                                    }
+                                  }
+                                }
+                              }
+                              current_statement__ = 252;
+                              if (stan::math::logical_gt(n_em, 0)) {
+                                current_statement__ = 250;
+                                for (int i = 1; i <= n_em; ++i) {
+                                  current_statement__ = 248;
+                                  if (stan::math::logical_gt(
+                                        stan::model::rvalue(effort_em,
+                                          "effort_em",
+                                          stan::model::index_uni(i)), 0)) {
+                                    local_scalar_t__ lambda_em_i =
+                                      DUMMY_VAR__;
+                                    current_statement__ = 241;
+                                    lambda_em_i = (stan::model::rvalue(
+                                                     lambda_base,
+                                                     "lambda_base",
+                                                     stan::model::index_uni(
+                                                       stan::model::rvalue(
+                                                         time_idx_em,
+                                                         "time_idx_em",
+                                                         stan::model::index_uni(
+                                                           i))))
+                                      *
+                                      stan::model::rvalue(effort_em,
+                                        "effort_em",
+                                        stan::model::index_uni(i)));
+                                    current_statement__ = 246;
+                                    if (stan::math::logical_eq(
+                                          stan::model::rvalue(yint_em,
+                                            "yint_em",
+                                            stan::model::index_uni(i)), 0)) {
+                                      current_statement__ = 245;
+                                      lp_accum__.add(stan::math::bernoulli_lpmf<
+                                                       propto__>(1, theta));
+                                    } else {
+                                      current_statement__ = 242;
+                                      lp_accum__.add(stan::math::bernoulli_lpmf<
+                                                       propto__>(0, theta));
+                                      current_statement__ = 243;
+                                      lp_accum__.add(stan::math::normal_lpdf<
+                                                       propto__>(
+                                                       stan::model::rvalue(
+                                                         yreal_em,
+                                                         "yreal_em",
+                                                         stan::model::index_uni(
+                                                           i)), lambda_em_i,
+                                                       stan::model::rvalue(
+                                                         sigma_logn,
+                                                         "sigma_logn",
+                                                         stan::model::index_uni(
+                                                           1))));
+                                    }
+                                  }
+                                }
+                              }
+                              current_statement__ = 264;
+                              if (stan::math::logical_gt(n_both, 0)) {
+                                current_statement__ = 262;
+                                for (int i = 1; i <= n_both; ++i) {
+                                  current_statement__ = 260;
+                                  if (stan::math::logical_gt(
+                                        stan::model::rvalue(effort_both,
+                                          "effort_both",
+                                          stan::model::index_uni(i)), 0)) {
+                                    local_scalar_t__ lambda_both_i =
+                                      DUMMY_VAR__;
+                                    current_statement__ = 253;
+                                    lambda_both_i = (stan::model::rvalue(
+                                                       lambda_base,
+                                                       "lambda_base",
                                                        stan::model::index_uni(
-                                                         i)), lambda_both_i,
-                                                     stan::model::rvalue(
-                                                       sigma_logn,
-                                                       "sigma_logn",
-                                                       stan::model::index_uni(
-                                                         1))));
+                                                         stan::model::rvalue(
+                                                           time_idx_both,
+                                                           "time_idx_both",
+                                                           stan::model::index_uni(
+                                                             i))))
+                                      *
+                                      stan::model::rvalue(effort_both,
+                                        "effort_both",
+                                        stan::model::index_uni(i)));
+                                    current_statement__ = 258;
+                                    if (stan::math::logical_eq(
+                                          stan::model::rvalue(yint_both,
+                                            "yint_both",
+                                            stan::model::index_uni(i)), 0)) {
+                                      current_statement__ = 257;
+                                      lp_accum__.add(stan::math::bernoulli_lpmf<
+                                                       propto__>(1, theta));
+                                    } else {
+                                      current_statement__ = 254;
+                                      lp_accum__.add(stan::math::bernoulli_lpmf<
+                                                       propto__>(0, theta));
+                                      current_statement__ = 255;
+                                      lp_accum__.add(stan::math::normal_lpdf<
+                                                       propto__>(
+                                                       stan::model::rvalue(
+                                                         yreal_both,
+                                                         "yreal_both",
+                                                         stan::model::index_uni(
+                                                           i)),
+                                                       lambda_both_i,
+                                                       stan::model::rvalue(
+                                                         sigma_logn,
+                                                         "sigma_logn",
+                                                         stan::model::index_uni(
+                                                           1))));
+                                    }
                                   }
                                 }
                               }
@@ -3004,53 +3499,581 @@ public:
         return ;
       }
       Eigen::Matrix<double,-1,1> log_lik =
-        Eigen::Matrix<double,-1,1>::Constant(n_year,
+        Eigen::Matrix<double,-1,1>::Constant(log_lik_1dim__,
           std::numeric_limits<double>::quiet_NaN());
       std::vector<int> y_new =
         std::vector<int>(y_new_1dim__, std::numeric_limits<int>::min());
       Eigen::Matrix<double,-1,1> y_new_real =
         Eigen::Matrix<double,-1,1>::Constant(y_new_real_1dim__,
           std::numeric_limits<double>::quiet_NaN());
-      current_statement__ = 84;
-      for (int t = 1; t <= n_year; ++t) {
+      current_statement__ = 172;
+      if (stan::math::logical_eq(multi_stream, 0)) {
+        current_statement__ = 170;
+        for (int n = 1; n <= n_row; ++n) {
+          double lambda_n = std::numeric_limits<double>::quiet_NaN();
+          current_statement__ = 117;
+          lambda_n = (stan::model::rvalue(lambda_base, "lambda_base",
+                        stan::model::index_uni(
+                          stan::model::rvalue(time, "time",
+                            stan::model::index_uni(n))))
+            *
+            stan::model::rvalue(effort, "effort", stan::model::index_uni(n)));
+          double log_lambda_n = std::numeric_limits<double>::quiet_NaN();
+          current_statement__ = 118;
+          log_lambda_n = (stan::model::rvalue(log_lambda_base,
+                            "log_lambda_base",
+                            stan::model::index_uni(
+                              stan::model::rvalue(time, "time",
+                                stan::model::index_uni(n))))
+            +
+            stan::math::log(
+              stan::model::rvalue(effort, "effort", stan::model::index_uni(n))));
+          current_statement__ = 168;
+          if (stan::math::logical_eq(family, 1)) {
+            current_statement__ = 166;
+            stan::model::assign(log_lik,
+              stan::math::poisson_log_lpmf<false>(
+                stan::model::rvalue(yint, "yint", stan::model::index_uni(n)),
+                log_lambda_n), "assigning variable log_lik",
+              stan::model::index_uni(n));
+          } else {
+            current_statement__ = 165;
+            if (stan::math::logical_eq(family, 2)) {
+              current_statement__ = 163;
+              stan::model::assign(log_lik,
+                stan::math::neg_binomial_2_log_lpmf<false>(
+                  stan::model::rvalue(yint, "yint", stan::model::index_uni(n)),
+                  log_lambda_n,
+                  stan::model::rvalue(nb2_phi, "nb2_phi",
+                    stan::model::index_uni(1))),
+                "assigning variable log_lik", stan::model::index_uni(n));
+            } else {
+              current_statement__ = 162;
+              if (stan::math::logical_eq(family, 3)) {
+                current_statement__ = 160;
+                if (stan::math::logical_eq(
+                      stan::model::rvalue(yint, "yint",
+                        stan::model::index_uni(n)), 0)) {
+                  current_statement__ = 158;
+                  stan::model::assign(log_lik,
+                    stan::math::log(
+                      stan::model::rvalue(theta, "theta",
+                        stan::model::index_uni(1))),
+                    "assigning variable log_lik", stan::model::index_uni(n));
+                } else {
+                  current_statement__ = 156;
+                  stan::model::assign(log_lik,
+                    (stan::math::log1m(
+                       stan::model::rvalue(theta, "theta",
+                         stan::model::index_uni(1))) +
+                    stan::math::poisson_log_lpmf<false>(
+                      stan::model::rvalue(yint, "yint",
+                        stan::model::index_uni(n)), log_lambda_n)),
+                    "assigning variable log_lik", stan::model::index_uni(n));
+                }
+              } else {
+                current_statement__ = 155;
+                if (stan::math::logical_eq(family, 4)) {
+                  current_statement__ = 153;
+                  if (stan::math::logical_eq(
+                        stan::model::rvalue(yint, "yint",
+                          stan::model::index_uni(n)), 0)) {
+                    current_statement__ = 151;
+                    stan::model::assign(log_lik,
+                      stan::math::log(
+                        stan::model::rvalue(theta, "theta",
+                          stan::model::index_uni(1))),
+                      "assigning variable log_lik", stan::model::index_uni(n));
+                  } else {
+                    current_statement__ = 149;
+                    stan::model::assign(log_lik,
+                      (stan::math::log1m(
+                         stan::model::rvalue(theta, "theta",
+                           stan::model::index_uni(1))) +
+                      stan::math::neg_binomial_2_log_lpmf<false>(
+                        stan::model::rvalue(yint, "yint",
+                          stan::model::index_uni(n)), log_lambda_n,
+                        stan::model::rvalue(nb2_phi, "nb2_phi",
+                          stan::model::index_uni(1)))),
+                      "assigning variable log_lik", stan::model::index_uni(n));
+                  }
+                } else {
+                  current_statement__ = 148;
+                  if (stan::math::logical_eq(family, 5)) {
+                    current_statement__ = 146;
+                    stan::model::assign(log_lik,
+                      stan::math::lognormal_lpdf<false>(
+                        stan::model::rvalue(yreal, "yreal",
+                          stan::model::index_uni(n)), log_lambda_n,
+                        stan::model::rvalue(sigma_logn, "sigma_logn",
+                          stan::model::index_uni(1))),
+                      "assigning variable log_lik", stan::model::index_uni(n));
+                  } else {
+                    current_statement__ = 145;
+                    if (stan::math::logical_eq(family, 6)) {
+                      current_statement__ = 143;
+                      stan::model::assign(log_lik,
+                        stan::math::gamma_lpdf<false>(
+                          stan::model::rvalue(yreal, "yreal",
+                            stan::model::index_uni(n)),
+                          stan::model::rvalue(gammaA, "gammaA",
+                            stan::model::index_uni(1)),
+                          (stan::model::rvalue(gammaA, "gammaA",
+                             stan::model::index_uni(1)) / lambda_n)),
+                        "assigning variable log_lik",
+                        stan::model::index_uni(n));
+                    } else {
+                      current_statement__ = 142;
+                      if (stan::math::logical_eq(family, 7)) {
+                        current_statement__ = 140;
+                        if (stan::math::logical_eq(
+                              stan::model::rvalue(yreal, "yreal",
+                                stan::model::index_uni(n)), 0)) {
+                          current_statement__ = 138;
+                          stan::model::assign(log_lik,
+                            stan::math::log(
+                              stan::model::rvalue(theta, "theta",
+                                stan::model::index_uni(1))),
+                            "assigning variable log_lik",
+                            stan::model::index_uni(n));
+                        } else {
+                          current_statement__ = 136;
+                          stan::model::assign(log_lik,
+                            (stan::math::log1m(
+                               stan::model::rvalue(theta, "theta",
+                                 stan::model::index_uni(1))) +
+                            stan::math::lognormal_lpdf<false>(
+                              stan::model::rvalue(yreal, "yreal",
+                                stan::model::index_uni(n)), log_lambda_n,
+                              stan::model::rvalue(sigma_logn, "sigma_logn",
+                                stan::model::index_uni(1)))),
+                            "assigning variable log_lik",
+                            stan::model::index_uni(n));
+                        }
+                      } else {
+                        current_statement__ = 135;
+                        if (stan::math::logical_eq(family, 8)) {
+                          current_statement__ = 133;
+                          if (stan::math::logical_eq(
+                                stan::model::rvalue(yreal, "yreal",
+                                  stan::model::index_uni(n)), 0)) {
+                            current_statement__ = 131;
+                            stan::model::assign(log_lik,
+                              stan::math::log(
+                                stan::model::rvalue(theta, "theta",
+                                  stan::model::index_uni(1))),
+                              "assigning variable log_lik",
+                              stan::model::index_uni(n));
+                          } else {
+                            current_statement__ = 129;
+                            stan::model::assign(log_lik,
+                              (stan::math::log1m(
+                                 stan::model::rvalue(theta, "theta",
+                                   stan::model::index_uni(1))) +
+                              stan::math::gamma_lpdf<false>(
+                                stan::model::rvalue(yreal, "yreal",
+                                  stan::model::index_uni(n)),
+                                stan::model::rvalue(gammaA, "gammaA",
+                                  stan::model::index_uni(1)),
+                                (stan::model::rvalue(gammaA, "gammaA",
+                                   stan::model::index_uni(1)) / lambda_n))),
+                              "assigning variable log_lik",
+                              stan::model::index_uni(n));
+                          }
+                        } else {
+                          current_statement__ = 128;
+                          if (stan::math::logical_eq(family, 9)) {
+                            current_statement__ = 126;
+                            stan::model::assign(log_lik,
+                              stan::math::normal_lpdf<false>(
+                                stan::model::rvalue(yreal, "yreal",
+                                  stan::model::index_uni(n)), lambda_n,
+                                stan::model::rvalue(sigma_logn, "sigma_logn",
+                                  stan::model::index_uni(1))),
+                              "assigning variable log_lik",
+                              stan::model::index_uni(n));
+                          } else {
+                            current_statement__ = 125;
+                            if (stan::math::logical_eq(family, 10)) {
+                              current_statement__ = 123;
+                              if (stan::math::logical_eq(
+                                    stan::model::rvalue(yreal, "yreal",
+                                      stan::model::index_uni(n)), 0)) {
+                                current_statement__ = 121;
+                                stan::model::assign(log_lik,
+                                  stan::math::log(
+                                    stan::model::rvalue(theta, "theta",
+                                      stan::model::index_uni(1))),
+                                  "assigning variable log_lik",
+                                  stan::model::index_uni(n));
+                              } else {
+                                current_statement__ = 119;
+                                stan::model::assign(log_lik,
+                                  (stan::math::log1m(
+                                     stan::model::rvalue(theta, "theta",
+                                       stan::model::index_uni(1))) +
+                                  stan::math::normal_lpdf<false>(
+                                    stan::model::rvalue(yreal, "yreal",
+                                      stan::model::index_uni(n)), lambda_n,
+                                    stan::model::rvalue(sigma_logn,
+                                      "sigma_logn", stan::model::index_uni(1)))),
+                                  "assigning variable log_lik",
+                                  stan::model::index_uni(n));
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      } else {
+        int idx = std::numeric_limits<int>::min();
         current_statement__ = 40;
-        stan::model::assign(log_lik, 0, "assigning variable log_lik",
-          stan::model::index_uni(t));
-        current_statement__ = 82;
+        idx = 1;
+        current_statement__ = 65;
+        for (int i = 1; i <= n_obs; ++i) {
+          double lambda_obs_i = std::numeric_limits<double>::quiet_NaN();
+          current_statement__ = 41;
+          lambda_obs_i = (stan::model::rvalue(lambda_base, "lambda_base",
+                            stan::model::index_uni(
+                              stan::model::rvalue(time_idx_obs,
+                                "time_idx_obs", stan::model::index_uni(i))))
+            *
+            stan::model::rvalue(effort_obs, "effort_obs",
+              stan::model::index_uni(i)));
+          double log_lambda_obs_i = std::numeric_limits<double>::quiet_NaN();
+          current_statement__ = 42;
+          log_lambda_obs_i = (stan::model::rvalue(log_lambda_base,
+                                "log_lambda_base",
+                                stan::model::index_uni(
+                                  stan::model::rvalue(time_idx_obs,
+                                    "time_idx_obs", stan::model::index_uni(i))))
+            +
+            stan::math::log(
+              stan::model::rvalue(effort_obs, "effort_obs",
+                stan::model::index_uni(i))));
+          current_statement__ = 62;
+          if (stan::math::logical_eq(family, 1)) {
+            current_statement__ = 60;
+            stan::model::assign(log_lik,
+              stan::math::poisson_log_lpmf<false>(
+                stan::model::rvalue(yint_obs, "yint_obs",
+                  stan::model::index_uni(i)), log_lambda_obs_i),
+              "assigning variable log_lik", stan::model::index_uni(idx));
+          } else {
+            current_statement__ = 59;
+            if (stan::math::logical_eq(family, 2)) {
+              current_statement__ = 57;
+              stan::model::assign(log_lik,
+                stan::math::neg_binomial_2_log_lpmf<false>(
+                  stan::model::rvalue(yint_obs, "yint_obs",
+                    stan::model::index_uni(i)), log_lambda_obs_i,
+                  stan::model::rvalue(nb2_phi, "nb2_phi",
+                    stan::model::index_uni(1))),
+                "assigning variable log_lik", stan::model::index_uni(idx));
+            } else {
+              current_statement__ = 56;
+              if (stan::math::logical_eq(family, 3)) {
+                current_statement__ = 54;
+                if (stan::math::logical_eq(
+                      stan::model::rvalue(yint_obs, "yint_obs",
+                        stan::model::index_uni(i)), 0)) {
+                  current_statement__ = 52;
+                  stan::model::assign(log_lik,
+                    stan::math::log(
+                      stan::model::rvalue(theta, "theta",
+                        stan::model::index_uni(1))),
+                    "assigning variable log_lik", stan::model::index_uni(idx));
+                } else {
+                  current_statement__ = 50;
+                  stan::model::assign(log_lik,
+                    (stan::math::log1m(
+                       stan::model::rvalue(theta, "theta",
+                         stan::model::index_uni(1))) +
+                    stan::math::poisson_log_lpmf<false>(
+                      stan::model::rvalue(yint_obs, "yint_obs",
+                        stan::model::index_uni(i)), log_lambda_obs_i)),
+                    "assigning variable log_lik", stan::model::index_uni(idx));
+                }
+              } else {
+                current_statement__ = 49;
+                if (stan::math::logical_eq(family, 4)) {
+                  current_statement__ = 47;
+                  if (stan::math::logical_eq(
+                        stan::model::rvalue(yint_obs, "yint_obs",
+                          stan::model::index_uni(i)), 0)) {
+                    current_statement__ = 45;
+                    stan::model::assign(log_lik,
+                      stan::math::log(
+                        stan::model::rvalue(theta, "theta",
+                          stan::model::index_uni(1))),
+                      "assigning variable log_lik",
+                      stan::model::index_uni(idx));
+                  } else {
+                    current_statement__ = 43;
+                    stan::model::assign(log_lik,
+                      (stan::math::log1m(
+                         stan::model::rvalue(theta, "theta",
+                           stan::model::index_uni(1))) +
+                      stan::math::neg_binomial_2_log_lpmf<false>(
+                        stan::model::rvalue(yint_obs, "yint_obs",
+                          stan::model::index_uni(i)), log_lambda_obs_i,
+                        stan::model::rvalue(nb2_phi, "nb2_phi",
+                          stan::model::index_uni(1)))),
+                      "assigning variable log_lik",
+                      stan::model::index_uni(idx));
+                  }
+                }
+              }
+            }
+          }
+          current_statement__ = 63;
+          idx = (idx + 1);
+        }
+        current_statement__ = 90;
+        for (int i = 1; i <= n_em; ++i) {
+          double lambda_em_i = std::numeric_limits<double>::quiet_NaN();
+          current_statement__ = 66;
+          lambda_em_i = (stan::model::rvalue(lambda_base, "lambda_base",
+                           stan::model::index_uni(
+                             stan::model::rvalue(time_idx_em, "time_idx_em",
+                               stan::model::index_uni(i))))
+            *
+            stan::model::rvalue(effort_em, "effort_em",
+              stan::model::index_uni(i)));
+          double log_lambda_em_i = std::numeric_limits<double>::quiet_NaN();
+          current_statement__ = 67;
+          log_lambda_em_i = (stan::model::rvalue(log_lambda_base,
+                               "log_lambda_base",
+                               stan::model::index_uni(
+                                 stan::model::rvalue(time_idx_em,
+                                   "time_idx_em", stan::model::index_uni(i))))
+            +
+            stan::math::log(
+              stan::model::rvalue(effort_em, "effort_em",
+                stan::model::index_uni(i))));
+          current_statement__ = 87;
+          if (stan::math::logical_eq(family, 1)) {
+            current_statement__ = 85;
+            stan::model::assign(log_lik,
+              stan::math::poisson_log_lpmf<false>(
+                stan::model::rvalue(yint_em, "yint_em",
+                  stan::model::index_uni(i)), log_lambda_em_i),
+              "assigning variable log_lik", stan::model::index_uni(idx));
+          } else {
+            current_statement__ = 84;
+            if (stan::math::logical_eq(family, 2)) {
+              current_statement__ = 82;
+              stan::model::assign(log_lik,
+                stan::math::neg_binomial_2_log_lpmf<false>(
+                  stan::model::rvalue(yint_em, "yint_em",
+                    stan::model::index_uni(i)), log_lambda_em_i,
+                  stan::model::rvalue(nb2_phi, "nb2_phi",
+                    stan::model::index_uni(1))),
+                "assigning variable log_lik", stan::model::index_uni(idx));
+            } else {
+              current_statement__ = 81;
+              if (stan::math::logical_eq(family, 3)) {
+                current_statement__ = 79;
+                if (stan::math::logical_eq(
+                      stan::model::rvalue(yint_em, "yint_em",
+                        stan::model::index_uni(i)), 0)) {
+                  current_statement__ = 77;
+                  stan::model::assign(log_lik,
+                    stan::math::log(
+                      stan::model::rvalue(theta, "theta",
+                        stan::model::index_uni(1))),
+                    "assigning variable log_lik", stan::model::index_uni(idx));
+                } else {
+                  current_statement__ = 75;
+                  stan::model::assign(log_lik,
+                    (stan::math::log1m(
+                       stan::model::rvalue(theta, "theta",
+                         stan::model::index_uni(1))) +
+                    stan::math::poisson_log_lpmf<false>(
+                      stan::model::rvalue(yint_em, "yint_em",
+                        stan::model::index_uni(i)), log_lambda_em_i)),
+                    "assigning variable log_lik", stan::model::index_uni(idx));
+                }
+              } else {
+                current_statement__ = 74;
+                if (stan::math::logical_eq(family, 4)) {
+                  current_statement__ = 72;
+                  if (stan::math::logical_eq(
+                        stan::model::rvalue(yint_em, "yint_em",
+                          stan::model::index_uni(i)), 0)) {
+                    current_statement__ = 70;
+                    stan::model::assign(log_lik,
+                      stan::math::log(
+                        stan::model::rvalue(theta, "theta",
+                          stan::model::index_uni(1))),
+                      "assigning variable log_lik",
+                      stan::model::index_uni(idx));
+                  } else {
+                    current_statement__ = 68;
+                    stan::model::assign(log_lik,
+                      (stan::math::log1m(
+                         stan::model::rvalue(theta, "theta",
+                           stan::model::index_uni(1))) +
+                      stan::math::neg_binomial_2_log_lpmf<false>(
+                        stan::model::rvalue(yint_em, "yint_em",
+                          stan::model::index_uni(i)), log_lambda_em_i,
+                        stan::model::rvalue(nb2_phi, "nb2_phi",
+                          stan::model::index_uni(1)))),
+                      "assigning variable log_lik",
+                      stan::model::index_uni(idx));
+                  }
+                }
+              }
+            }
+          }
+          current_statement__ = 88;
+          idx = (idx + 1);
+        }
+        current_statement__ = 115;
+        for (int i = 1; i <= n_both; ++i) {
+          double lambda_both_i = std::numeric_limits<double>::quiet_NaN();
+          current_statement__ = 91;
+          lambda_both_i = (stan::model::rvalue(lambda_base, "lambda_base",
+                             stan::model::index_uni(
+                               stan::model::rvalue(time_idx_both,
+                                 "time_idx_both", stan::model::index_uni(i))))
+            *
+            stan::model::rvalue(effort_both, "effort_both",
+              stan::model::index_uni(i)));
+          double log_lambda_both_i = std::numeric_limits<double>::quiet_NaN();
+          current_statement__ = 92;
+          log_lambda_both_i = (stan::model::rvalue(log_lambda_base,
+                                 "log_lambda_base",
+                                 stan::model::index_uni(
+                                   stan::model::rvalue(time_idx_both,
+                                     "time_idx_both",
+                                     stan::model::index_uni(i))))
+            +
+            stan::math::log(
+              stan::model::rvalue(effort_both, "effort_both",
+                stan::model::index_uni(i))));
+          current_statement__ = 112;
+          if (stan::math::logical_eq(family, 1)) {
+            current_statement__ = 110;
+            stan::model::assign(log_lik,
+              stan::math::poisson_log_lpmf<false>(
+                stan::model::rvalue(yint_both, "yint_both",
+                  stan::model::index_uni(i)), log_lambda_both_i),
+              "assigning variable log_lik", stan::model::index_uni(idx));
+          } else {
+            current_statement__ = 109;
+            if (stan::math::logical_eq(family, 2)) {
+              current_statement__ = 107;
+              stan::model::assign(log_lik,
+                stan::math::neg_binomial_2_log_lpmf<false>(
+                  stan::model::rvalue(yint_both, "yint_both",
+                    stan::model::index_uni(i)), log_lambda_both_i,
+                  stan::model::rvalue(nb2_phi, "nb2_phi",
+                    stan::model::index_uni(1))),
+                "assigning variable log_lik", stan::model::index_uni(idx));
+            } else {
+              current_statement__ = 106;
+              if (stan::math::logical_eq(family, 3)) {
+                current_statement__ = 104;
+                if (stan::math::logical_eq(
+                      stan::model::rvalue(yint_both, "yint_both",
+                        stan::model::index_uni(i)), 0)) {
+                  current_statement__ = 102;
+                  stan::model::assign(log_lik,
+                    stan::math::log(
+                      stan::model::rvalue(theta, "theta",
+                        stan::model::index_uni(1))),
+                    "assigning variable log_lik", stan::model::index_uni(idx));
+                } else {
+                  current_statement__ = 100;
+                  stan::model::assign(log_lik,
+                    (stan::math::log1m(
+                       stan::model::rvalue(theta, "theta",
+                         stan::model::index_uni(1))) +
+                    stan::math::poisson_log_lpmf<false>(
+                      stan::model::rvalue(yint_both, "yint_both",
+                        stan::model::index_uni(i)), log_lambda_both_i)),
+                    "assigning variable log_lik", stan::model::index_uni(idx));
+                }
+              } else {
+                current_statement__ = 99;
+                if (stan::math::logical_eq(family, 4)) {
+                  current_statement__ = 97;
+                  if (stan::math::logical_eq(
+                        stan::model::rvalue(yint_both, "yint_both",
+                          stan::model::index_uni(i)), 0)) {
+                    current_statement__ = 95;
+                    stan::model::assign(log_lik,
+                      stan::math::log(
+                        stan::model::rvalue(theta, "theta",
+                          stan::model::index_uni(1))),
+                      "assigning variable log_lik",
+                      stan::model::index_uni(idx));
+                  } else {
+                    current_statement__ = 93;
+                    stan::model::assign(log_lik,
+                      (stan::math::log1m(
+                         stan::model::rvalue(theta, "theta",
+                           stan::model::index_uni(1))) +
+                      stan::math::neg_binomial_2_log_lpmf<false>(
+                        stan::model::rvalue(yint_both, "yint_both",
+                          stan::model::index_uni(i)), log_lambda_both_i,
+                        stan::model::rvalue(nb2_phi, "nb2_phi",
+                          stan::model::index_uni(1)))),
+                      "assigning variable log_lik",
+                      stan::model::index_uni(idx));
+                  }
+                }
+              }
+            }
+          }
+          current_statement__ = 113;
+          idx = (idx + 1);
+        }
+      }
+      current_statement__ = 216;
+      for (int t = 1; t <= n_year; ++t) {
+        current_statement__ = 214;
         if (stan::math::logical_eq(is_discrete, 1)) {
-          current_statement__ = 65;
+          current_statement__ = 197;
           stan::model::assign(y_new, 0, "assigning variable y_new",
             stan::model::index_uni(t));
-          current_statement__ = 80;
+          current_statement__ = 212;
           if (stan::math::logical_gt(
                 stan::model::rvalue(new_effort_by_year, "new_effort_by_year",
                   stan::model::index_uni(t)), 0)) {
             double lambda_new_t = std::numeric_limits<double>::quiet_NaN();
-            current_statement__ = 66;
+            current_statement__ = 198;
             lambda_new_t = (stan::model::rvalue(lambda_base, "lambda_base",
                               stan::model::index_uni(t))
               *
               stan::model::rvalue(new_effort_by_year, "new_effort_by_year",
                 stan::model::index_uni(t)));
-            current_statement__ = 78;
+            current_statement__ = 210;
             if (stan::math::logical_eq(family, 1)) {
-              current_statement__ = 76;
+              current_statement__ = 208;
               stan::model::assign(y_new,
                 stan::math::poisson_rng(lambda_new_t, base_rng__),
                 "assigning variable y_new", stan::model::index_uni(t));
             } else {
-              current_statement__ = 75;
+              current_statement__ = 207;
               if (stan::math::logical_eq(family, 2)) {
-                current_statement__ = 73;
+                current_statement__ = 205;
                 stan::model::assign(y_new,
                   stan::math::neg_binomial_2_rng(lambda_new_t,
                     stan::model::rvalue(nb2_phi, "nb2_phi",
                       stan::model::index_uni(1)), base_rng__),
                   "assigning variable y_new", stan::model::index_uni(t));
               } else {
-                current_statement__ = 72;
+                current_statement__ = 204;
                 if (stan::math::logical_eq(family, 3)) {
-                  current_statement__ = 70;
+                  current_statement__ = 202;
                   stan::model::assign(y_new, ((1 -
                     stan::math::bernoulli_rng(
                       stan::model::rvalue(theta, "theta",
@@ -3058,9 +4081,9 @@ public:
                     stan::math::poisson_rng(lambda_new_t, base_rng__)),
                     "assigning variable y_new", stan::model::index_uni(t));
                 } else {
-                  current_statement__ = 69;
+                  current_statement__ = 201;
                   if (stan::math::logical_eq(family, 4)) {
-                    current_statement__ = 67;
+                    current_statement__ = 199;
                     stan::model::assign(y_new, ((1 -
                       stan::math::bernoulli_rng(
                         stan::model::rvalue(theta, "theta",
@@ -3075,16 +4098,16 @@ public:
             }
           }
         } else {
-          current_statement__ = 41;
+          current_statement__ = 173;
           stan::model::assign(y_new_real, 0, "assigning variable y_new_real",
             stan::model::index_uni(t));
-          current_statement__ = 63;
+          current_statement__ = 195;
           if (stan::math::logical_gt(
                 stan::model::rvalue(new_effort_by_year, "new_effort_by_year",
                   stan::model::index_uni(t)), 0)) {
             double log_lambda_new_t =
               std::numeric_limits<double>::quiet_NaN();
-            current_statement__ = 42;
+            current_statement__ = 174;
             log_lambda_new_t = (stan::model::rvalue(log_lambda_base,
                                   "log_lambda_base",
                                   stan::model::index_uni(t))
@@ -3093,24 +4116,24 @@ public:
                 stan::model::rvalue(new_effort_by_year, "new_effort_by_year",
                   stan::model::index_uni(t))));
             double lambda_new_t = std::numeric_limits<double>::quiet_NaN();
-            current_statement__ = 43;
+            current_statement__ = 175;
             lambda_new_t = (stan::model::rvalue(lambda_base, "lambda_base",
                               stan::model::index_uni(t))
               *
               stan::model::rvalue(new_effort_by_year, "new_effort_by_year",
                 stan::model::index_uni(t)));
-            current_statement__ = 61;
+            current_statement__ = 193;
             if (stan::math::logical_eq(family, 5)) {
-              current_statement__ = 59;
+              current_statement__ = 191;
               stan::model::assign(y_new_real,
                 stan::math::lognormal_rng(log_lambda_new_t,
                   stan::model::rvalue(sigma_logn, "sigma_logn",
                     stan::model::index_uni(1)), base_rng__),
                 "assigning variable y_new_real", stan::model::index_uni(t));
             } else {
-              current_statement__ = 58;
+              current_statement__ = 190;
               if (stan::math::logical_eq(family, 6)) {
-                current_statement__ = 56;
+                current_statement__ = 188;
                 stan::model::assign(y_new_real,
                   stan::math::gamma_rng(
                     stan::model::rvalue(gammaA, "gammaA",
@@ -3119,9 +4142,9 @@ public:
                        stan::model::index_uni(1)) / lambda_new_t), base_rng__),
                   "assigning variable y_new_real", stan::model::index_uni(t));
               } else {
-                current_statement__ = 55;
+                current_statement__ = 187;
                 if (stan::math::logical_eq(family, 7)) {
-                  current_statement__ = 53;
+                  current_statement__ = 185;
                   stan::model::assign(y_new_real, ((1 -
                     stan::math::bernoulli_rng(
                       stan::model::rvalue(theta, "theta",
@@ -3132,9 +4155,9 @@ public:
                     "assigning variable y_new_real",
                     stan::model::index_uni(t));
                 } else {
-                  current_statement__ = 52;
+                  current_statement__ = 184;
                   if (stan::math::logical_eq(family, 8)) {
-                    current_statement__ = 50;
+                    current_statement__ = 182;
                     stan::model::assign(y_new_real, ((1 -
                       stan::math::bernoulli_rng(
                         stan::model::rvalue(theta, "theta",
@@ -3147,9 +4170,9 @@ public:
                         base_rng__)), "assigning variable y_new_real",
                       stan::model::index_uni(t));
                   } else {
-                    current_statement__ = 49;
+                    current_statement__ = 181;
                     if (stan::math::logical_eq(family, 9)) {
-                      current_statement__ = 47;
+                      current_statement__ = 179;
                       stan::model::assign(y_new_real,
                         stan::math::normal_rng(lambda_new_t,
                           stan::model::rvalue(sigma_logn, "sigma_logn",
@@ -3157,9 +4180,9 @@ public:
                         "assigning variable y_new_real",
                         stan::model::index_uni(t));
                     } else {
-                      current_statement__ = 46;
+                      current_statement__ = 178;
                       if (stan::math::logical_eq(family, 10)) {
-                        current_statement__ = 44;
+                        current_statement__ = 176;
                         stan::model::assign(y_new_real, ((1 -
                           stan::math::bernoulli_rng(
                             stan::model::rvalue(theta, "theta",
@@ -3403,7 +4426,7 @@ public:
     }
     if (emit_generated_quantities__) {
       std::vector<std::vector<size_t>>
-        temp{std::vector<size_t>{static_cast<size_t>(n_year)},
+        temp{std::vector<size_t>{static_cast<size_t>(log_lik_1dim__)},
              std::vector<size_t>{static_cast<size_t>(y_new_1dim__)},
              std::vector<size_t>{static_cast<size_t>(y_new_real_1dim__)}};
       dimss__.reserve(dimss__.size() + temp.size());
@@ -3473,7 +4496,7 @@ public:
       }
     }
     if (emit_generated_quantities__) {
-      for (int sym1__ = 1; sym1__ <= n_year; ++sym1__) {
+      for (int sym1__ = 1; sym1__ <= log_lik_1dim__; ++sym1__) {
         param_names__.emplace_back(std::string() + "log_lik" + '.' +
           std::to_string(sym1__));
       }
@@ -3550,7 +4573,7 @@ public:
       }
     }
     if (emit_generated_quantities__) {
-      for (int sym1__ = 1; sym1__ <= n_year; ++sym1__) {
+      for (int sym1__ = 1; sym1__ <= log_lik_1dim__; ++sym1__) {
         param_names__.emplace_back(std::string() + "log_lik" + '.' +
           std::to_string(sym1__));
       }
@@ -3565,10 +4588,10 @@ public:
     }
   }
   inline std::string get_constrained_sizedtypes() const {
-    return std::string("[{\"name\":\"beta\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(K) + "},\"block\":\"parameters\"},{\"name\":\"est_time_dev\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(est_time_dev_1dim__) + "},\"block\":\"parameters\"},{\"name\":\"sigma_rw\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(time_varying) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"parameters\"},{\"name\":\"sigma_logn\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(est_sigma) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"parameters\"},{\"name\":\"cv_gamma\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(est_cv) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"parameters\"},{\"name\":\"nb2_phi\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(est_phi) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"parameters\"},{\"name\":\"theta\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(est_theta) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"parameters\"},{\"name\":\"log_lambda_base\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(n_year) + "},\"block\":\"transformed_parameters\"},{\"name\":\"lambda_base\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(n_year) + "},\"block\":\"transformed_parameters\"},{\"name\":\"pred\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(n_year) + "},\"block\":\"transformed_parameters\"},{\"name\":\"gammaA\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(est_cv) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"time_dev\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(time_dev_1dim__) + "},\"block\":\"transformed_parameters\"},{\"name\":\"log_lambda\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(n_row) + "},\"block\":\"transformed_parameters\"},{\"name\":\"lambda\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(n_row) + "},\"block\":\"transformed_parameters\"},{\"name\":\"log_lik\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(n_year) + "},\"block\":\"generated_quantities\"},{\"name\":\"y_new\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(y_new_1dim__) + ",\"element_type\":{\"name\":\"int\"}},\"block\":\"generated_quantities\"},{\"name\":\"y_new_real\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(y_new_real_1dim__) + "},\"block\":\"generated_quantities\"}]");
+    return std::string("[{\"name\":\"beta\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(K) + "},\"block\":\"parameters\"},{\"name\":\"est_time_dev\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(est_time_dev_1dim__) + "},\"block\":\"parameters\"},{\"name\":\"sigma_rw\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(time_varying) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"parameters\"},{\"name\":\"sigma_logn\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(est_sigma) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"parameters\"},{\"name\":\"cv_gamma\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(est_cv) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"parameters\"},{\"name\":\"nb2_phi\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(est_phi) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"parameters\"},{\"name\":\"theta\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(est_theta) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"parameters\"},{\"name\":\"log_lambda_base\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(n_year) + "},\"block\":\"transformed_parameters\"},{\"name\":\"lambda_base\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(n_year) + "},\"block\":\"transformed_parameters\"},{\"name\":\"pred\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(n_year) + "},\"block\":\"transformed_parameters\"},{\"name\":\"gammaA\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(est_cv) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"time_dev\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(time_dev_1dim__) + "},\"block\":\"transformed_parameters\"},{\"name\":\"log_lambda\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(n_row) + "},\"block\":\"transformed_parameters\"},{\"name\":\"lambda\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(n_row) + "},\"block\":\"transformed_parameters\"},{\"name\":\"log_lik\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(log_lik_1dim__) + "},\"block\":\"generated_quantities\"},{\"name\":\"y_new\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(y_new_1dim__) + ",\"element_type\":{\"name\":\"int\"}},\"block\":\"generated_quantities\"},{\"name\":\"y_new_real\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(y_new_real_1dim__) + "},\"block\":\"generated_quantities\"}]");
   }
   inline std::string get_unconstrained_sizedtypes() const {
-    return std::string("[{\"name\":\"beta\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(K) + "},\"block\":\"parameters\"},{\"name\":\"est_time_dev\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(est_time_dev_1dim__) + "},\"block\":\"parameters\"},{\"name\":\"sigma_rw\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(time_varying) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"parameters\"},{\"name\":\"sigma_logn\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(est_sigma) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"parameters\"},{\"name\":\"cv_gamma\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(est_cv) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"parameters\"},{\"name\":\"nb2_phi\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(est_phi) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"parameters\"},{\"name\":\"theta\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(est_theta) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"parameters\"},{\"name\":\"log_lambda_base\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(n_year) + "},\"block\":\"transformed_parameters\"},{\"name\":\"lambda_base\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(n_year) + "},\"block\":\"transformed_parameters\"},{\"name\":\"pred\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(n_year) + "},\"block\":\"transformed_parameters\"},{\"name\":\"gammaA\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(est_cv) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"time_dev\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(time_dev_1dim__) + "},\"block\":\"transformed_parameters\"},{\"name\":\"log_lambda\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(n_row) + "},\"block\":\"transformed_parameters\"},{\"name\":\"lambda\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(n_row) + "},\"block\":\"transformed_parameters\"},{\"name\":\"log_lik\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(n_year) + "},\"block\":\"generated_quantities\"},{\"name\":\"y_new\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(y_new_1dim__) + ",\"element_type\":{\"name\":\"int\"}},\"block\":\"generated_quantities\"},{\"name\":\"y_new_real\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(y_new_real_1dim__) + "},\"block\":\"generated_quantities\"}]");
+    return std::string("[{\"name\":\"beta\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(K) + "},\"block\":\"parameters\"},{\"name\":\"est_time_dev\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(est_time_dev_1dim__) + "},\"block\":\"parameters\"},{\"name\":\"sigma_rw\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(time_varying) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"parameters\"},{\"name\":\"sigma_logn\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(est_sigma) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"parameters\"},{\"name\":\"cv_gamma\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(est_cv) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"parameters\"},{\"name\":\"nb2_phi\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(est_phi) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"parameters\"},{\"name\":\"theta\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(est_theta) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"parameters\"},{\"name\":\"log_lambda_base\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(n_year) + "},\"block\":\"transformed_parameters\"},{\"name\":\"lambda_base\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(n_year) + "},\"block\":\"transformed_parameters\"},{\"name\":\"pred\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(n_year) + "},\"block\":\"transformed_parameters\"},{\"name\":\"gammaA\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(est_cv) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"time_dev\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(time_dev_1dim__) + "},\"block\":\"transformed_parameters\"},{\"name\":\"log_lambda\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(n_row) + "},\"block\":\"transformed_parameters\"},{\"name\":\"lambda\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(n_row) + "},\"block\":\"transformed_parameters\"},{\"name\":\"log_lik\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(log_lik_1dim__) + "},\"block\":\"generated_quantities\"},{\"name\":\"y_new\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(y_new_1dim__) + ",\"element_type\":{\"name\":\"int\"}},\"block\":\"generated_quantities\"},{\"name\":\"y_new_real\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(y_new_real_1dim__) + "},\"block\":\"generated_quantities\"}]");
   }
   // Begin method overload boilerplate
   template <typename RNG> inline void
@@ -3582,8 +4605,8 @@ public:
     const size_t num_transformed = emit_transformed_parameters *
       (((((((n_year + n_year) + n_year) + est_cv) + time_dev_1dim__) + n_row)
       + n_row));
-    const size_t num_gen_quantities = emit_generated_quantities * (((n_year +
-      y_new_1dim__) + y_new_real_1dim__));
+    const size_t num_gen_quantities = emit_generated_quantities *
+      (((log_lik_1dim__ + y_new_1dim__) + y_new_real_1dim__));
     const size_t num_to_write = num_params__ + num_transformed +
       num_gen_quantities;
     std::vector<int> params_i;
@@ -3603,8 +4626,8 @@ public:
     const size_t num_transformed = emit_transformed_parameters *
       (((((((n_year + n_year) + n_year) + est_cv) + time_dev_1dim__) + n_row)
       + n_row));
-    const size_t num_gen_quantities = emit_generated_quantities * (((n_year +
-      y_new_1dim__) + y_new_real_1dim__));
+    const size_t num_gen_quantities = emit_generated_quantities *
+      (((log_lik_1dim__ + y_new_1dim__) + y_new_real_1dim__));
     const size_t num_to_write = num_params__ + num_transformed +
       num_gen_quantities;
     vars = std::vector<double>(num_to_write,
