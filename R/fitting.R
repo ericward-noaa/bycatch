@@ -11,9 +11,12 @@
 #' @param covrate_em Optional: Column name for EM coverage rate (percentage). Used to calculate unobserved effort.
 #' @param takes_both Optional: Column name for bycatch takes when both Observer and EM are present. Default NULL.
 #' @param effort_both Optional: Column name for effort with both Observer and EM monitoring. Required if takes_both is provided.
-#' @param covrate_obs Optional: Column name for Observer coverage rate (percentage). Used to calculate unobserved effort.
+#' @param covrate_obs Optional: Column name for Observer coverage rate (percentage). Used to calculate unobserved effort. Required if detrate_obsself is provided.
 #' @param covrate_both Optional: Column name for "Both" coverage rate (percentage). Used to calculate unobserved effort.
 #' @param effort_total Optional: Column name for total fishery effort. If provided, takes precedence over coverage rates. Must be in same units as effort columns.
+#' @param takes_obsself Optional: Column name for bycatch takes when both Observer and Self report are present, but no EM. Default NULL.
+#' @param effort_obsself Optional: Column name for effort with both Observer and Self report records. Required if takes_obs_self is provided.
+#' @param detrate_obsself Optional: Column name for detection rate (matched / observed) (percentage). Default NULL(use built in estimation).
 #' @param family Family for response distribution can be discrete ("poisson",
 #' "nbinom2", "poisson-hurdle","nbinom2-hurdle"), or continuous ("normal",
 #' "gamma","lognormal", "normal-hurdle", "gamma-hurdle", "lognormal-hurdle"). The
@@ -42,7 +45,7 @@
 #' @details
 #' **Coverage Rates vs effort_total:**
 #'
-#' This function supports two approaches for calculating unobserved effort:
+#' This function supports two approaches for calculating unobserved effort: #may need change here
 #'
 #' 1. **Coverage rates** (recommended): Use `covrate`, `covrate_obs`, `covrate_em`, `covrate_both`
 #'    to specify what percentage of the fishery is monitored. The function calculates
@@ -54,7 +57,7 @@
 #'
 #' **Priority order**: effort_total > coverage rates > 100% coverage assumed
 #'
-#' **Multi-stream monitoring:** When using multiple monitoring streams (Observer, EM, Both),
+#' **Multi-stream monitoring:** When using multiple monitoring streams (Observer, EM, Both, Self report matched with Observer),
 #' the data are kept separate in the statistical model but all share the same underlying bycatch rate.
 #' This approach assumes all monitoring types have perfect/equal detection (detection = 100%) but
 #' avoids distributional issues that arise from pooling.
@@ -109,6 +112,10 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort",
                         covrate_obs = NULL,
                         covrate_both = NULL,
                         effort_total = NULL,
+                        takes_obsself = NULL,
+                        effort_obsself = NULL,
+                        detrate_obsself = NULL,
+                        
                         family = c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle",
                                    "lognormal", "gamma", "lognormal-hurdle", "gamma-hurdle",
                                    "normal", "normal-hurdle"),
@@ -124,7 +131,7 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort",
     # Map expansion_rate to appropriate coverage parameter
     if (is.null(covrate) && is.null(covrate_obs)) {
       # Determine if this is multi-stream
-      if (!is.null(takes_em) || !is.null(takes_both)) {
+      if (!is.null(takes_em) || !is.null(takes_both) || !is.null(takes_obsself))) {
         covrate_obs <- expansion_rate
       } else {
         covrate <- expansion_rate
@@ -231,6 +238,14 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort",
       n_both <- 0
       time_idx_both <- integer(0)
     }
+    
+    # Get Obs self data (if provided)
+    if (!is.null(takes_obsself)) {
+      takes_obsself_vec <- data[[takes_obsself]]
+      effort_obsself_vec <- data[[effort_obsself]]
+      n_obsself <- length(takes_obsself_vec)
+      time_idx_obsself <- time_idx
+    }
 
     # Calculate total observed effort by year
     effort_by_year <- rep(0, n_year)
@@ -248,6 +263,12 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort",
       for(i in 1:n_both) {
         t <- time_idx_both[i]
         effort_by_year[t] <- effort_by_year[t] + effort_both_vec[i]
+      }
+    }
+    if(n_obsself > 0) {
+      for(i in 1:n_obsself) {
+        t <- time_idx_obsself[i]
+        effort_by_year[t] <- effort_by_year[t] + effort_obsself_vec[i]
       }
     }
 
@@ -275,7 +296,7 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort",
         new_effort_by_year[which(is.na(new_effort_by_year))] <- 0
       }
 
-    } else if (!is.null(covrate_obs) || !is.null(covrate_em) || !is.null(covrate_both)) {
+    } else if (!is.null(covrate_obs) || !is.null(covrate_em) || !is.null(covrate_both)) { #also detection rate for expansion for self report?
       # Coverage rate approach: Calculate expansion from coverage percentages
       cli_inform("Using coverage rates for expansion")
 
@@ -318,6 +339,8 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort",
           }
         }
       }
+      
+      # Add obs self coverage
 
       # Calculate new_effort using coverage rates
       # Formula: new_effort = observed_effort * ((100 - coverage_rate) / coverage_rate)
@@ -350,17 +373,21 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort",
       yint_obs <- as.integer(takes_obs_vec)
       yint_em <- if(n_em > 0) as.integer(takes_em_vec) else integer(0)
       yint_both <- if(n_both > 0) as.integer(takes_both_vec) else integer(0)
+      yint_obsself <- if(n_obsself > 0) as.integer(takes_obsself_vec) else integer(0)
       yreal_obs <- takes_obs_vec
       yreal_em <- if(n_em > 0) takes_em_vec else numeric(0)
       yreal_both <- if(n_both > 0) takes_both_vec else numeric(0)
+      yreal_obsself <- if(n_obsself > 0) takes_obsself_vec else numeric(0)
     } else {
       # Continuous family
       yint_obs <- ifelse(takes_obs_vec > 0, 1L, 0L)
       yint_em <- if(n_em > 0) ifelse(takes_em_vec > 0, 1L, 0L) else integer(0)
       yint_both <- if(n_both > 0) ifelse(takes_both_vec > 0, 1L, 0L) else integer(0)
+      yint_obsself <- if(n_both > 0) ifelse(takes_both_vec > 0, 1L, 0L) else integer(0)
       yreal_obs <- takes_obs_vec
       yreal_em <- if(n_em > 0) takes_em_vec else numeric(0)
       yreal_both <- if(n_both > 0) takes_both_vec else numeric(0)
+      yreal_obsself <- if(n_obsself > 0) takes_obsself_vec else numeric(0)
     }
 
     # For multi-stream mode, we need year-level covariates (n_year x K)
@@ -381,15 +408,21 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort",
       yint_obs = yint_obs,
       yint_em = yint_em,
       yint_both = yint_both,
+      yint_obsself = yint_obsself,
       yreal_obs = yreal_obs,
       yreal_em = yreal_em,
       yreal_both = yreal_both,
+      yreal_obsself = yreal_obsself,
       effort_obs = effort_obs_vec,
       effort_em = if(n_em > 0) effort_em_vec else numeric(0),
       effort_both = if(n_both > 0) effort_both_vec else numeric(0),
+      effort_obsself = if(n_both > 0) effort_obsself_vec else numeric(0),
       time_idx_obs = time_idx_obs,
       time_idx_em = if(n_em > 0) time_idx_em else integer(0),
       time_idx_both = if(n_both > 0) time_idx_both else integer(0),
+      time_idx_obsself = if(n_both > 0) time_idx_obsself else integer(0),
+      
+      
       new_effort_by_year = new_effort_by_year,
       n_row = nrow(data),
       effort = data[[effort]],
@@ -413,10 +446,14 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort",
       "effort_both" = effort_both,
       "covrate_obs" = covrate_obs,
       "covrate_both" = covrate_both,
+      "takes_obsself" = takes_obsself,
+      "effort_obsself" = effort_obsself,
+      "covrate_obsself" = covrate_obsself,
       "effort_total" = effort_total,
       "n_obs" = n_obs,
       "n_em" = n_em,
       "n_both" = n_both
+      "n_obsself" = n_obsself
     )
 
   } else {
@@ -490,15 +527,19 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort",
       yint_obs = integer(0),
       yint_em = integer(0),
       yint_both = integer(0),
+      yint_obsself = integer(0),
       yreal_obs = numeric(0),
       yreal_em = numeric(0),
       yreal_both = numeric(0),
+      yreal_obsself = numeric(0),
       effort_obs = numeric(0),
       effort_em = numeric(0),
       effort_both = numeric(0),
+      effort_obsself = numeric(0),
       time_idx_obs = integer(0),
       time_idx_em = integer(0),
       time_idx_both = integer(0),
+      time_idx_obsself = integer(0),
       new_effort_by_year = new_effort_by_year,
       n_row = nrow(data),
       effort = observed_effort,

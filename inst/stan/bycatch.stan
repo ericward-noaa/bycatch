@@ -17,6 +17,13 @@ data {
   int<lower=0> n_em;      // Number of EM-only observations
   int<lower=0> n_both;    // Number of both observations
 
+  // Self report stream data (only used if n_obs != 0)
+  int<lower=0,upper=1> self_report;  // self_report mode 0/1
+  int<lower=0,upper=1> self_report_rate_estimation;  // self_report_rate_estimation mode 0/1 (only used if self_report == 1)
+  int<lower=0> n_self;     // Number of obs-self observations
+  int<lower=0> n_self_nonmatch;      // Number of self-only observations
+  // self_report_rate_estimation value setup? prob_report (only used if self_report_rate_estimation == 1, otherwise required to input)
+
   // Separate data streams (only used if multi_stream == 1)
   array[n_obs] int yint_obs;
   array[n_em] int yint_em;
@@ -114,7 +121,7 @@ transformed parameters {
 
   // lambda for each year (without effort multiplier)
   for(t in 1:n_year) {
-    log_lambda_base[t] = pred[t];
+    log_lambda_base[t] = pred[t] + log(prob_report[t]);
     lambda_base[t] = exp(log_lambda_base[t]);
   }
 
