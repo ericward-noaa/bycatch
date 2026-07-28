@@ -16,25 +16,37 @@ data {
   int<lower=0> n_obs;     // Number of obs-only observations
   int<lower=0> n_em;      // Number of EM-only observations
   int<lower=0> n_both;    // Number of both observations
+  int<lower=0> n_selfreport; // Number of self-report observations
 
   // Separate data streams (only used if multi_stream == 1)
   array[n_obs] int yint_obs;
   array[n_em] int yint_em;
   array[n_both] int yint_both;
+  array[n_selfreport] int yint_selfreport;
   vector[n_obs] effort_obs;
   vector[n_em] effort_em;
   vector[n_both] effort_both;
+  vector[n_selfreport] effort_selfreport;
   vector[n_obs] yreal_obs;
   vector[n_em] yreal_em;
   vector[n_both] yreal_both;
+  vector[n_selfreport] yreal_selfreport;
 
   // Indices mapping stream observations to time periods
   array[n_obs] int time_idx_obs;
   array[n_em] int time_idx_em;
   array[n_both] int time_idx_both;
+  array[n_selfreport] int time_idx_selfreport;
 
   // Effort for unobserved expansion (by time period)
   vector[n_year] new_effort_by_year;
+
+  // ---- NEW: self-reporting probability sub-model ----
+  // Ground truth comes from OBS/EM/BOTH-covered vessels only, where we know
+  // both monitoring status and self-report status. Pooled (constant) across years.
+  int<lower=0,upper=1> estimate_self_report;   // turn this sub-model on/off
+  array[n_year] int<lower=0> n_vessels_observed;      // denominator: all observed (obs/em/both) vessels
+  array[n_year] int<lower=0> n_vessels_self_report;   // numerator: subset that also self-report
 }
 transformed data {
   int est_phi;
@@ -42,6 +54,13 @@ transformed data {
   int est_sigma;
   int est_cv;
   int is_discrete;
+
+  // Total monitored effort (obs+em+both) by year, and total self-report stream
+  // effort by year. Used in generated quantities to figure out how much of the
+  // self-report stream's effort is genuinely NEW coverage vs. overlap with
+  // vessels already captured by obs/em/both.
+  vector[n_year] effort_monitored_by_year;
+  vector[n_year] effort_selfreport_by_year;
 
   // initial
   est_phi = 0;
@@ -78,6 +97,16 @@ transformed data {
     est_sigma = 1;
     est_theta = 1;
   }
+
+  // ---- NEW: sum monitored (obs+em+both) and self-report effort by year ----
+  for(t in 1:n_year) {
+    effort_monitored_by_year[t] = 0;
+    effort_selfreport_by_year[t] = 0;
+  }
+  for(i in 1:n_obs)  effort_monitored_by_year[time_idx_obs[i]]  += effort_obs[i];
+  for(i in 1:n_em)   effort_monitored_by_year[time_idx_em[i]]   += effort_em[i];
+  for(i in 1:n_both) effort_monitored_by_year[time_idx_both[i]] += effort_both[i];
+  for(i in 1:n_selfreport) effort_selfreport_by_year[time_idx_selfreport[i]] += effort_selfreport[i];
 }
 parameters {
   vector[K] beta;
@@ -87,6 +116,9 @@ parameters {
   real<lower=0> cv_gamma[est_cv];
   real<lower=0> nb2_phi[est_phi];
   real<lower=0,upper=1> theta[est_theta];
+
+  // Single pooled logit probability - self-reporting compliance assumed constant over time.
+  real logit_p_report[estimate_self_report];
 }
 transformed parameters {
   vector[n_year] log_lambda_base;  // Base lambda for each year
@@ -98,6 +130,9 @@ transformed parameters {
   // Single stream transformed parameters (backwards compatibility)
   vector[n_row] log_lambda;
   vector[n_row] lambda;
+
+  // ---- NEW: self-reporting probability by year ----
+  vector[n_year] p_report; // defaults to 0 (unused) when estimate_self_report == 0
 
   // base prediction for each year
   pred = x * beta;
@@ -128,6 +163,15 @@ transformed parameters {
 
   // gamma model
   if(est_cv == 1) gammaA[1] = inv(pow(cv_gamma[1], 2.0));
+
+  // ---- NEW: build p_report[t] (pooled/constant across years) ----
+  for(t in 1:n_year) p_report[t] = 0;
+  if(estimate_self_report == 1) {
+    real p_pooled = inv_logit(logit_p_report[1]);
+    for(t in 1:n_year) {
+      p_report[t] = p_pooled;
+    }
+  }
 }
 model {
   beta ~ student_t(3, 0, 2);
@@ -251,6 +295,14 @@ model {
           }
         }
       }
+      if(n_selfreport > 0) {
+        for(i in 1:n_selfreport) {
+          if(effort_selfreport[i] > 0) {
+            real lambda_selfreport_i = lambda_base[time_idx_selfreport[i]] * effort_selfreport[i];
+            yint_selfreport[i] ~ poisson(lambda_selfreport_i);
+          }
+        }
+      }
     }
 
     // Family 2: Negative Binomial
@@ -277,6 +329,14 @@ model {
           if(effort_both[i] > 0) {
             real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
             yint_both[i] ~ neg_binomial_2(lambda_both_i, nb2_phi[1]);
+          }
+        }
+      }
+      if(n_selfreport > 0) {
+        for(i in 1:n_selfreport) {
+          if(effort_selfreport[i] > 0) {
+            real lambda_selfreport_i = lambda_base[time_idx_selfreport[i]] * effort_selfreport[i];
+            yint_selfreport[i] ~ neg_binomial_2(lambda_selfreport_i, nb2_phi[1]);
           }
         }
       }
@@ -319,6 +379,19 @@ model {
             else {
               0 ~ bernoulli(theta);
               yint_both[i] ~ poisson(lambda_both_i) T[1, ];
+            }
+          }
+        }
+      }
+      if(n_selfreport > 0) {
+        for(i in 1:n_selfreport) {
+          if(effort_selfreport[i] > 0) {
+            real lambda_selfreport_i = lambda_base[time_idx_selfreport[i]] * effort_selfreport[i];
+            if (yint_selfreport[i] == 0)
+              1 ~ bernoulli(theta);
+            else {
+              0 ~ bernoulli(theta);
+              yint_selfreport[i] ~ poisson(lambda_selfreport_i) T[1, ];
             }
           }
         }
@@ -367,6 +440,19 @@ model {
           }
         }
       }
+      if(n_selfreport > 0) {
+        for(i in 1:n_selfreport) {
+          if(effort_selfreport[i] > 0) {
+            real lambda_selfreport_i = lambda_base[time_idx_selfreport[i]] * effort_selfreport[i];
+            if (yint_selfreport[i] == 0)
+              1 ~ bernoulli(theta);
+            else {
+              0 ~ bernoulli(theta);
+              yint_selfreport[i] ~ neg_binomial_2(lambda_selfreport_i, nb2_phi[1]) T[1, ];
+            }
+          }
+        }
+      }
     }
 
     // Family 5: Lognormal
@@ -396,6 +482,14 @@ model {
           }
         }
       }
+      if(n_selfreport > 0) {
+        for(i in 1:n_selfreport) {
+          if(effort_selfreport[i] > 0 && yreal_selfreport[i] > 0) {
+            real log_lambda_selfreport_i = log_lambda_base[time_idx_selfreport[i]] + log(effort_selfreport[i]);
+            yreal_selfreport[i] ~ lognormal(log_lambda_selfreport_i, sigma_logn[1]);
+          }
+        }
+      }
     }
 
     // Family 6: Gamma
@@ -422,6 +516,14 @@ model {
           if(effort_both[i] > 0 && yreal_both[i] > 0) {
             real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
             yreal_both[i] ~ gamma(gammaA[1], gammaA[1] / lambda_both_i);
+          }
+        }
+      }
+      if(n_selfreport > 0) {
+        for(i in 1:n_selfreport) {
+          if(effort_selfreport[i] > 0 && yreal_selfreport[i] > 0) {
+            real lambda_selfreport_i = lambda_base[time_idx_selfreport[i]] * effort_selfreport[i];
+            yreal_selfreport[i] ~ gamma(gammaA[1], gammaA[1] / lambda_selfreport_i);
           }
         }
       }
@@ -470,6 +572,21 @@ model {
               0 ~ bernoulli(theta);
               if(yreal_both[i] > 0) {
                 yreal_both[i] ~ lognormal(log_lambda_both_i, sigma_logn[1]);
+              }
+            }
+          }
+        }
+      }
+      if(n_selfreport > 0) {
+        for(i in 1:n_selfreport) {
+          if(effort_selfreport[i] > 0) {
+            real log_lambda_selfreport_i = log_lambda_base[time_idx_selfreport[i]] + log(effort_selfreport[i]);
+            if (yint_selfreport[i] == 0)
+              1 ~ bernoulli(theta);
+            else {
+              0 ~ bernoulli(theta);
+              if(yreal_selfreport[i] > 0) {
+                yreal_selfreport[i] ~ lognormal(log_lambda_selfreport_i, sigma_logn[1]);
               }
             }
           }
@@ -525,6 +642,21 @@ model {
           }
         }
       }
+      if(n_selfreport > 0) {
+        for(i in 1:n_selfreport) {
+          if(effort_selfreport[i] > 0) {
+            real lambda_selfreport_i = lambda_base[time_idx_selfreport[i]] * effort_selfreport[i];
+            if (yint_selfreport[i] == 0)
+              1 ~ bernoulli(theta);
+            else {
+              0 ~ bernoulli(theta);
+              if(yreal_selfreport[i] > 0) {
+                yreal_selfreport[i] ~ gamma(gammaA[1], gammaA[1] / lambda_selfreport_i);
+              }
+            }
+          }
+        }
+      }
     }
 
     // Family 9: Normal
@@ -551,6 +683,14 @@ model {
           if(effort_both[i] > 0) {
             real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
             yreal_both[i] ~ normal(lambda_both_i, sigma_logn[1]);
+          }
+        }
+      }
+      if(n_selfreport > 0) {
+        for(i in 1:n_selfreport) {
+          if(effort_selfreport[i] > 0) {
+            real lambda_selfreport_i = lambda_base[time_idx_selfreport[i]] * effort_selfreport[i];
+            yreal_selfreport[i] ~ normal(lambda_selfreport_i, sigma_logn[1]);
           }
         }
       }
@@ -598,35 +738,80 @@ model {
           }
         }
       }
+      if(n_selfreport > 0) {
+        for(i in 1:n_selfreport) {
+          if(effort_selfreport[i] > 0) {
+            real lambda_selfreport_i = lambda_base[time_idx_selfreport[i]] * effort_selfreport[i];
+            if (yint_selfreport[i] == 0)
+              1 ~ bernoulli(theta);
+            else {
+              0 ~ bernoulli(theta);
+              yreal_selfreport[i] ~ normal(lambda_selfreport_i, sigma_logn[1]);
+            }
+          }
+        }
+      }
+    }
+
+    // ---- NEW: self-reporting probability sub-model likelihood ----
+    // (Pooled/constant across years; ground truth from obs/em/both-covered vessels)
+    if(estimate_self_report == 1) {
+      logit_p_report ~ normal(0, 1.5); // weakly informative on the probability scale
+      for(t in 1:n_year) {
+        if(n_vessels_observed[t] > 0) {
+          n_vessels_self_report[t] ~ binomial(n_vessels_observed[t], p_report[t]);
+        }
+      }
     }
   }
 }
 generated quantities {
   // Log-likelihood needs different sizes for pooled vs multi-stream models
-  vector[multi_stream == 0 ? n_row : (n_obs + n_em + n_both)] log_lik;
+  vector[multi_stream == 0 ? n_row : (n_obs + n_em + n_both + n_selfreport)] log_lik;
   int<lower = 0> y_new[n_year*is_discrete];
   vector[n_year*(1-is_discrete)] y_new_real;
-  
+
+  // ---- NEW: self-report-adjusted expansion effort ----
+  // The self-report stream's effort may overlap with vessels already covered by
+  // obs/em/both (a vessel can be both monitored AND self-report). p_report tells us,
+  // per posterior draw, what fraction of MONITORED effort we'd expect to be
+  // double-counted in the self-report stream. What's left over
+  // (effort_selfreport_by_year - expected overlap) is genuinely NEW coverage, and
+  // that portion is netted out of the truly-unaccounted effort before generating
+  // y_new. Because this happens per draw, the width of p_report's posterior shows
+  // up directly in the width of the expanded estimates.
+  vector[n_year] effort_selfreport_new_coverage;
+  vector[n_year] new_effort_adjusted;
+
+  for(t in 1:n_year) {
+    real expected_overlap = 0;
+    if(estimate_self_report == 1) {
+      expected_overlap = p_report[t] * effort_monitored_by_year[t];
+    }
+    effort_selfreport_new_coverage[t] = fmax(effort_selfreport_by_year[t] - expected_overlap, 0);
+    new_effort_adjusted[t] = fmax(new_effort_by_year[t] - effort_selfreport_new_coverage[t], 0);
+  }
+
   // POOLED MODEL (single stream)
   if(multi_stream == 0) {
     // Calculate pointwise log-likelihood for each observation
     for(n in 1:n_row) {
       real lambda_n = lambda_base[time[n]] * effort[n];
       real log_lambda_n = log_lambda_base[time[n]] + log(effort[n]);
-      
+
       if(family == 1) {  // Poisson
         log_lik[n] = poisson_log_lpmf(yint[n] | log_lambda_n);
-      } 
+      }
       else if(family == 2) {  // Negative Binomial
         log_lik[n] = neg_binomial_2_log_lpmf(yint[n] | log_lambda_n, nb2_phi[1]);
-      } 
+      }
       else if(family == 3) {  // Poisson-Hurdle
         if(yint[n] == 0) {
           log_lik[n] = log(theta[1]);
         } else {
           log_lik[n] = log1m(theta[1]) + poisson_log_lpmf(yint[n] | log_lambda_n);
         }
-      } 
+      }
       else if(family == 4) {  // NB-Hurdle
         if(yint[n] == 0) {
           log_lik[n] = log(theta[1]);
@@ -665,16 +850,16 @@ generated quantities {
         }
       }
     }
-  } 
+  }
   // MULTI-STREAM MODEL
   else {
     int idx = 1;  // Index for filling log_lik
-    
+
     // OBS sector observations
     for(i in 1:n_obs) {
       real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
       real log_lambda_obs_i = log_lambda_base[time_idx_obs[i]] + log(effort_obs[i]);
-      
+
       if(family == 1) {  // Poisson
         log_lik[idx] = poisson_log_lpmf(yint_obs[i] | log_lambda_obs_i);
       } else if(family == 2) {  // NB
@@ -694,12 +879,12 @@ generated quantities {
       }
       idx += 1;
     }
-    
+
     // EM sector observations
     for(i in 1:n_em) {
       real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
       real log_lambda_em_i = log_lambda_base[time_idx_em[i]] + log(effort_em[i]);
-      
+
       if(family == 1) {  // Poisson
         log_lik[idx] = poisson_log_lpmf(yint_em[i] | log_lambda_em_i);
       } else if(family == 2) {  // NB
@@ -719,12 +904,12 @@ generated quantities {
       }
       idx += 1;
     }
-    
+
     // BOTH sector observations
     for(i in 1:n_both) {
       real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
       real log_lambda_both_i = log_lambda_base[time_idx_both[i]] + log(effort_both[i]);
-      
+
       if(family == 1) {  // Poisson
         log_lik[idx] = poisson_log_lpmf(yint_both[i] | log_lambda_both_i);
       } else if(family == 2) {  // NB
@@ -744,15 +929,42 @@ generated quantities {
       }
       idx += 1;
     }
+
+    // SELFREPORT sector observations
+    for(i in 1:n_selfreport) {
+      real lambda_selfreport_i = lambda_base[time_idx_selfreport[i]] * effort_selfreport[i];
+      real log_lambda_selfreport_i = log_lambda_base[time_idx_selfreport[i]] + log(effort_selfreport[i]);
+
+      if(family == 1) {  // Poisson
+        log_lik[idx] = poisson_log_lpmf(yint_selfreport[i] | log_lambda_selfreport_i);
+      } else if(family == 2) {  // NB
+        log_lik[idx] = neg_binomial_2_log_lpmf(yint_selfreport[i] | log_lambda_selfreport_i, nb2_phi[1]);
+      } else if(family == 3) {  // Poisson-Hurdle
+        if(yint_selfreport[i] == 0) {
+          log_lik[idx] = log(theta[1]);
+        } else {
+          log_lik[idx] = log1m(theta[1]) + poisson_log_lpmf(yint_selfreport[i] | log_lambda_selfreport_i);
+        }
+      } else if(family == 4) {  // NB-Hurdle
+        if(yint_selfreport[i] == 0) {
+          log_lik[idx] = log(theta[1]);
+        } else {
+          log_lik[idx] = log1m(theta[1]) + neg_binomial_2_log_lpmf(yint_selfreport[i] | log_lambda_selfreport_i, nb2_phi[1]);
+        }
+      }
+      idx += 1;
+    }
   }
-  
+
   // Generate posterior predictive samples for unobserved effort (by year)
+  // NOTE: uses new_effort_adjusted (nets out self-report-inferred coverage)
+  // instead of the raw new_effort_by_year.
   for(t in 1:n_year) {
     if(is_discrete == 1) {
       y_new[t] = 0;
-      if(new_effort_by_year[t] > 0) {
-        real lambda_new_t = lambda_base[t] * new_effort_by_year[t];
-        
+      if(new_effort_adjusted[t] > 0) {
+        real lambda_new_t = lambda_base[t] * new_effort_adjusted[t];
+
         if(family == 1) {
           y_new[t] = poisson_rng(lambda_new_t);
         } else if(family == 2) {
@@ -765,10 +977,10 @@ generated quantities {
       }
     } else {
       y_new_real[t] = 0;
-      if(new_effort_by_year[t] > 0) {
-        real log_lambda_new_t = log_lambda_base[t] + log(new_effort_by_year[t]);
-        real lambda_new_t = lambda_base[t] * new_effort_by_year[t];
-        
+      if(new_effort_adjusted[t] > 0) {
+        real log_lambda_new_t = log_lambda_base[t] + log(new_effort_adjusted[t]);
+        real lambda_new_t = lambda_base[t] * new_effort_adjusted[t];
+
         if(family == 5) {
           y_new_real[t] = lognormal_rng(log_lambda_new_t, sigma_logn[1]);
         } else if(family == 6) {

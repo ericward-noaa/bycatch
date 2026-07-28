@@ -19,6 +19,10 @@ fit_bycatch(
   covrate_obs = NULL,
   covrate_both = NULL,
   effort_total = NULL,
+  takes_selfreport = NULL,
+  effort_selfreport = NULL,
+  covrate_selfreport = NULL,
+  vessels_observed = NULL,
   family = c("poisson", "nbinom2", "poisson-hurdle", "nbinom2-hurdle", "lognormal",
     "gamma", "lognormal-hurdle", "gamma-hurdle", "normal", "normal-hurdle"),
   time_varying = FALSE,
@@ -57,6 +61,14 @@ fit_bycatch(
 
 \item{effort_total}{Optional: Column name for total fishery effort. If provided, takes precedence over coverage rates. Must be in same units as effort columns.}
 
+\item{takes_selfreport}{Optional: Column name for bycatch takes recorded via self-report. Default NULL. Treated as a 4th monitoring stream, exactly like 'takes_em'/'takes_both' - contributes directly to the shared bycatch rate.}
+
+\item{effort_selfreport}{Optional: Column name for effort covered by self-report. Required if takes_selfreport is provided.}
+
+\item{covrate_selfreport}{Optional: Column name for the percentage (0-100) of observed (obs/em/both-covered) vessels that also self-report, per row. Used with 'vessels_observed' to estimate the probability of self-reporting, p_report, with a full posterior (unlike covrate_obs/covrate_em/covrate_both, which are treated as fixed known rates).}
+
+\item{vessels_observed}{Optional: Column name for the count of observed (obs/em/both-covered) vessels per row - the denominator for the p_report binomial sub-model. Required together with 'covrate_selfreport'.}
+
 \item{family}{Family for response distribution can be discrete ("poisson",
 "nbinom2", "poisson-hurdle","nbinom2-hurdle"), or continuous ("normal",
 "gamma","lognormal", "normal-hurdle", "gamma-hurdle", "lognormal-hurdle"). The
@@ -71,12 +83,12 @@ link function.}
 
 \item{chains}{the number of mcmc chains, defaults to 3}
 
-\item{control}{List to pass to \code{\link[rstan:stanmodel-method-sampling]{rstan::sampling()}}. For example,
+\item{control}{List to pass to \code{\link[rstan:sampling]{rstan::sampling()}}. For example,
 increase \code{adapt_delta} if there are warnings about divergent
 transitions: \code{control = list(adapt_delta = 0.99)}. By default,
 \pkg{bycatch} sets \code{adapt_delta = 0.9}.}
 
-\item{...}{Any other arguments to pass to \code{\link[rstan:stanmodel-method-sampling]{rstan::sampling()}}.}
+\item{...}{Any other arguments to pass to \code{\link[rstan:sampling]{rstan::sampling()}}.}
 }
 \value{
 list of the data used to fit the model, the matrix of covariates, the expanded bycatch generated via the fit and simulations, and the fitted stan model
@@ -103,6 +115,21 @@ NOTE: effort_total must be in the same units as your effort columns
 the data are kept separate in the statistical model but all share the same underlying bycatch rate.
 This approach assumes all monitoring types have perfect/equal detection (detection = 100\%) but
 avoids distributional issues that arise from pooling.
+
+\strong{Self-reporting as a monitoring stream:} Providing \code{takes_selfreport}/\code{effort_selfreport}
+adds self-report as a 4th stream, structurally identical to \code{em}/\code{both} - its catches feed
+directly into the shared bycatch rate.
+
+\strong{Self-reporting probability sub-model:} A vessel can be covered by EM/Observer \emph{and}
+self-report, so summing streams naively can double-count effort. Providing
+\code{covrate_selfreport} (percentage of observed vessels that also self-report, per row) and
+\code{vessels_observed} (the denominator) fits a binomial sub-model for the probability of
+self-reporting, p_report (pooled across all years). Within each posterior draw, p_report
+is used to estimate how much of the self-report stream's effort overlaps with vessels
+already covered by obs/em/both; only the genuinely incremental portion is netted out of
+the unobserved effort before expansion — so the posterior uncertainty in the self-report
+rate shows up directly in the width of the expanded bycatch estimates, rather than being
+applied as a fixed correction factor after fitting.
 }
 \examples{
 \donttest{
@@ -142,5 +169,34 @@ fit_multi <- fit_bycatch(Takes_obs ~ 1,
   covrate_em = "CovRate_em",
   family = "poisson"
 )
+
+# Multi-stream example with self-report as a 4th stream plus a reporting-probability sub-model
+d_sr <- data.frame(
+  Year = 2002:2014,
+  Takes_obs = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0),
+  Sets_obs = c(200, 180, 150, 350, 250, 270, 180, 150, 400, 350, 280, 180, 250),
+  CovRate_obs = c(20, 19, 17, 19, 21, 21, 20, 20, 20, 19, 20, 19, 19),
+  # Self-report stream: its own catches and effort, like takes_em/effort_em
+  Takes_selfreport = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0),
+  Sets_selfreport = c(60, 55, 45, 80, 65, 70, 48, 40, 90, 78, 62, 50, 58),
+  # Of the observed (obs/em/both) vessels each year, how many also self-report?
+  VesselsObserved = c(18, 17, 15, 22, 20, 21, 17, 15, 24, 22, 20, 17, 19),
+  CovRate_selfreport = c(67, 65, 60, 68, 70, 71, 65, 67, 71, 73, 70, 65, 68) # percent
+)
+
+fit_sr <- fit_bycatch(Takes_obs ~ 1,
+  data = d_sr,
+  time = "Year",
+  effort = "Sets_obs",
+  covrate_obs = "CovRate_obs",
+  takes_selfreport = "Takes_selfreport",
+  effort_selfreport = "Sets_selfreport",
+  covrate_selfreport = "CovRate_selfreport",
+  vessels_observed = "VesselsObserved",
+  family = "poisson"
+)
+
+# Posterior of the self-report probability
+p_report_draws <- rstan::extract(fit_sr$fitted_model, "p_report")$p_report
 }
 }
