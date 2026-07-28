@@ -704,12 +704,12 @@ fit_bycatch <- function(formula, data, time = "year", effort = "effort",
   if(multi_stream) {
     pars <- c("beta", "lambda_base", "log_lambda_base", "log_lik", "y_new",
               "est_time_dev", "sigma_rw", "sigma_logn", "cv_gamma",
-              "nb2_phi", "theta", "y_new_real",
+              "nb2_phi", "theta", "y_new_real", "logit_p_report",
               "p_report", "new_effort_adjusted", "effort_selfreport_new_coverage")
   } else {
     pars <- c("beta", "lambda", "log_lambda", "log_lik", "y_new",
               "est_time_dev", "sigma_rw", "sigma_logn", "cv_gamma",
-              "nb2_phi", "theta", "y_new_real",
+              "nb2_phi", "theta", "y_new_real", "logit_p_report",
               "p_report", "new_effort_adjusted", "effort_selfreport_new_coverage")
   }
 
