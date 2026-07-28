@@ -41,9 +41,9 @@ Suggests:
     MASS
 URL: https://ericward-noaa.github.io/bycatch/
 BugReports: https://github.com/ericward-noaa/bycatch/issues
-RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 SystemRequirements: GNU make
 Biarch: true
 Config/testthat/edition: 3
+Config/roxygen2/version: 8.0.0
