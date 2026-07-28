@@ -117,9 +117,8 @@ parameters {
   real<lower=0> nb2_phi[est_phi];
   real<lower=0,upper=1> theta[est_theta];
 
-  // ---- NEW: self-reporting sub-model parameters ----
   // Single pooled logit probability - self-reporting compliance assumed constant over time.
-  vector[estimate_self_report] logit_p_report;
+  real logit_p_report[estimate_self_report];
 }
 transformed parameters {
   vector[n_year] log_lambda_base;  // Base lambda for each year
@@ -799,20 +798,20 @@ generated quantities {
     for(n in 1:n_row) {
       real lambda_n = lambda_base[time[n]] * effort[n];
       real log_lambda_n = log_lambda_base[time[n]] + log(effort[n]);
-      
+
       if(family == 1) {  // Poisson
         log_lik[n] = poisson_log_lpmf(yint[n] | log_lambda_n);
-      } 
+      }
       else if(family == 2) {  // Negative Binomial
         log_lik[n] = neg_binomial_2_log_lpmf(yint[n] | log_lambda_n, nb2_phi[1]);
-      } 
+      }
       else if(family == 3) {  // Poisson-Hurdle
         if(yint[n] == 0) {
           log_lik[n] = log(theta[1]);
         } else {
           log_lik[n] = log1m(theta[1]) + poisson_log_lpmf(yint[n] | log_lambda_n);
         }
-      } 
+      }
       else if(family == 4) {  // NB-Hurdle
         if(yint[n] == 0) {
           log_lik[n] = log(theta[1]);
@@ -851,16 +850,16 @@ generated quantities {
         }
       }
     }
-  } 
+  }
   // MULTI-STREAM MODEL
   else {
     int idx = 1;  // Index for filling log_lik
-    
+
     // OBS sector observations
     for(i in 1:n_obs) {
       real lambda_obs_i = lambda_base[time_idx_obs[i]] * effort_obs[i];
       real log_lambda_obs_i = log_lambda_base[time_idx_obs[i]] + log(effort_obs[i]);
-      
+
       if(family == 1) {  // Poisson
         log_lik[idx] = poisson_log_lpmf(yint_obs[i] | log_lambda_obs_i);
       } else if(family == 2) {  // NB
@@ -880,12 +879,12 @@ generated quantities {
       }
       idx += 1;
     }
-    
+
     // EM sector observations
     for(i in 1:n_em) {
       real lambda_em_i = lambda_base[time_idx_em[i]] * effort_em[i];
       real log_lambda_em_i = log_lambda_base[time_idx_em[i]] + log(effort_em[i]);
-      
+
       if(family == 1) {  // Poisson
         log_lik[idx] = poisson_log_lpmf(yint_em[i] | log_lambda_em_i);
       } else if(family == 2) {  // NB
@@ -905,12 +904,12 @@ generated quantities {
       }
       idx += 1;
     }
-    
+
     // BOTH sector observations
     for(i in 1:n_both) {
       real lambda_both_i = lambda_base[time_idx_both[i]] * effort_both[i];
       real log_lambda_both_i = log_lambda_base[time_idx_both[i]] + log(effort_both[i]);
-      
+
       if(family == 1) {  // Poisson
         log_lik[idx] = poisson_log_lpmf(yint_both[i] | log_lambda_both_i);
       } else if(family == 2) {  // NB
@@ -935,7 +934,7 @@ generated quantities {
     for(i in 1:n_selfreport) {
       real lambda_selfreport_i = lambda_base[time_idx_selfreport[i]] * effort_selfreport[i];
       real log_lambda_selfreport_i = log_lambda_base[time_idx_selfreport[i]] + log(effort_selfreport[i]);
-      
+
       if(family == 1) {  // Poisson
         log_lik[idx] = poisson_log_lpmf(yint_selfreport[i] | log_lambda_selfreport_i);
       } else if(family == 2) {  // NB
@@ -956,7 +955,7 @@ generated quantities {
       idx += 1;
     }
   }
-  
+
   // Generate posterior predictive samples for unobserved effort (by year)
   // NOTE: uses new_effort_adjusted (nets out self-report-inferred coverage)
   // instead of the raw new_effort_by_year.
@@ -965,7 +964,7 @@ generated quantities {
       y_new[t] = 0;
       if(new_effort_adjusted[t] > 0) {
         real lambda_new_t = lambda_base[t] * new_effort_adjusted[t];
-        
+
         if(family == 1) {
           y_new[t] = poisson_rng(lambda_new_t);
         } else if(family == 2) {
@@ -981,7 +980,7 @@ generated quantities {
       if(new_effort_adjusted[t] > 0) {
         real log_lambda_new_t = log_lambda_base[t] + log(new_effort_adjusted[t]);
         real lambda_new_t = lambda_base[t] * new_effort_adjusted[t];
-        
+
         if(family == 5) {
           y_new_real[t] = lognormal_rng(log_lambda_new_t, sigma_logn[1]);
         } else if(family == 6) {
