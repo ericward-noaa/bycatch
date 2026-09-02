@@ -18,7 +18,7 @@ library(bycatch)
 set.seed(123)
 ```
 
-`plot_pred_distribution()` plots a histogram of the posterior distribution of predicted bycatch (lambda of the Poisson) for a single year, accounting for effort but not for observer coverage. For hurdle models, the distribution shown is the total predicted bycatch rate, combining the zero and non-zero components.
+`plot_pred_distribution()` plots a histogram of the posterior distribution of predicted bycatch rate (lambda of the Poisson) for a single year, accounting for effort but not for observer coverage. For hurdle models, the distribution shown is the total predicted bycatch rate, combining the zero and non-zero components.
 
 ### Load data
 
