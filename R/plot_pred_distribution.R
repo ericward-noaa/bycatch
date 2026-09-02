@@ -1,7 +1,6 @@
-#' plot_pred_distribution makes plots bycatch estimates (lambda of Poisson), accounting for effort but not accounting for observer coverage
+#' plot_pred_distribution plots the distribution of bycatch prediction for a specific year
 #'
-#' @param fitted_model Data and fitted model returned from fit_bycatch(). If a hurdle model, then only
-#' then the plot returns the total bycatch rate (including zero and non-zero components).
+#' @param fitted_model Data and fitted model returned from fit_bycatch().
 #' @param year Specified year for the prediction distribution
 #' @param xlab X-axis label for plot
 #' @param ylab Y-axis label for plot
