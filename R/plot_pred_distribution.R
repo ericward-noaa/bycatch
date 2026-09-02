@@ -6,11 +6,10 @@
 #' @param ylab Y-axis label for plot
 #' @param breaks Breaks for bars in the plot, defaults to 1
 #'
-#' @return plot called from ggplot
+#' @return A ggplot object.
 #'
 #' @export
 #' @import ggplot2
-#' @importFrom stats quantile
 #' @examples
 #' \donttest{
 #' d <- data.frame(
