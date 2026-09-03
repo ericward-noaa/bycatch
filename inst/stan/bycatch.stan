@@ -2,9 +2,9 @@ data {
   int<lower=0> n_row;
   vector[n_row] effort; // For backwards compatibility (single stream)
   vector[n_row] new_effort; // covariate for unobserved sets
-  int yint[n_row]; // For backwards compatibility (single stream)
+  array[n_row] int yint; // For backwards compatibility (single stream)
   vector[n_row] yreal; // For backwards compatibility (single stream)
-  int time[n_row]; // time variable
+  array[n_row] int time; // time variable
   int<lower=0> n_year; // number of unique years
   int<lower=0> K;
   matrix[n_year, K] x; // covariates (year-level)
@@ -82,17 +82,17 @@ transformed data {
 parameters {
   vector[K] beta;
   vector[time_varying*(n_year-1)] est_time_dev;
-  real<lower=0> sigma_rw[time_varying];
-  real<lower=0> sigma_logn[est_sigma];
-  real<lower=0> cv_gamma[est_cv];
-  real<lower=0> nb2_phi[est_phi];
-  real<lower=0,upper=1> theta[est_theta];
+  array[time_varying] real<lower=0> sigma_rw;
+  array[est_sigma] real<lower=0> sigma_logn;
+  array[est_cv] real<lower=0> cv_gamma;
+  array[est_phi] real<lower=0> nb2_phi;
+  array[est_theta] real<lower=0,upper=1> theta;
 }
 transformed parameters {
   vector[n_year] log_lambda_base;  // Base lambda for each year
   vector[n_year] lambda_base;
   vector[n_year] pred;
-  real<lower=0> gammaA[est_cv];
+  array[est_cv] real<lower=0> gammaA;
   vector[time_varying*n_year] time_dev;
 
   // Single stream transformed parameters (backwards compatibility)
@@ -604,7 +604,7 @@ model {
 generated quantities {
   // Log-likelihood needs different sizes for pooled vs multi-stream models
   vector[multi_stream == 0 ? n_row : (n_obs + n_em + n_both)] log_lik;
-  int<lower = 0> y_new[n_year*is_discrete];
+  array[n_year*is_discrete] int<lower = 0> y_new;
   vector[n_year*(1-is_discrete)] y_new_real;
   
   // POOLED MODEL (single stream)
