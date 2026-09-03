@@ -1,0 +1,57 @@
+---
+title: "Plotting the predicted bycatch distribution"
+author: ""
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Plotting the predicted bycatch distribution}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, results = "hide", message = FALSE, warning = FALSE}
+library(bycatch)
+set.seed(123)
+```
+
+`plot_pred_distribution()` plots a histogram of the posterior distribution of predicted bycatch rate (lambda of the Poisson) for a single year, accounting for effort but not for observer coverage. For hurdle models, the distribution shown is the total predicted bycatch rate, combining the zero and non-zero components.
+
+### Load data
+
+```{r data}
+# replace this with your own data frame
+d <- data.frame(
+  "Year" = 2002:2014,
+  "Takes" = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0),
+  "expansionRate" = c(24, 22, 14, 32, 28, 25, 30, 7, 26, 21, 22, 23, 27),
+  "Sets" = c(391, 340, 330, 660, 470, 500, 330, 287, 756, 673, 532, 351, 486)
+)
+```
+
+### Fit a model
+
+```{r fit, results = "hide", message = FALSE, warning = FALSE}
+fit <- fit_bycatch(Takes ~ 1,
+  data = d, time = "Year",
+  effort = "Sets",
+  family = "poisson",
+  expansion_rate = "expansionRate",
+  time_varying = FALSE
+)
+```
+
+### Plot the prediction distribution for a single year
+
+`year` selects which year (from the time column used in `fit_bycatch()`) to show the distribution for, and `breaks` controls the histogram bin width (it defaults to integer-width bins).
+
+```{r plot, fig.width = 7, fig.height = 5}
+plot_pred_distribution(fit,
+  year = 2014,
+  xlab = "Predicted Bycatch",
+  ylab = "Frequency"
+)
+```

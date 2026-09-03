@@ -41,7 +41,7 @@ fit <- fit_bycatch(Takes ~ 1,
 log_lik <- extract_log_lik_for_loo(fit)
 
 # Run LOO-CV
-library(loo)
-loo_result <- loo(log_lik)
+# library(loo)
+# loo_result <- loo(log_lik)
 }
 }

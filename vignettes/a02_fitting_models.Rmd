@@ -65,7 +65,7 @@ plot_fitted(fit, xlab="Year", ylab = "Estimated bycatch for observed vessels", i
 The `loo` package in R provides a nice interface for extracting leave one out information criterion (LOOIC) from `stanfit` objects. Like AIC, lower is better. Values of LOOIC can be used to compare models with the same response but different structure (covariates or not, time-varying bycatch or not, etc). Additional information on LOOIC can be found at [mc-stan.org](http://mc-stan.org/rstanarm/reference/loo.stanreg.html), [Vehtari et al. 2017](https://link.springer.com/article/10.1007/s11222-016-9696-4), or the vignette for the [loo package](https://cran.r-project.org/web/packages/loo/vignettes/loo2-example.html).
 
 ```{r}
-loo::loo(fit$fitted_model)$estimates
+# loo::loo(fit$fitted_model)$estimates
 ```
 
 \break 

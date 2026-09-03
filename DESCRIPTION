@@ -1,13 +1,14 @@
 Package: bycatch
 Type: Package
 Title: Fit Bayesian Models to Bycatch Data
-Version: 1.0.9
+Version: 1.0.10
 Authors@R: c(
     person(c("Eric"), "Ward", email = "eric.ward@noaa.gov",
       role = c("aut", "cre")),
     person(c("Jason"), "Jannot", role = "aut"),
     person(c("Kate"), "Richerson", email = "kate.e.richerson@noaa.gov", role = "aut"),
     person(c("Kayleigh"), "Somers", email = "kayleigh.somers@noaa.gov", role = "aut"),
+    person(c("Tina"), "Lyu", role = "ctb"),
     person("Trustees of", "Columbia University", role = "cph"))
 Maintainer: Eric Ward <eric.ward@noaa.gov>
 Description: Fits models to bycatch data, and can expand to fleet-wide estimates, like in situations when fisheries are observed with less than 100% observer coverage.
@@ -17,9 +18,7 @@ Depends:
     R (>= 4.3.0)
 Imports:
     cli,
-    dplyr (>= 1.0.2),
     ggplot2,
-    loo (>= 2.4.1),
     methods,
     Rcpp (>= 0.12.0),
     RcppParallel (>= 5.0.1),
@@ -41,9 +40,9 @@ Suggests:
     MASS
 URL: https://ericward-noaa.github.io/bycatch/
 BugReports: https://github.com/ericward-noaa/bycatch/issues
-RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 SystemRequirements: GNU make
 Biarch: true
 Config/testthat/edition: 3
+Config/roxygen2/version: 8.1.0

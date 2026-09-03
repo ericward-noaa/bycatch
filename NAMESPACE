@@ -8,18 +8,26 @@ export(get_stream_summary)
 export(get_total)
 export(plot_expanded)
 export(plot_fitted)
+export(plot_pred_distribution)
 import(Rcpp)
 import(ggplot2)
 import(methods)
 importFrom(RcppParallel,RcppParallelLibs)
-importFrom(cli,cli_inform)
-importFrom(cli,cli_warn)
-importFrom(rstan,extract)
-importFrom(rstan,sampling)
-importFrom(rstan,vb)
+importFrom(cli,
+  cli_inform,
+  cli_warn
+)
+importFrom(rlang,.data)
+importFrom(rstan,
+  extract,
+  sampling,
+  vb
+)
 importFrom(rstantools,rstan_config)
-importFrom(stats,model.frame)
-importFrom(stats,model.matrix)
-importFrom(stats,model.response)
-importFrom(stats,quantile)
+importFrom(stats,
+  model.frame,
+  model.matrix,
+  model.response,
+  quantile
+)
 useDynLib(bycatch, .registration = TRUE)

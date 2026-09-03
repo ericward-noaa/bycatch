@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r, results="hide", message=FALSE, warning=FALSE}
 library(bycatch)
-library(loo)
+#library(loo)
 set.seed(123)
 ```
 
@@ -41,9 +41,9 @@ fit = fit_bycatch(Takes ~ 1, data=d, time="Year", effort="Sets", family="poisson
 If the 'fit' object produced errors about the Pareto K statistics being high, we could use moment matching in the `loo` package,  
 
 ```{r}
-loo_stats <- loo(fit$fitted_model, moment_match = TRUE)
+#loo_stats <- loo(fit$fitted_model, moment_match = TRUE)
 
-print(loo_stats)
+#print(loo_stats)
 ```
 
 
